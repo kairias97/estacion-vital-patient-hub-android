@@ -1,4 +1,4 @@
-package com.estacionvital.patienthubestacionvital
+package com.estacionvital.patienthub
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4

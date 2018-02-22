@@ -1,4 +1,4 @@
-package com.estacionvital.patienthubestacionvital
+package com.estacionvital.patienthub
 
 import org.junit.Test
 
