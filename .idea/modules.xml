@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://C:\Users\dusti\Documents\GitHub\estacion-vital-patient-hub-android\PatientHubEstacionVital.iml" filepath="C:\Users\dusti\Documents\GitHub\estacion-vital-patient-hub-android\PatientHubEstacionVital.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\dusti\Documents\GitHub\estacion-vital-patient-hub-android\app\app.iml" filepath="C:\Users\dusti\Documents\GitHub\estacion-vital-patient-hub-android\app\app.iml" />
       <module fileurl="file://$PROJECT_DIR$/estacion-vital-patient-hub-android.iml" filepath="$PROJECT_DIR$/estacion-vital-patient-hub-android.iml" />
     </modules>
   </component>
