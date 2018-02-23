@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Estación Vital</string>
+    <string name="num_tel_label">Número de teléfono</string>
+    <string name="verify_number">Verificar número</string>
 </resources>
