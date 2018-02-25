@@ -1,9 +1,11 @@
 package com.estacionvital.patienthub.ui.activities
 
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.estacionvital.patienthub.R
+import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.presenter.ISplashPresenter
 import com.estacionvital.patienthub.presenter.implementations.SplashPresenterImpl
 import com.estacionvital.patienthub.ui.views.ISplashView
@@ -16,7 +18,8 @@ class SplashActivity : BaseActivity(), ISplashView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         supportActionBar?.hide()
-        mSplashPresenter = SplashPresenterImpl(this)
+        mSplashPresenter = SplashPresenterImpl(this, SharedPrefManager(getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
+                Context.MODE_PRIVATE)))
         mSplashPresenter!!.checkSession()
     }
 

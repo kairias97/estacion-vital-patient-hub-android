@@ -6,7 +6,7 @@ package com.estacionvital.patienthub.util
 
 //Endpoints API
 const val MAIN_URL: String = "http://app.netmovil.co/appestacionvital/"
-const val EV_MAIN_URL: String = "http://app.netmovil.co/appestacionvital/"
+const val EV_MAIN_URL: String = "https://dev.estacionvital.com/api/"
 const val URL_VERIFY_NUMBER: String = "pin/number_validate"
 const val AUTH_CREDENTIAL: String = "bm1Fc3RhY2lvblZpdGFsOjIwMTdFViRWMQ=="
 const val URL_SEND_SMS: String = "pin/send"

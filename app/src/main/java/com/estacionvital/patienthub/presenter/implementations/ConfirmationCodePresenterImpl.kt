@@ -1,5 +1,7 @@
 package com.estacionvital.patienthub.presenter.implementations
 
+
+import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.data.remote.Callbacks.IValidateEVCredentialsCallback
 import com.estacionvital.patienthub.data.remote.Callbacks.IValidatePinCallback
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
@@ -21,11 +23,16 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
     private val mCodeVerificationView: IConfirmationCodeVerificationView
     private val mNetMobileRemoteDataSource: NetMobileRemoteDataSource
     private val mEstacionVitalRemoteDataSource:EstacionVitalRemoteDataSource
+    private val mPrefManager:SharedPrefManager
 
-    constructor(numberVerificationView: IConfirmationCodeVerificationView, netMobileRemoteDataSource: NetMobileRemoteDataSource, evRemoteDataSource: EstacionVitalRemoteDataSource){
+    private val mPhoneNumber: String
+
+    constructor(phoneNumber: String, numberVerificationView: IConfirmationCodeVerificationView, netMobileRemoteDataSource: NetMobileRemoteDataSource, evRemoteDataSource: EstacionVitalRemoteDataSource, prefManager: SharedPrefManager){
         this.mCodeVerificationView = numberVerificationView
         this.mNetMobileRemoteDataSource = netMobileRemoteDataSource
         this.mEstacionVitalRemoteDataSource = evRemoteDataSource
+        this.mPrefManager = prefManager
+        this.mPhoneNumber = phoneNumber
     }
 
     private fun validateCodeInput(code: String): Boolean{
@@ -36,7 +43,8 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
         mCodeVerificationView.hideCodeInputMessage()
         return true
     }
-    override fun validateCode(phoneNumber: String, confirmationCode: String) {
+    override fun validateCode(confirmationCode: String) {
+        val phoneNumber:String = mPhoneNumber
         if(validateCodeInput(confirmationCode)) {
             mCodeVerificationView.showCodeValidationProgress()
             mNetMobileRemoteDataSource.validatePinCode(ValidatePinRequest(phoneNumber,
@@ -63,14 +71,17 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
         mEstacionVitalRemoteDataSource.validateEVCredentials(LoginRequest(phoneNumber.toBase64()),
                 object:IValidateEVCredentialsCallback {
                     override fun onSuccess(response: LoginResponse) {
+                        mCodeVerificationView.dismissEVLoginRequestProgress()
                         if (response.status == "success") {
                             val authToken = response.data[0].auth_token
                             //Add here logic to save to Shared Pref
+                            mPrefManager.saveString(SharedPrefManager.PreferenceKeys.AuthToken,
+                                    authToken)
                             mCodeVerificationView.navigateToMain()
                         } else {
                             mCodeVerificationView.navigateToConfirmSuscription()
                         }
-                        mCodeVerificationView.dismissEVLoginRequestProgress()
+
                     }
 
                     override fun onFailure() {
@@ -82,7 +93,7 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
                 })
     }
 
-    override fun checkNumberChanged(confirmationCode: String) {
+    override fun checkCodeChanged(confirmationCode: String) {
         validateCodeInput(confirmationCode)
     }
 }

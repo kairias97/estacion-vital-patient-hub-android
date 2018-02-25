@@ -13,6 +13,12 @@ class SharedPrefManager(private val mSharedPref: SharedPreferences) {
     fun getSharedPrefString(key: PreferenceKeys): String {
         return mSharedPref.getString(key.toString(), "")
     }
+    fun saveString(key: PreferenceKeys, value: String) {
+        val editor: SharedPreferences.Editor = mSharedPref.edit()
+        editor.putString(key.toString(), value)
+        editor.commit()
+
+    }
 
     fun getSharedPrefBoolean(key: PreferenceKeys): Boolean {
         return mSharedPref.getBoolean(key.toString(), false)

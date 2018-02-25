@@ -8,7 +8,6 @@ interface IConfirmationCodeVerificationView {
     fun showCodeRequiredMessage()
     fun hideCodeInputMessage()
     //Webservice result behaviours
-    fun showInvalidCodeMessage()
     fun showCustomMessage(msg:String)
     fun showInternalErrorMessage()
     fun showCodeValidationProgress()
