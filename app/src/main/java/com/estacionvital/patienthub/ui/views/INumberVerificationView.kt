@@ -9,6 +9,7 @@ interface INumberVerificationView {
     fun showValidationMessage(msg: String)
     fun showErrorMessage()
     fun showMovistarValidationProgress()
+    fun dismissMovistarValidationProgress()
     fun showUserVerificationProgress()
     fun navigateToSMSCodeVerification(isRegisteredUser: Boolean)
 
