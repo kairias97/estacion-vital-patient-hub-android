@@ -30,8 +30,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.activities.NumberVerificationActivity"
-            ></activity>
+        <activity android:name=".ui.activities.NumberVerificationActivity" />
+        <activity android:name=".ui.activities.ConfirmationCodeVerificationActivity"></activity>
     </application>
 
 </manifest>

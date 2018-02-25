@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Estación Vital</string>
     <string name="num_tel_label">Número de teléfono</string>
+    <string name="validation_code_label">Código de confirmación</string>
     <string name="verify_number">Verificar</string>
+    <string name="validate_code">Validar</string>
     <string name="verify_number_activity_title">Verificación de teléfono</string>
-
+    <string name="verify_code_activity_title">Ingrese código de confirmación</string>
 </resources>
