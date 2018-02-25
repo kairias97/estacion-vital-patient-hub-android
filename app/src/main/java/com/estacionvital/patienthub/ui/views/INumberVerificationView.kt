@@ -4,13 +4,18 @@ package com.estacionvital.patienthub.ui.views
  * Created by dusti on 23/02/2018.
  */
 interface INumberVerificationView {
-    //The presenter will invoke this method from its view's reference
-    fun showNumberRequiredMessage(msg: String)
-    fun showValidationMessage(msg: String)
-    fun showErrorMessage()
+    //Input validations
+    fun showNumberRequiredMessage()
+    fun showNumberInputInvalidMessage()
+    fun hidePhoneNumberInputMessage()
+    //Webservice result behaviours
+    fun showInvalidNumberMessage()
+    fun showInternalErrorMessage()
     fun showMovistarValidationProgress()
     fun dismissMovistarValidationProgress()
-    fun showUserVerificationProgress()
-    fun navigateToSMSCodeVerification(isRegisteredUser: Boolean)
+    fun dismissSMSRequestProgress()
+    fun showSMSRequestProgress()
+    //Navegability
+    fun navigateToSMSCodeVerification(phoneNumber:String)
 
 }

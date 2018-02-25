@@ -23,12 +23,12 @@ import android.app.ProgressDialog
 abstract class BaseActivity: AppCompatActivity(), IBaseView {
 
     protected var mProgressDialog: ProgressDialog? = null
-    override fun showProgressDialog() {
+    override fun showProgressDialog(msg:String) {
         //Show progress dialog here
         if (mProgressDialog == null) {
             mProgressDialog = ProgressDialog(this)
         }
-        mProgressDialog?.setMessage("Validando numero Movistar")
+        mProgressDialog?.setMessage(msg)
         mProgressDialog?.isIndeterminate = true
         mProgressDialog?.setProgressStyle(ProgressDialog.STYLE_SPINNER)
         mProgressDialog?.setCancelable(false)

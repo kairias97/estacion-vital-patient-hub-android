@@ -1,33 +1,33 @@
 package com.estacionvital.patienthub.data.api
 
-import com.estacionvital.patienthub.util.MAIN_URL
+import com.estacionvital.patienthub.util.EV_MAIN_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
- * Created by dusti on 24/02/2018.
+ * Created by kevin on 25/2/2018.
  */
-class NetMobileAPI {
-    public val service: INetMobileService?
+class EstacionVitalAPI {
+    public val service: IEstacionVitalService?
 
     private constructor(){
         val interceptor: HttpLoggingInterceptor = HttpLoggingInterceptor()
         interceptor.level = HttpLoggingInterceptor.Level.BODY
 
-        val client:OkHttpClient = OkHttpClient.Builder()
+        val client: OkHttpClient = OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .build()
 
         val retrofit: Retrofit = Retrofit.Builder()
-                .baseUrl(MAIN_URL)
+                .baseUrl(EV_MAIN_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(client)
                 .build()
-        service = retrofit.create(INetMobileService::class.java)
+        service = retrofit.create(IEstacionVitalService::class.java)
     }
     companion object {
-        val instance:NetMobileAPI  by lazy {NetMobileAPI()}
+        val instance:EstacionVitalAPI  by lazy {EstacionVitalAPI()}
     }
 }

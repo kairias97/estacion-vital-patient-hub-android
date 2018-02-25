@@ -1,4 +1,4 @@
-package com.estacionvital.patienthub
+package com.estacionvital.patienthub.model
 
 import com.google.gson.annotations.SerializedName
 
