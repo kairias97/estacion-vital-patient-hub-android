@@ -4,10 +4,7 @@ import android.os.Build
 import android.util.Log
 import com.estacionvital.patienthub.BuildConfig
 import com.estacionvital.patienthub.data.api.NetMobileAPI
-import com.estacionvital.patienthub.data.remote.Callbacks.AuthRegistrationCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.ISendSMSCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.ISuscriptionCatalogCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.IValidatePinCallback
+import com.estacionvital.patienthub.data.remote.Callbacks.*
 import com.estacionvital.patienthub.model.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -126,6 +123,50 @@ class NetMobileRemoteDataSource {
         })
     }
 
+    fun retrieveSuscriptionLimit(data: SuscriptionLimitRequest, callback: ISuscriptionLimitCallback){
+        val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionLimit(data)
+        authCall.enqueue(object:Callback<SuscriptionLimitResponse>{
+            override fun onResponse(call: Call<SuscriptionLimitResponse>?, response: Response<SuscriptionLimitResponse>?) {
+                if(response!!.code() == 200){
+                    callback.onSuccess(response.body()!!)
+                }
+                else if(response!!.code() == 500){
+                    if(BuildConfig.BUILD_TYPE == "debug") {
+                        Log.e("SuscriptionLimit error " + response.code().toString(), response.raw().body().toString())
+                    }
+                    callback.onFailure()
+                }
+            }
+
+            override fun onFailure(call: Call<SuscriptionLimitResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug"){
+                    Log.e("SuscriptionLimit error", t.toString())
+                }
+            }
+        })
+    }
+
+    fun retrieveSucriptionActive(data: SuscriptionActiveRequest, callback: ISuscriptionActiveCallback){
+        val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionActive(data)
+        authCall.enqueue(object: Callback<SuscriptionActiveResponse> {
+            override fun onResponse(call: Call<SuscriptionActiveResponse>?, response: Response<SuscriptionActiveResponse>?) {
+                if(response!!.code() == 200){
+                    callback.onSuccess(response.body()!!)
+                }
+                else if(response!!.code() == 500){
+                    if(BuildConfig.BUILD_TYPE == "debug") {
+                        Log.e("SuscriptionActive error " + response.code().toString(), response.raw().body().toString())
+                    }
+                    callback.onFailure()
+                }
+            }
+            override fun onFailure(call: Call<SuscriptionActiveResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug"){
+                    Log.e("SuscriptionActive error", t.toString())
+                }
+            }
+        })
+    }
     private constructor()
     companion object {
         val INSTANCE: NetMobileRemoteDataSource by lazy { NetMobileRemoteDataSource()}

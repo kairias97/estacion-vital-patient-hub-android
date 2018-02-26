@@ -20,4 +20,8 @@ interface INetMobileService {
     fun validatePin(@Body body: ValidatePinRequest): Call<ValidatePinResponse>
     @POST(URL_RETRIEVE_SUSCRIPTION_CATALOG)
     fun retrieveSuscriptionCatalog(@Body body: SuscriptionCatalogRequest):Call<List<SuscriptionCatalogResponse>>
+    @POST(URL_RETRIEVE_SUSCRIPTION_LIMIT)
+    fun retrieveSuscriptionLimit(@Body body: SuscriptionLimitRequest): Call<SuscriptionLimitResponse>
+    @POST(URL_RETRIVE_SUSCRIPTION_ACTIVE)
+    fun retrieveSuscriptionActive(@Body body: SuscriptionActiveRequest): Call<SuscriptionActiveResponse>
 }

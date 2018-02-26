@@ -12,6 +12,8 @@ const val AUTH_CREDENTIAL: String = "bm1Fc3RhY2lvblZpdGFsOjIwMTdFViRWMQ=="
 const val URL_SEND_SMS: String = "pin/send"
 const val URL_VALIDATE_PIN: String = "pin/validate"
 const val URL_RETRIEVE_SUSCRIPTION_CATALOG = "pin/sevice"
+const val URL_RETRIEVE_SUSCRIPTION_LIMIT = "pin/limite_subscripciones_ev"
+const val URL_RETRIVE_SUSCRIPTION_ACTIVE = "pin/servicios_activos_ev"
 
 //Endpoints API EV
 const val EV_LOGIN_URL: String = "auth/sign-in"

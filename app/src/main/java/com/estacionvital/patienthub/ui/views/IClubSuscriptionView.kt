@@ -6,4 +6,5 @@ package com.estacionvital.patienthub.ui.views
 interface IClubSuscriptionView {
     fun showInternalErrorMessage()
     fun showLimitSuscriptionMessage()
+    fun showRetrievingProcces()
 }

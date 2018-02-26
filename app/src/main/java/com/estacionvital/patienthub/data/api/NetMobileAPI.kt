@@ -1,5 +1,6 @@
 package com.estacionvital.patienthub.data.api
 
+import com.estacionvital.patienthub.model.SuscriptionCatalogResponse
 import com.estacionvital.patienthub.util.MAIN_URL
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
