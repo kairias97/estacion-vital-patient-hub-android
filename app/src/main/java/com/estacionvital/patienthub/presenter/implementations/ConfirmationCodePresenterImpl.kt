@@ -68,7 +68,7 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
     }
     private fun validateEVLogin(phoneNumber: String) {
         mCodeVerificationView.showEVLoginRequestProgress()
-        mEstacionVitalRemoteDataSource.validateEVCredentials(LoginRequest(phoneNumber.toBase64()),
+        mEstacionVitalRemoteDataSource.validateEVCredentials(LoginRequest(phoneNumber.toBase64().replace("\n", "")),
                 object:IValidateEVCredentialsCallback {
                     override fun onSuccess(response: LoginResponse) {
                         mCodeVerificationView.dismissEVLoginRequestProgress()
