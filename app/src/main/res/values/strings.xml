@@ -11,6 +11,7 @@
     <string name="verify_code_activity_title">Verificación SMS</string>
 
     <!-- Contenido de labels-->
+    <string name="label_club_suscription">Por favor, elige los servicios a los cuales te deseas suscribir:</string>
     <string name="label_confirmation_suscription">Estimado cliente, usted no se encuentra suscrito al club Estación Vital. ¿Desea suscribirse?</string>
     <string name="label_confirmation_code_msg">Te hemos enviado un SMS con un código de confirmación al número antes digitado.\nPara completar la verificación de su número de teléfono, introduzca el código de confirmación</string>
     <!--Mensajes de inputs-->

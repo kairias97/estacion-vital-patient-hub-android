@@ -5,11 +5,10 @@ package com.estacionvital.patienthub.data.api
  */
 
 import com.estacionvital.patienthub.model.*
-import com.estacionvital.patienthub.util.URL_SEND_SMS
-import com.estacionvital.patienthub.util.URL_VALIDATE_PIN
-import com.estacionvital.patienthub.util.URL_VERIFY_NUMBER
+import com.estacionvital.patienthub.util.*
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface INetMobileService {
@@ -19,5 +18,6 @@ interface INetMobileService {
     fun sendSMSCode(@Body body: SendSMSRequest): Call<SendSMSResponse>
     @POST(URL_VALIDATE_PIN)
     fun validatePin(@Body body: ValidatePinRequest): Call<ValidatePinResponse>
-
+    @POST(URL_RETRIEVE_SUSCRIPTION_CATALOG)
+    fun retrieveSuscriptionCatalog(@Body body: SuscriptionCatalogRequest):Call<List<SuscriptionCatalogResponse>>
 }
