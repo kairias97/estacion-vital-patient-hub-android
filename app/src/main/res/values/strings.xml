@@ -4,11 +4,14 @@
     <string name="validation_code_label">Código de confirmación</string>
     <string name="verify_number">Verificar</string>
     <string name="validate_code">Validar</string>
+    <string name="confirmation_register">Confirmar</string>
+    <string name="cancel_register">Cancelar</string>
 
     <string name="verify_number_activity_title">Verificación de teléfono</string>
     <string name="verify_code_activity_title">Verificación SMS</string>
 
     <!-- Contenido de labels-->
+    <string name="label_confirmation_suscription">Estimado cliente, usted no se encuentra suscrito al club Estación Vital. ¿Desea suscribirse?</string>
     <string name="label_confirmation_code_msg">Te hemos enviado un SMS con un código de confirmación al número antes digitado.\nPara completar la verificación de su número de teléfono, introduzca el código de confirmación</string>
     <!--Mensajes de inputs-->
     <string name="required_input_phone_number">El número celular es requerido</string>

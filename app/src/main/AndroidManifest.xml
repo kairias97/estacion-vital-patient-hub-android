@@ -36,7 +36,8 @@
         <activity
             android:name=".ui.activities.ConfirmationCodeVerificationActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity android:name=".ui.activities.SuscriptionQuestionActivity"></activity>
+        <activity android:name=".ui.activities.SuscriptionQuestionActivity" />
+        <activity android:name=".ui.activities.ClubSuscriptionActivity"></activity>
     </application>
 
 </manifest>
