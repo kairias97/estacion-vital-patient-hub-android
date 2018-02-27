@@ -1,6 +1,5 @@
 package com.estacionvital.patienthub.data.remote
 
-import android.os.Build
 import android.util.Log
 import com.estacionvital.patienthub.BuildConfig
 import com.estacionvital.patienthub.data.api.NetMobileAPI
@@ -102,14 +101,14 @@ class NetMobileRemoteDataSource {
     }
     fun retrieveSuscriptionCatalog(data: SuscriptionCatalogRequest, callback: ISuscriptionCatalogCallback){
         val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionCatalog(data)
-        authCall.enqueue(object:Callback<List<SuscriptionCatalogResponse>>{
-            override fun onFailure(call: Call<List<SuscriptionCatalogResponse>>?, t: Throwable?) {
+        authCall.enqueue(object:Callback<List<EVClub>>{
+            override fun onFailure(call: Call<List<EVClub>>?, t: Throwable?) {
                 if(BuildConfig.BUILD_TYPE == "debug"){
                     Log.e("SuscriptionCatalog error", t.toString())
                 }
             }
 
-            override fun onResponse(call: Call<List<SuscriptionCatalogResponse>>?, response: Response<List<SuscriptionCatalogResponse>>?) {
+            override fun onResponse(call: Call<List<EVClub>>?, response: Response<List<EVClub>>?) {
                 if(response!!.code()==200){
                     callback.onSucces(response.body()!!)
                 }

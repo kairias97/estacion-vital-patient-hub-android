@@ -7,8 +7,6 @@ import com.estacionvital.patienthub.data.remote.NetMobileRemoteDataSource
 import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.ISuscriptionCatalogPresenter
 import com.estacionvital.patienthub.ui.views.IClubSuscriptionView
-import com.estacionvital.patienthub.util.AUTH_CREDENTIAL
-import javax.security.auth.callback.Callback
 
 /**
  * Created by dusti on 26/02/2018.
@@ -27,7 +25,7 @@ class SuscriptionCatalogPresenterImpl: ISuscriptionCatalogPresenter {
         mSuscriptionCatalogView.showRetrievingProcces()
         mNetMobileRemoteDataSource.retrieveSuscriptionCatalog(SuscriptionCatalogRequest(auth_credential),
                 object: ISuscriptionCatalogCallback{
-                    override fun onSucces(response: List<SuscriptionCatalogResponse>) {
+                    override fun onSucces(response: List<EVClub>) {
                         //se copia la lista a nuestra lista local
                         print(response.count() as Any)
                     }
@@ -51,7 +49,7 @@ class SuscriptionCatalogPresenterImpl: ISuscriptionCatalogPresenter {
                 })
     }
 
-    override fun retrieveActive(number: String, auth_credential: String, catalog: List<SuscriptionCatalogResponse>) {
+    override fun retrieveActive(number: String, auth_credential: String, catalog: List<EVClub>) {
         mNetMobileRemoteDataSource.retrieveSucriptionActive(SuscriptionActiveRequest(number, auth_credential),
                 object: ISuscriptionActiveCallback{
                     override fun onSuccess(response: SuscriptionActiveResponse) {

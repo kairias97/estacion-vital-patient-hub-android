@@ -8,7 +8,6 @@ import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.util.*
 import retrofit2.Call
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface INetMobileService {
@@ -19,7 +18,7 @@ interface INetMobileService {
     @POST(URL_VALIDATE_PIN)
     fun validatePin(@Body body: ValidatePinRequest): Call<ValidatePinResponse>
     @POST(URL_RETRIEVE_SUSCRIPTION_CATALOG)
-    fun retrieveSuscriptionCatalog(@Body body: SuscriptionCatalogRequest):Call<List<SuscriptionCatalogResponse>>
+    fun retrieveSuscriptionCatalog(@Body body: SuscriptionCatalogRequest):Call<List<EVClub>>
     @POST(URL_RETRIEVE_SUSCRIPTION_LIMIT)
     fun retrieveSuscriptionLimit(@Body body: SuscriptionLimitRequest): Call<SuscriptionLimitResponse>
     @POST(URL_RETRIVE_SUSCRIPTION_ACTIVE)
