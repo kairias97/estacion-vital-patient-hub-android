@@ -147,8 +147,8 @@ class NetMobileRemoteDataSource {
 
     fun retrieveSucriptionActive(data: SuscriptionActiveRequest, callback: ISuscriptionActiveCallback){
         val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionActive(data)
-        authCall.enqueue(object: Callback<SuscriptionActiveResponse> {
-            override fun onResponse(call: Call<SuscriptionActiveResponse>?, response: Response<SuscriptionActiveResponse>?) {
+        authCall.enqueue(object: Callback<List<SuscriptionActiveResponse>> {
+            override fun onResponse(call: Call<List<SuscriptionActiveResponse>>?, response: Response<List<SuscriptionActiveResponse>>?) {
                 if(response!!.code() == 200){
                     callback.onSuccess(response.body()!!)
                 }
@@ -159,7 +159,7 @@ class NetMobileRemoteDataSource {
                     callback.onFailure()
                 }
             }
-            override fun onFailure(call: Call<SuscriptionActiveResponse>?, t: Throwable?) {
+            override fun onFailure(call: Call<List<SuscriptionActiveResponse>>?, t: Throwable?) {
                 if(BuildConfig.BUILD_TYPE == "debug"){
                     Log.e("SuscriptionActive error", t.toString())
                 }

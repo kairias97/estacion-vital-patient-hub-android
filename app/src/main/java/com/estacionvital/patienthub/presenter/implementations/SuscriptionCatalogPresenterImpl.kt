@@ -15,32 +15,39 @@ class SuscriptionCatalogPresenterImpl: ISuscriptionCatalogPresenter {
 
     private val mSuscriptionCatalogView: IClubSuscriptionView
     private val mNetMobileRemoteDataSource: NetMobileRemoteDataSource
+    private lateinit var suscriptionLimit: SuscriptionLimitResponse
+    private lateinit var suscriptionCatalog: List<EVClub>
 
     constructor(clubSuscriptionView: IClubSuscriptionView, netMobileRemoteDataSource: NetMobileRemoteDataSource){
         this.mSuscriptionCatalogView = clubSuscriptionView
         this.mNetMobileRemoteDataSource = netMobileRemoteDataSource
     }
 
-    override fun retrieveCatalog(auth_credential: String) {
+    override fun retrieveCatalog(number: String, auth_credential: String) {
         mSuscriptionCatalogView.showRetrievingProcces()
         mNetMobileRemoteDataSource.retrieveSuscriptionCatalog(SuscriptionCatalogRequest(auth_credential),
                 object: ISuscriptionCatalogCallback{
                     override fun onSucces(response: List<EVClub>) {
-                        //se copia la lista a nuestra lista local
-                        print(response.count() as Any)
+                        if(response.count()>0){
+                            retrieveActive(number, auth_credential, response)
+                        }
+                        else{
+                            mSuscriptionCatalogView.showInternalErrorMessage()
+                        }
                     }
 
                     override fun onFailure() {
-                        //en caso de error
+                        mSuscriptionCatalogView.showInternalErrorMessage()
                     }
                 })
     }
 
-    override fun retrieveLimit(auth_credential: String) {
+    override fun retrieveLimit(number: String, auth_credential: String) {
         mNetMobileRemoteDataSource.retrieveSuscriptionLimit(SuscriptionLimitRequest(auth_credential),
                 object: ISuscriptionLimitCallback{
                     override fun onSuccess(response: SuscriptionLimitResponse) {
-                        //se obtiene el limite
+                        RegistrationSession.instance.clubsRegistrationLimit = response.max
+                        retrieveCatalog(number, auth_credential)
                     }
 
                     override fun onFailure() {
@@ -52,13 +59,25 @@ class SuscriptionCatalogPresenterImpl: ISuscriptionCatalogPresenter {
     override fun retrieveActive(number: String, auth_credential: String, catalog: List<EVClub>) {
         mNetMobileRemoteDataSource.retrieveSucriptionActive(SuscriptionActiveRequest(number, auth_credential),
                 object: ISuscriptionActiveCallback{
-                    override fun onSuccess(response: SuscriptionActiveResponse) {
-                        //se recibe lista de suscripciones activas
+                    override fun onSuccess(response: List<SuscriptionActiveResponse>) {
+                        if(response.count()>0){
+                            mSuscriptionCatalogView.showClubSuscription(markRegisteredSuscriptions(catalog, response))
+                        }
                     }
 
                     override fun onFailure() {
                         //en caso de error
                     }
                 })
+    }
+    private fun markRegisteredSuscriptions(catalog: List<EVClub>, selected: List<SuscriptionActiveResponse>): List<EVClub>{
+        for(item in catalog){
+            for(secondItem in selected){
+                if(item.id == secondItem.id){
+                    item.isRemoteRegistered = true
+                }
+            }
+        }
+        return catalog
     }
 }

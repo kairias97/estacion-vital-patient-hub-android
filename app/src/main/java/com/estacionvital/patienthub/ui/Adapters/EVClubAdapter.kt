@@ -11,7 +11,7 @@ import com.estacionvital.patienthub.model.EVClub
  * Created by kevin on 26/2/2018.
  */
 public class EVClubAdapter: RecyclerView.Adapter<EVClubViewHolder> {
-    public lateinit var clubs: List<EVClub>
+    private lateinit var clubs: List<EVClub>
 
     constructor(myDataSet: List<EVClub>){
         this.clubs = myDataSet
@@ -34,4 +34,7 @@ public class EVClubAdapter: RecyclerView.Adapter<EVClubViewHolder> {
         return R.layout.item_checkbox_suscription
     }
 
+    public fun setClubsList(list: List<EVClub>){
+        this.clubs = list
+    }
 }

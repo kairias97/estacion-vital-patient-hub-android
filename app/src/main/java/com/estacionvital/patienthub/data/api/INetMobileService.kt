@@ -22,5 +22,5 @@ interface INetMobileService {
     @POST(URL_RETRIEVE_SUSCRIPTION_LIMIT)
     fun retrieveSuscriptionLimit(@Body body: SuscriptionLimitRequest): Call<SuscriptionLimitResponse>
     @POST(URL_RETRIVE_SUSCRIPTION_ACTIVE)
-    fun retrieveSuscriptionActive(@Body body: SuscriptionActiveRequest): Call<SuscriptionActiveResponse>
+    fun retrieveSuscriptionActive(@Body body: SuscriptionActiveRequest): Call<List<SuscriptionActiveResponse>>
 }

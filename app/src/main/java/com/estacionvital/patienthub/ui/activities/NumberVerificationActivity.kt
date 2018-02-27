@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.Toast
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.remote.NetMobileRemoteDataSource
+import com.estacionvital.patienthub.model.RegistrationSession
 import com.estacionvital.patienthub.presenter.INumberVerificationPresenter
 import com.estacionvital.patienthub.presenter.implementations.NumberVerificationPresenterImpl
 import com.estacionvital.patienthub.ui.views.INumberVerificationView
@@ -36,6 +37,7 @@ class NumberVerificationActivity : BaseActivity(), INumberVerificationView {
         //Events
         mVerifyButton.setOnClickListener{
             val phone: String = mPhoneEditText.text.toString()
+            RegistrationSession.instance.phoneNumber = phone
             mNumberVerificationPresenter.validateNumber(phone)
         }
 
