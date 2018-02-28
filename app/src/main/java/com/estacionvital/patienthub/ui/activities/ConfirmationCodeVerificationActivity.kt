@@ -34,14 +34,8 @@ class ConfirmationCodeVerificationActivity : BaseActivity(), IConfirmationCodeVe
         mVerifyButton = findViewById<Button>(R.id.button_verify)
         mCodeInputLayout = findViewById<TextInputLayout>(R.id.text_input_layout_code)
 
-        //Bundle extras
-        var phoneNumber: String = ""
-        if (intent.extras != null) {
-            phoneNumber = intent.extras.getString("phoneNumber")
-        }
 
-        mPresenter = ConfirmationCodePresenterImpl(phoneNumber,
-                this,
+        mPresenter = ConfirmationCodePresenterImpl(this,
                 NetMobileRemoteDataSource.INSTANCE,
                 EstacionVitalRemoteDataSource.INSTANCE,
                 SharedPrefManager(getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),

@@ -4,10 +4,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import com.estacionvital.patienthub.R
 
-class ClubSuscriptionActivity : AppCompatActivity() {
+class RegistrationProfileActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_club_suscription)
+        setContentView(R.layout.activity_registration_profile)
     }
 }

@@ -16,6 +16,6 @@ interface INumberVerificationView {
     fun dismissSMSRequestProgress()
     fun showSMSRequestProgress()
     //Navegability
-    fun navigateToSMSCodeVerification(phoneNumber:String)
+    fun navigateToSMSCodeVerification()
 
 }

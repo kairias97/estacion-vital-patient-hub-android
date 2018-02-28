@@ -1,7 +1,6 @@
 package com.estacionvital.patienthub.ui.activities
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.estacionvital.patienthub.R
@@ -30,7 +29,7 @@ class SuscriptionQuestionActivity : BaseActivity(), ISuscriptionQuestionActivity
     }
 
     override fun navigateToClubSuscription() {
-        val clubSuscriptionIntent: Intent = Intent(this, ClubSuscriptionActivity::class.java)
+        val clubSuscriptionIntent: Intent = Intent(this, ClubSubscriptionActivity::class.java)
         clubSuscriptionIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(clubSuscriptionIntent)
     }

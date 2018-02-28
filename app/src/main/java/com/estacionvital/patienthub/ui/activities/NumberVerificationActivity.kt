@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.Toast
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.remote.NetMobileRemoteDataSource
+import com.estacionvital.patienthub.model.RegistrationSession
 import com.estacionvital.patienthub.presenter.INumberVerificationPresenter
 import com.estacionvital.patienthub.presenter.implementations.NumberVerificationPresenterImpl
 import com.estacionvital.patienthub.ui.views.INumberVerificationView
@@ -36,6 +37,7 @@ class NumberVerificationActivity : BaseActivity(), INumberVerificationView {
         //Events
         mVerifyButton.setOnClickListener{
             val phone: String = mPhoneEditText.text.toString()
+            RegistrationSession.instance.phoneNumber = phone
             mNumberVerificationPresenter.validateNumber(phone)
         }
 
@@ -95,10 +97,10 @@ class NumberVerificationActivity : BaseActivity(), INumberVerificationView {
     }
 
 
-    override fun navigateToSMSCodeVerification(phoneNumber: String) {
+    override fun navigateToSMSCodeVerification() {
         val smsCodeIntent: Intent = Intent(this, ConfirmationCodeVerificationActivity::class.java)
         smsCodeIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        smsCodeIntent.putExtra("phoneNumber", phoneNumber)
+        //smsCodeIntent.putExtra("phoneNumber", phoneNumber)
         startActivity(smsCodeIntent)
     }
 

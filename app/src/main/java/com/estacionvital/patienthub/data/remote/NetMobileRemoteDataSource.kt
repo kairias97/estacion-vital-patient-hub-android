@@ -3,9 +3,7 @@ package com.estacionvital.patienthub.data.remote
 import android.util.Log
 import com.estacionvital.patienthub.BuildConfig
 import com.estacionvital.patienthub.data.api.NetMobileAPI
-import com.estacionvital.patienthub.data.remote.Callbacks.AuthRegistrationCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.ISendSMSCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.IValidatePinCallback
+import com.estacionvital.patienthub.data.remote.Callbacks.*
 import com.estacionvital.patienthub.model.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -101,11 +99,107 @@ class NetMobileRemoteDataSource {
 
         })
     }
+    fun retrieveSubscriptionCatalog(data: SuscriptionCatalogRequest, callback: ISuscriptionCatalogCallback){
+        val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionCatalog(data)
+        authCall.enqueue(object:Callback<List<EVClub>>{
+            override fun onFailure(call: Call<List<EVClub>>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug"){
+                    Log.e("SubscriptionCatalog", t.toString())
+                }
+            }
 
+            override fun onResponse(call: Call<List<EVClub>>?, response: Response<List<EVClub>>?) {
+                if(response!!.code()==200){
+                    callback.onSuccess(response.body()!!)
+                }
+                else if(response!!.code() == 500){
+                    if(BuildConfig.BUILD_TYPE == "debug") {
+                        Log.e("SubscriptionCatalog" + response.code().toString(), response.raw().body().toString())
+                    }
+                    callback.onFailure()
+                }
+            }
+        })
+    }
+
+    fun retrieveSubscriptionLimit(data: SuscriptionLimitRequest, callback: ISuscriptionLimitCallback){
+        val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionLimit(data)
+        authCall.enqueue(object:Callback<SuscriptionLimitResponse>{
+            override fun onResponse(call: Call<SuscriptionLimitResponse>?, response: Response<SuscriptionLimitResponse>?) {
+                if(response!!.code() == 200){
+                    callback.onSuccess(response.body()!!)
+                }
+                else if(response!!.code() == 500){
+                    if(BuildConfig.BUILD_TYPE == "debug") {
+                        Log.e("SubscriptionLimit" + response.code().toString(), response.raw().body().toString())
+                    }
+                    callback.onFailure()
+                }
+            }
+
+            override fun onFailure(call: Call<SuscriptionLimitResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug"){
+                    Log.e("SuscriptionLimit error", t.toString())
+                }
+                callback.onFailure()
+            }
+        })
+    }
+
+    fun retrieveSubscriptionActive(data: SuscriptionActiveRequest, callback: ISuscriptionActiveCallback){
+        val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionActive(data)
+        authCall.enqueue(object: Callback<List<SuscriptionActiveResponse>> {
+            override fun onResponse(call: Call<List<SuscriptionActiveResponse>>?, response: Response<List<SuscriptionActiveResponse>>?) {
+                if(response!!.code() == 200){
+                    callback.onSuccess(response.body()!!)
+                }
+                else if(response!!.code() == 500){
+                    if(BuildConfig.BUILD_TYPE == "debug") {
+                        Log.e("SuscriptionActive" + response.code().toString(), response.raw().body().toString())
+                    }
+                    callback.onFailure()
+                }
+            }
+            override fun onFailure(call: Call<List<SuscriptionActiveResponse>>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug"){
+                    Log.e("SuscriptionActive error", t.toString())
+                }
+                callback.onFailure()
+            }
+        })
+    }
+
+    fun subscribeToEVClub(data: ClubSubscriptionRequest, callback:INewClubSubscriptionCallback){
+        val authCall = NetMobileAPI.instance.service!!.subscribeToEVClub(data)
+        authCall.enqueue(object:Callback<ClubSubscriptionResponse>{
+            override fun onFailure(call: Call<ClubSubscriptionResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug"){
+                    Log.e("SubscriptionRegister", t.toString())
+                }
+                callback.onFailure()
+            }
+
+            override fun onResponse(call: Call<ClubSubscriptionResponse>?, response: Response<ClubSubscriptionResponse>?) {
+                if(response!!.code() == 200){
+                    callback.onSuccess(response.body()!!)
+                }
+                else if(response!!.code() == 500){
+                    if(BuildConfig.BUILD_TYPE == "debug") {
+                        Log.e("SubscriptionRegister" + response.code().toString(), response.raw().body().toString())
+                    }
+                    callback.onFailure()
+                }
+            }
+
+
+        })
+    }
     private constructor()
     companion object {
         val INSTANCE: NetMobileRemoteDataSource by lazy { NetMobileRemoteDataSource()}
     }
 }
+
+
 
 
