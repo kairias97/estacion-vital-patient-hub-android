@@ -6,10 +6,7 @@ import com.estacionvital.patienthub.data.remote.Callbacks.IValidateEVCredentials
 import com.estacionvital.patienthub.data.remote.Callbacks.IValidatePinCallback
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.data.remote.NetMobileRemoteDataSource
-import com.estacionvital.patienthub.model.LoginRequest
-import com.estacionvital.patienthub.model.LoginResponse
-import com.estacionvital.patienthub.model.ValidatePinRequest
-import com.estacionvital.patienthub.model.ValidatePinResponse
+import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.IConfirmationCodePresenter
 import com.estacionvital.patienthub.ui.views.IConfirmationCodeVerificationView
 import com.estacionvital.patienthub.util.AUTH_CREDENTIAL
@@ -25,14 +22,14 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
     private val mEstacionVitalRemoteDataSource:EstacionVitalRemoteDataSource
     private val mPrefManager:SharedPrefManager
 
-    private val mPhoneNumber: String
 
-    constructor(phoneNumber: String, numberVerificationView: IConfirmationCodeVerificationView, netMobileRemoteDataSource: NetMobileRemoteDataSource, evRemoteDataSource: EstacionVitalRemoteDataSource, prefManager: SharedPrefManager){
+
+    constructor(numberVerificationView: IConfirmationCodeVerificationView, netMobileRemoteDataSource: NetMobileRemoteDataSource, evRemoteDataSource: EstacionVitalRemoteDataSource, prefManager: SharedPrefManager){
         this.mCodeVerificationView = numberVerificationView
         this.mNetMobileRemoteDataSource = netMobileRemoteDataSource
         this.mEstacionVitalRemoteDataSource = evRemoteDataSource
         this.mPrefManager = prefManager
-        this.mPhoneNumber = phoneNumber
+
     }
 
     private fun validateCodeInput(code: String): Boolean{
@@ -44,7 +41,8 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
         return true
     }
     override fun validateCode(confirmationCode: String) {
-        val phoneNumber:String = mPhoneNumber
+        val phoneNumber: String = RegistrationSession.instance.phoneNumber
+
         if(validateCodeInput(confirmationCode)) {
             mCodeVerificationView.showCodeValidationProgress()
             mNetMobileRemoteDataSource.validatePinCode(ValidatePinRequest(phoneNumber,

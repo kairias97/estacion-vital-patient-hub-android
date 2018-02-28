@@ -9,4 +9,6 @@ interface ISuscriptionCatalogPresenter {
     fun retrieveCatalog(number: String,auth_credential: String)
     fun retrieveLimit(number: String, auth_credential: String)
     fun retrieveActive(number: String, auth_credential: String, catalog: List<EVClub>)
+    fun validateSelectedClub(club: EVClub)
+    fun validateSubscriptions()
 }

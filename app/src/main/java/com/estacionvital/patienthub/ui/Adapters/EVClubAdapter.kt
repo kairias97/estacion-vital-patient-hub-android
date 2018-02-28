@@ -11,10 +11,15 @@ import com.estacionvital.patienthub.model.EVClub
  * Created by kevin on 26/2/2018.
  */
 public class EVClubAdapter: RecyclerView.Adapter<EVClubViewHolder> {
-    private lateinit var clubs: List<EVClub>
+    private lateinit var clubs: MutableList<EVClub>
+    private lateinit var listener: OnClubSelectedListener
 
-    constructor(myDataSet: List<EVClub>){
+    public interface OnClubSelectedListener{
+        fun OnClubItemClicked(club: EVClub)
+    }
+    constructor(myDataSet: MutableList<EVClub>, listener: OnClubSelectedListener){
         this.clubs = myDataSet
+        this.listener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): EVClubViewHolder {
@@ -27,14 +32,31 @@ public class EVClubAdapter: RecyclerView.Adapter<EVClubViewHolder> {
     }
 
     override fun onBindViewHolder(holder: EVClubViewHolder?, position: Int) {
-        (holder as EVClubViewHolder).bindData(clubs.get(position))
+        (holder as EVClubViewHolder).bindData(clubs.get(position), this.listener)
     }
 
     override fun getItemViewType(position: Int): Int {
         return R.layout.item_checkbox_suscription
     }
 
-    public fun setClubsList(list: List<EVClub>){
+    fun setClubsList(list: MutableList<EVClub>){
         this.clubs = list
+    }
+    fun getSelectedClubsCount(): Int {
+        return this.clubs.count { it.isSelected  || it.isRemoteRegistered}
+    }
+    fun getSelectedClubs(): List<EVClub>{
+        return this.clubs.filter { it.isSelected || it.isRemoteRegistered}
+
+    }
+
+    fun setClub(club: EVClub){
+        val clubIndex = this.clubs.indexOf(club)
+        if (clubIndex == -1) {
+            this.clubs.add(club)
+        } else {
+            this.clubs[clubIndex] = club
+        }
+
     }
 }

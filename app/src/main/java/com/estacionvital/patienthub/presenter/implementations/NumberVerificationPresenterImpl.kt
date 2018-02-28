@@ -2,11 +2,8 @@ package com.estacionvital.patienthub.presenter.implementations
 
 import com.estacionvital.patienthub.data.remote.Callbacks.AuthRegistrationCallback
 import com.estacionvital.patienthub.data.remote.Callbacks.ISendSMSCallback
-import com.estacionvital.patienthub.model.NumberVerificationRequest
-import com.estacionvital.patienthub.model.NumberVerificationResponse
 import com.estacionvital.patienthub.data.remote.NetMobileRemoteDataSource
-import com.estacionvital.patienthub.model.SendSMSRequest
-import com.estacionvital.patienthub.model.SendSMSResponse
+import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.INumberVerificationPresenter
 import com.estacionvital.patienthub.ui.views.INumberVerificationView
 import com.estacionvital.patienthub.util.AUTH_CREDENTIAL
@@ -70,7 +67,8 @@ class NumberVerificationPresenterImpl : INumberVerificationPresenter {
         mNetMobileRemoteDataSource.requestSMSCode(SendSMSRequest(phoneNumber, AUTH_CREDENTIAL), object: ISendSMSCallback{
             override fun onSuccess(response: SendSMSResponse) {
                 mNumberVerificationView.dismissSMSRequestProgress()
-                mNumberVerificationView.navigateToSMSCodeVerification(phoneNumber)
+                RegistrationSession.instance.phoneNumber = phoneNumber
+                mNumberVerificationView.navigateToSMSCodeVerification()
             }
 
             override fun onFailure() {

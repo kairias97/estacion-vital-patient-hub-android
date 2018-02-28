@@ -99,22 +99,22 @@ class NetMobileRemoteDataSource {
 
         })
     }
-    fun retrieveSuscriptionCatalog(data: SuscriptionCatalogRequest, callback: ISuscriptionCatalogCallback){
+    fun retrieveSubscriptionCatalog(data: SuscriptionCatalogRequest, callback: ISuscriptionCatalogCallback){
         val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionCatalog(data)
         authCall.enqueue(object:Callback<List<EVClub>>{
             override fun onFailure(call: Call<List<EVClub>>?, t: Throwable?) {
                 if(BuildConfig.BUILD_TYPE == "debug"){
-                    Log.e("SuscriptionCatalog error", t.toString())
+                    Log.e("SubscriptionCatalog", t.toString())
                 }
             }
 
             override fun onResponse(call: Call<List<EVClub>>?, response: Response<List<EVClub>>?) {
                 if(response!!.code()==200){
-                    callback.onSucces(response.body()!!)
+                    callback.onSuccess(response.body()!!)
                 }
                 else if(response!!.code() == 500){
                     if(BuildConfig.BUILD_TYPE == "debug") {
-                        Log.e("SuscriptionCatalog error " + response.code().toString(), response.raw().body().toString())
+                        Log.e("SubscriptionCatalog" + response.code().toString(), response.raw().body().toString())
                     }
                     callback.onFailure()
                 }
@@ -122,7 +122,7 @@ class NetMobileRemoteDataSource {
         })
     }
 
-    fun retrieveSuscriptionLimit(data: SuscriptionLimitRequest, callback: ISuscriptionLimitCallback){
+    fun retrieveSubscriptionLimit(data: SuscriptionLimitRequest, callback: ISuscriptionLimitCallback){
         val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionLimit(data)
         authCall.enqueue(object:Callback<SuscriptionLimitResponse>{
             override fun onResponse(call: Call<SuscriptionLimitResponse>?, response: Response<SuscriptionLimitResponse>?) {
@@ -131,7 +131,7 @@ class NetMobileRemoteDataSource {
                 }
                 else if(response!!.code() == 500){
                     if(BuildConfig.BUILD_TYPE == "debug") {
-                        Log.e("SuscriptionLimit error " + response.code().toString(), response.raw().body().toString())
+                        Log.e("SubscriptionLimit" + response.code().toString(), response.raw().body().toString())
                     }
                     callback.onFailure()
                 }
@@ -141,11 +141,12 @@ class NetMobileRemoteDataSource {
                 if(BuildConfig.BUILD_TYPE == "debug"){
                     Log.e("SuscriptionLimit error", t.toString())
                 }
+                callback.onFailure()
             }
         })
     }
 
-    fun retrieveSucriptionActive(data: SuscriptionActiveRequest, callback: ISuscriptionActiveCallback){
+    fun retrieveSubscriptionActive(data: SuscriptionActiveRequest, callback: ISuscriptionActiveCallback){
         val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionActive(data)
         authCall.enqueue(object: Callback<List<SuscriptionActiveResponse>> {
             override fun onResponse(call: Call<List<SuscriptionActiveResponse>>?, response: Response<List<SuscriptionActiveResponse>>?) {
@@ -154,7 +155,7 @@ class NetMobileRemoteDataSource {
                 }
                 else if(response!!.code() == 500){
                     if(BuildConfig.BUILD_TYPE == "debug") {
-                        Log.e("SuscriptionActive error " + response.code().toString(), response.raw().body().toString())
+                        Log.e("SuscriptionActive" + response.code().toString(), response.raw().body().toString())
                     }
                     callback.onFailure()
                 }
@@ -163,7 +164,34 @@ class NetMobileRemoteDataSource {
                 if(BuildConfig.BUILD_TYPE == "debug"){
                     Log.e("SuscriptionActive error", t.toString())
                 }
+                callback.onFailure()
             }
+        })
+    }
+
+    fun subscribeToEVClub(data: ClubSubscriptionRequest, callback:INewClubSubscriptionCallback){
+        val authCall = NetMobileAPI.instance.service!!.subscribeToEVClub(data)
+        authCall.enqueue(object:Callback<ClubSubscriptionResponse>{
+            override fun onFailure(call: Call<ClubSubscriptionResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug"){
+                    Log.e("SubscriptionRegister", t.toString())
+                }
+                callback.onFailure()
+            }
+
+            override fun onResponse(call: Call<ClubSubscriptionResponse>?, response: Response<ClubSubscriptionResponse>?) {
+                if(response!!.code() == 200){
+                    callback.onSuccess(response.body()!!)
+                }
+                else if(response!!.code() == 500){
+                    if(BuildConfig.BUILD_TYPE == "debug") {
+                        Log.e("SubscriptionRegister" + response.code().toString(), response.raw().body().toString())
+                    }
+                    callback.onFailure()
+                }
+            }
+
+
         })
     }
     private constructor()
@@ -171,5 +199,7 @@ class NetMobileRemoteDataSource {
         val INSTANCE: NetMobileRemoteDataSource by lazy { NetMobileRemoteDataSource()}
     }
 }
+
+
 
 

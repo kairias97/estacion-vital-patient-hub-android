@@ -14,6 +14,7 @@ const val URL_VALIDATE_PIN: String = "pin/validate"
 const val URL_RETRIEVE_SUSCRIPTION_CATALOG = "pin/service"
 const val URL_RETRIEVE_SUSCRIPTION_LIMIT = "pin/limite_subscripciones_ev"
 const val URL_RETRIVE_SUSCRIPTION_ACTIVE = "pin/servicios_activos_ev"
+const val URL_NEW_CLUB_SUBSCRIPTION = "pin/alta"
 
 //Endpoints API EV
 const val EV_LOGIN_URL: String = "auth/sign-in"

@@ -17,16 +17,25 @@ public class EVClubViewHolder: RecyclerView.ViewHolder {
     constructor(itemView: View) : super(itemView) {
         checkBox = itemView.findViewById<CheckBox>(R.id.checkBox_club_suscribed)
         textView = itemView.findViewById<TextView>(R.id.text_club_name)
+
     }
-    fun bindData(viewModel: EVClub){
+    fun bindData(viewModel: EVClub, listener: EVClubAdapter.OnClubSelectedListener){
         if(viewModel.isRemoteRegistered){
             checkBox.isEnabled = false
             checkBox.isChecked = true
         }
         else{
-            checkBox.isChecked = false
+            checkBox.isChecked = viewModel.isSelected
             checkBox.isEnabled = true
         }
         textView.setText(viewModel.name)
+        //To handle the onclick as a whole
+        itemView.setOnClickListener(){
+            listener.OnClubItemClicked(viewModel)
+        }
+        checkBox.setOnClickListener(){
+            listener.OnClubItemClicked(viewModel)
+        }
+
     }
 }

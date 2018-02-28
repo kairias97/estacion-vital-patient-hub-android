@@ -30,4 +30,12 @@
     <string name="required_input_code">El código de confirmación es requerido</string>
     <string name="code_verification_progress">Verificando código de confirmación...</string>
     <string name="ev_login_progress">Verificando cuenta de Estación Vital</string>
+    <string name="validation_suscriptions_limit_msg">Se ha alcanzado el límite de suscripciones máximas permitidas por Estación Vital</string>
+    <string name="club_catalog_process">Obteniendo suscripciones...</string>
+    <string name="validation_suscription_required_msg">Debe estar suscrito al menos a un club de Estación Vital para continuar con el registro</string>
+    <string name="subscription_club_progress_msg">Suscribiéndose a club {0}...</string>
+    <string name="success_club_subscription_msg">La suscripción a los clubes solicitados ha sido realizada correctamente</string>
+    <string name="success_new_club_msg">Se ha suscrito exitosamente al club {0}</string>
+    <string name="custom_ws_message">No se procesó correctamente la solicitud. Razón: {0}</string>
+    <string name="active_subscriptions_progress">Obteniendo suscripciones activas...</string>
 </resources>
