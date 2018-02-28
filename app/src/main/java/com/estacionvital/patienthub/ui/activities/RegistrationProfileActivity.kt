@@ -9,5 +9,7 @@ class RegistrationProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registration_profile)
+
+        supportActionBar!!.title = "Registro de Perfil"
     }
 }

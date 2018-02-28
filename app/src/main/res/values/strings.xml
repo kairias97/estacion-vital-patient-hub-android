@@ -1,5 +1,12 @@
 <resources>
     <string name="app_name">Estación Vital</string>
+    <string name="name_hint_label">Nombre</string>
+    <string name="lastName_hint_label">Apellido</string>
+    <string name="email_hint_label">E-mail</string>
+    <string name="birthDate_hint_label">Fecha de nacimiento</string>
+    <string name="gender_hint_label">Género</string>
+    <string name="gender_male_hint_label">Masculino</string>
+    <string name="gender_female_hint_label">Femenino</string>
     <string name="num_tel_label">Número de teléfono</string>
     <string name="validation_code_label">Código de confirmación</string>
     <string name="verify_number">Verificar</string>
