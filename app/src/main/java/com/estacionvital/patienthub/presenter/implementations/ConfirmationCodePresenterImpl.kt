@@ -9,7 +9,7 @@ import com.estacionvital.patienthub.data.remote.NetMobileRemoteDataSource
 import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.IConfirmationCodePresenter
 import com.estacionvital.patienthub.ui.views.IConfirmationCodeVerificationView
-import com.estacionvital.patienthub.util.AUTH_CREDENTIAL
+import com.estacionvital.patienthub.util.NETMOBILE_AUTH_CREDENTIAL
 import com.estacionvital.patienthub.util.toBase64
 
 
@@ -46,7 +46,7 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
         if(validateCodeInput(confirmationCode)) {
             mCodeVerificationView.showCodeValidationProgress()
             mNetMobileRemoteDataSource.validatePinCode(ValidatePinRequest(phoneNumber,
-                    confirmationCode, AUTH_CREDENTIAL), object: IValidatePinCallback {
+                    confirmationCode, NETMOBILE_AUTH_CREDENTIAL), object: IValidatePinCallback {
                 override fun onSuccess(response: ValidatePinResponse) {
                     mCodeVerificationView.dismissCodeValidationProgress()
                     if (response.status == 1) {
@@ -72,9 +72,15 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
                         mCodeVerificationView.dismissEVLoginRequestProgress()
                         if (response.status == "success") {
                             val authToken = response.data[0].auth_token
-                            //Add here logic to save to Shared Pref
-                            mPrefManager.saveString(SharedPrefManager.PreferenceKeys.AuthToken,
+
+                            mPrefManager.saveString(SharedPrefManager.PreferenceKeys.AUTH_TOKEN,
                                     authToken)
+                            mPrefManager.saveString(SharedPrefManager.PreferenceKeys.PHONE_NUMBER,
+                                    phoneNumber)
+                            //We prepare the session for main activity
+                            EVUserSession.instance.authToken = authToken
+                            EVUserSession.instance.phoneNumber = phoneNumber
+
                             mCodeVerificationView.navigateToMain()
                         } else {
                             mCodeVerificationView.navigateToConfirmSuscription()

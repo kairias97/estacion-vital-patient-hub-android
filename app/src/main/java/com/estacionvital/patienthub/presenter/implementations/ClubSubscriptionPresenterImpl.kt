@@ -8,7 +8,7 @@ import com.estacionvital.patienthub.data.remote.NetMobileRemoteDataSource
 import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.ISuscriptionCatalogPresenter
 import com.estacionvital.patienthub.ui.views.IClubSubscriptionView
-import com.estacionvital.patienthub.util.AUTH_CREDENTIAL
+import com.estacionvital.patienthub.util.NETMOBILE_AUTH_CREDENTIAL
 
 /**
  * Created by dusti on 26/02/2018.
@@ -38,7 +38,7 @@ class ClubSubscriptionPresenterImpl : ISuscriptionCatalogPresenter {
         mSubscriptionCatalogView.showSubscriptionProgress(newClubs[index].name)
         mNetMobileRemoteDataSource.subscribeToEVClub(
                 ClubSubscriptionRequest(RegistrationSession.instance.phoneNumber,
-                        AUTH_CREDENTIAL, newClubs[index].id.toInt()),
+                        NETMOBILE_AUTH_CREDENTIAL, newClubs[index].id.toInt()),
                 object:INewClubSubscriptionCallback{
                     override fun onSuccess(result: ClubSubscriptionResponse) {
 
