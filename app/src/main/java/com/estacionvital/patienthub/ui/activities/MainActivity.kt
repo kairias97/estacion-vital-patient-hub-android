@@ -9,7 +9,7 @@ import io.fabric.sdk.android.Fabric;
 
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -4,9 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import com.estacionvital.patienthub.R
-import com.estacionvital.patienthub.ui.views.ISuscriptionQuestionActivity
+import com.estacionvital.patienthub.ui.views.ISuscriptionQuestionView
 
-class SuscriptionQuestionActivity : BaseActivity(), ISuscriptionQuestionActivity {
+class SuscriptionQuestionActivity : BaseActivity(), ISuscriptionQuestionView {
 
     private lateinit var mConfirmSuscriptionBtn: Button
     private lateinit var mCancelSuscriptionBtn: Button

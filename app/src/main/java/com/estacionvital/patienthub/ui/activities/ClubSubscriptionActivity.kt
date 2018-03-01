@@ -13,7 +13,7 @@ import com.estacionvital.patienthub.presenter.ISuscriptionCatalogPresenter
 import com.estacionvital.patienthub.presenter.implementations.ClubSubscriptionPresenterImpl
 import com.estacionvital.patienthub.ui.Adapters.EVClubAdapter
 import com.estacionvital.patienthub.ui.views.IClubSubscriptionView
-import com.estacionvital.patienthub.util.AUTH_CREDENTIAL
+import com.estacionvital.patienthub.util.NETMOBILE_AUTH_CREDENTIAL
 import com.estacionvital.patienthub.util.toast
 
 class ClubSubscriptionActivity : BaseActivity(), IClubSubscriptionView, EVClubAdapter.OnClubSelectedListener{
@@ -88,7 +88,7 @@ class ClubSubscriptionActivity : BaseActivity(), IClubSubscriptionView, EVClubAd
         mSuscriptionRecyclerView.setHasFixedSize(true)
 
         mCatalogSuscriptionPresenter = ClubSubscriptionPresenterImpl(this, NetMobileRemoteDataSource.INSTANCE)
-        mCatalogSuscriptionPresenter.retrieveLimit(RegistrationSession.instance.phoneNumber, AUTH_CREDENTIAL)
+        mCatalogSuscriptionPresenter.retrieveLimit(RegistrationSession.instance.phoneNumber, NETMOBILE_AUTH_CREDENTIAL)
 
         mClubAdapter = EVClubAdapter(ArrayList<EVClub>(), this)
         mSuscriptionRecyclerView.adapter = mClubAdapter

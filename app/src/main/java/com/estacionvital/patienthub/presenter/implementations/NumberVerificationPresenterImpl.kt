@@ -6,7 +6,7 @@ import com.estacionvital.patienthub.data.remote.NetMobileRemoteDataSource
 import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.INumberVerificationPresenter
 import com.estacionvital.patienthub.ui.views.INumberVerificationView
-import com.estacionvital.patienthub.util.AUTH_CREDENTIAL
+import com.estacionvital.patienthub.util.NETMOBILE_AUTH_CREDENTIAL
 
 /**
  * Created by dusti on 24/02/2018.
@@ -23,7 +23,7 @@ class NumberVerificationPresenterImpl : INumberVerificationPresenter {
     override fun validateNumber(phoneNumber: String) {
         if (validatePhoneNumberInput(phoneNumber)) {
             mNumberVerificationView.showMovistarValidationProgress()
-            mNetMobileRemoteDataSource.verifyNumber(NumberVerificationRequest(phoneNumber, AUTH_CREDENTIAL),
+            mNetMobileRemoteDataSource.verifyNumber(NumberVerificationRequest(phoneNumber, NETMOBILE_AUTH_CREDENTIAL),
                     object: AuthRegistrationCallback {
                         override fun onSuccess(response: NumberVerificationResponse) {
                             mNumberVerificationView.dismissMovistarValidationProgress()
@@ -64,7 +64,7 @@ class NumberVerificationPresenterImpl : INumberVerificationPresenter {
     }
     private fun requestSMSCode(phoneNumber: String) {
         mNumberVerificationView.showSMSRequestProgress()
-        mNetMobileRemoteDataSource.requestSMSCode(SendSMSRequest(phoneNumber, AUTH_CREDENTIAL), object: ISendSMSCallback{
+        mNetMobileRemoteDataSource.requestSMSCode(SendSMSRequest(phoneNumber, NETMOBILE_AUTH_CREDENTIAL), object: ISendSMSCallback{
             override fun onSuccess(response: SendSMSResponse) {
                 mNumberVerificationView.dismissSMSRequestProgress()
                 RegistrationSession.instance.phoneNumber = phoneNumber

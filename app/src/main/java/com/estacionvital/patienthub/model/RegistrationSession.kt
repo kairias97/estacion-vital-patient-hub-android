@@ -6,7 +6,7 @@ package com.estacionvital.patienthub.model
 class RegistrationSession {
     var phoneNumber: String = ""
     var clubsRegistrationLimit: Int = 0
-
+    private constructor()
     companion object {
         val instance: RegistrationSession by lazy { RegistrationSession()}
     }

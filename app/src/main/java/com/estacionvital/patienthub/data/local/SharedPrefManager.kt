@@ -32,6 +32,8 @@ class SharedPrefManager(private val mSharedPref: SharedPreferences) {
         UserSharedPref
     }
     enum class PreferenceKeys {
-        AuthToken
+        AUTH_TOKEN,
+
+        PHONE_NUMBER
     }
 }

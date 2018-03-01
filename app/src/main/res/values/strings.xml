@@ -45,4 +45,13 @@
     <string name="success_new_club_msg">Se ha suscrito exitosamente al club {0}</string>
     <string name="custom_ws_message">No se procesó correctamente la solicitud. Razón: {0}</string>
     <string name="active_subscriptions_progress">Obteniendo suscripciones activas...</string>
+    <string name="required_input_name">El nombre es requerido</string>
+    <string name="required_input_last_name">El apellido es requerido</string>
+    <string name="required_input_email">El correo es requerido</string>
+    <string name="required_input_birth_date">La fecha de nacimiento es requerida</string>
+    <string name="registration_progress">Registrando cuenta de Estación Vital...</string>
+    <string name="registration_profile_activity_title">Registro en Estación Vital</string>
+    <string name="success_ev_registration_msg">Cuenta creada exitosamente</string>
+    <string name="validation_invalid_email">El correo es inválido</string>
+    <string name="invalid_registration_data">Datos ingresados son inválidos. Favor verificar e intente nuevamente</string>
 </resources>
