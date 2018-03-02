@@ -126,7 +126,8 @@ class ConfirmationCodeVerificationActivity : BaseActivity(), IConfirmationCodeVe
     }
 
     override fun navigateToMain() {
-        val mainIntent: Intent = Intent(this, MainActivity::class.java)
+        //val mainIntent: Intent = Intent(this, MainActivity::class.java)\
+        val mainIntent: Intent = Intent(this, MainActivityDrawer::class.java)
         mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(mainIntent)
     }

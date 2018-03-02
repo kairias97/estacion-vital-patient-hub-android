@@ -32,7 +32,8 @@ class SplashActivity : BaseActivity(), ISplashView {
 
     override fun navigateToMain() {
         //Implement here logic to navigate to mains
-        val mainNavigationIntent: Intent = Intent(this, MainActivity::class.java)
+        //val mainNavigationIntent: Intent = Intent(this, MainActivity::class.java)
+        val mainNavigationIntent: Intent = Intent(this, MainActivityDrawer::class.java)
         mainNavigationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(mainNavigationIntent)
     }

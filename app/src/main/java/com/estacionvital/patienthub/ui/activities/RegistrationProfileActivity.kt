@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_registration_profile.*
 
 class RegistrationProfileActivity : BaseActivity(), IRegistrationProfileView {
     override fun navigateToMain() {
-        val mainIntent = Intent(this, MainActivity::class.java)
+        val mainIntent = Intent(this, MainActivityDrawer::class.java)
         mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(mainIntent)
     }

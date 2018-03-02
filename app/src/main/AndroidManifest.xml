@@ -3,8 +3,9 @@
     package="com.estacionvital.patienthub">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS"/>
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -39,7 +40,11 @@
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity android:name=".ui.activities.SuscriptionQuestionActivity" />
         <activity android:name=".ui.activities.ClubSubscriptionActivity" />
-        <activity android:name=".ui.activities.RegistrationProfileActivity"></activity>
+        <activity android:name=".ui.activities.RegistrationProfileActivity" />
+        <activity
+            android:name=".ui.activities.MainActivityDrawer"
+            android:label="@string/title_activity_main_drawer"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
