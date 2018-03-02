@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:title="@string/drawer_home" />
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/drawer_profile" />
+        <item
+            android:id="@+id/nav_articles"
+            android:icon="@drawable/ic_reorder_black_24dp"
+            android:title="@string/drawer_articles" />
+        <item android:title="@string/drawer_chats_section">
+            <menu>
+                <group android:checkableBehavior="single">
+                    <item
+                        android:id="@+id/nav_chat_free"
+                        android:icon="@drawable/ic_email_black_24dp"
+                        android:title="@string/drawer_chat_free" />
+                    <item
+                        android:id="@+id/nav_chat_premium"
+                        android:icon="@drawable/ic_vpn_key_black_24dp"
+                        android:title="@string/drawer_chat_premium" />
+                    <item
+                        android:id="@+id/nav_documents"
+                        android:icon="@drawable/ic_description_black_24dp"
+                        android:title="@string/drawer_documents" />
+                </group>
+            </menu>
+        </item>
+    </group>
+
+</menu>
