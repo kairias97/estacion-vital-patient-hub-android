@@ -1,20 +1,30 @@
 package com.estacionvital.patienthub.ui.activities
 
 import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.telephony.PhoneNumberFormattingTextWatcher
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
 import android.widget.Toast
 import com.estacionvital.patienthub.R
+import com.estacionvital.patienthub.broadcast.ISMSListener
+import com.estacionvital.patienthub.broadcast.SMSReceiver
 import com.estacionvital.patienthub.data.remote.NetMobileRemoteDataSource
 import com.estacionvital.patienthub.model.RegistrationSession
 import com.estacionvital.patienthub.presenter.INumberVerificationPresenter
 import com.estacionvital.patienthub.presenter.implementations.NumberVerificationPresenterImpl
 import com.estacionvital.patienthub.ui.views.INumberVerificationView
+import java.util.jar.Manifest
+import android.Manifest.permission
+import android.util.Log
+
 
 class NumberVerificationActivity : BaseActivity(), INumberVerificationView {
 
@@ -24,6 +34,10 @@ class NumberVerificationActivity : BaseActivity(), INumberVerificationView {
     private lateinit var mPhoneEditText : TextInputEditText
     private lateinit var mVerifyButton : Button
     private lateinit var mPhoneInputLayout: TextInputLayout
+
+
+    private val mPermissions = arrayOf(android.Manifest.permission.RECEIVE_SMS,
+            android.Manifest.permission.RECEIVE_SMS)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +73,27 @@ class NumberVerificationActivity : BaseActivity(), INumberVerificationView {
 
         supportActionBar?.title = getString(R.string.verify_number_activity_title)
 
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.RECEIVE_SMS)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, mPermissions, 1)
+
+
+        }
+
+
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        when (requestCode) {
+            1 ->
+                // Check if the only required permission has been granted
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.i("Permission", "SMS permission has now been granted. Showing result.")
+                    Toast.makeText(this, "Contact Permission is Granted", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.i("Permission", "SMS permission was NOT granted.")
+                }
+        }
     }
     override fun showInvalidNumberMessage() {
 
