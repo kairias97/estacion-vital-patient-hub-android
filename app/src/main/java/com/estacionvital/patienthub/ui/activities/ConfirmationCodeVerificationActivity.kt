@@ -2,6 +2,7 @@ package com.estacionvital.patienthub.ui.activities
 
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
@@ -9,7 +10,10 @@ import android.support.design.widget.TextInputLayout
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.Button
+import android.widget.Toast
 import com.estacionvital.patienthub.R
+import com.estacionvital.patienthub.broadcast.ISMSListener
+import com.estacionvital.patienthub.broadcast.SMSReceiver
 import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.data.remote.NetMobileRemoteDataSource
@@ -17,6 +21,7 @@ import com.estacionvital.patienthub.presenter.IConfirmationCodePresenter
 import com.estacionvital.patienthub.presenter.implementations.ConfirmationCodePresenterImpl
 import com.estacionvital.patienthub.ui.views.IConfirmationCodeVerificationView
 import com.estacionvital.patienthub.util.toast
+import java.util.regex.Pattern
 
 class ConfirmationCodeVerificationActivity : BaseActivity(), IConfirmationCodeVerificationView {
 
@@ -25,7 +30,7 @@ class ConfirmationCodeVerificationActivity : BaseActivity(), IConfirmationCodeVe
     private lateinit var mVerifyButton : Button
     private lateinit var mCodeInputLayout: TextInputLayout
     private lateinit var mPresenter: IConfirmationCodePresenter
-
+    private lateinit var mSMSBR: SMSReceiver
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_confirmation_code_verification)
@@ -65,11 +70,31 @@ class ConfirmationCodeVerificationActivity : BaseActivity(), IConfirmationCodeVe
             }
 
         })
+
+//Broadcast receiver setup
+        mSMSBR = SMSReceiver()
+        SMSReceiver.bindListener(object: ISMSListener {
+            override fun messageReceived(messageText: String) {
+                //Move this logic to presenter
+                val re = Regex("[\\D]") //To match non-digit characters
+                mCodeEditText.setText(re.replace(messageText, ""))
+                mPresenter.validateCode(mCodeEditText.text.toString())
+            }
+
+        })
+        val intentFilter = IntentFilter()
+        intentFilter.addAction("android.provider.Telephony.SMS_RECEIVED")
+        this.registerReceiver(mSMSBR, intentFilter)
     }
     override fun showCustomMessage(msg: String) {
         this.toast(msg)
     }
+    override fun onDestroy() {
+        super.onDestroy()
+        this.unregisterReceiver(mSMSBR)
 
+
+    }
     override fun showCodeRequiredMessage() {
         mCodeInputLayout.error = getString(R.string.required_input_code)
 
