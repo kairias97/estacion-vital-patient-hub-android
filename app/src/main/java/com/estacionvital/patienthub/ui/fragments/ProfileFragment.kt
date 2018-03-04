@@ -3,12 +3,17 @@ package com.estacionvital.patienthub.ui.fragments
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.TextInputEditText
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.estacionvital.patienthub.R
+import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.EVUserProfile
+import com.estacionvital.patienthub.model.EVUserSession
+import com.estacionvital.patienthub.presenter.implementations.ProfilePresenterImpl
 import com.estacionvital.patienthub.ui.fragmentViews.IProfileFragmentView
 
 
@@ -22,15 +27,37 @@ import com.estacionvital.patienthub.ui.fragmentViews.IProfileFragmentView
  */
 class ProfileFragment : Fragment(), IProfileFragmentView {
     private var mListener: OnFragmentInteractionListener? = null
+    private lateinit var mTextName: TextInputEditText
+    private lateinit var mTextLastName: TextInputEditText
+    private lateinit var mTextEmail: TextInputEditText
+
+    private lateinit var mProfilePresenterImpl: ProfilePresenterImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mProfilePresenterImpl = ProfilePresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE)
+
+        mProfilePresenterImpl.retrieveEVUserProfile()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater!!.inflate(R.layout.fragment_profile, container, false)
+        val view =inflater!!.inflate(R.layout.fragment_profile, container, false)
+        mTextName = view.findViewById<TextInputEditText>(R.id.edit_text_name_profile)
+        mTextLastName = view.findViewById<TextInputEditText>(R.id.edit_text_last_name_profile)
+        mTextEmail = view.findViewById<TextInputEditText>(R.id.edit_text_email_profile)
+
+        mTextName.isEnabled = false
+        mTextLastName.isEnabled = false
+        mTextEmail.isEnabled = false
+
+        mTextName.isFocusable = false
+        mTextLastName.isFocusable = false
+        mTextEmail.isFocusable = false
+
+        return view
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -82,7 +109,11 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
     }
 
     override fun getProfileData(data: EVUserProfile) {
+        EVUserSession.instance.userProfile = data
 
+        mTextName.setText(EVUserSession.instance.userProfile.name)
+        mTextLastName.setText(EVUserSession.instance.userProfile.last_name)
+        mTextEmail.setText(EVUserSession.instance.userProfile.email)
     }
 
     override fun hideLoadingProgress() {
