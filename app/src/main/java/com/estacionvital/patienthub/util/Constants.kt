@@ -17,6 +17,7 @@ const val URL_RETRIEVE_SUSCRIPTION_LIMIT = "pin/limite_subscripciones_ev"
 const val URL_RETRIVE_SUSCRIPTION_ACTIVE = "pin/servicios_activos_ev"
 const val URL_NEW_CLUB_SUBSCRIPTION = "pin/alta"
 const val URL_EV_NEW_REGISTRATION = "auth/register"
+const val URL_EV_RETRIEVE_PROFILE = "user"
 
 //Endpoints API EV
 const val URL_EV_LOGIN: String = "auth/sign-in"

@@ -6,6 +6,8 @@ package com.estacionvital.patienthub.model
 class EVUserSession {
     var phoneNumber: String = ""
     var authToken: String = ""
+
+    lateinit var userProfile: EVUserProfile
     private constructor()
 
     companion object {
