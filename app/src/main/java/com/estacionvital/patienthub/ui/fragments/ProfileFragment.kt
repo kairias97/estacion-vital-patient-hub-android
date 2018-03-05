@@ -1,19 +1,22 @@
 package com.estacionvital.patienthub.ui.fragments
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.provider.ContactsContract
 import android.support.design.widget.TextInputEditText
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.EVUserProfile
 import com.estacionvital.patienthub.model.EVUserSession
 import com.estacionvital.patienthub.presenter.implementations.ProfilePresenterImpl
+import com.estacionvital.patienthub.ui.activities.EditProfileActivity
+import com.estacionvital.patienthub.ui.activities.MainActivityDrawer
 import com.estacionvital.patienthub.ui.fragmentViews.IProfileFragmentView
 
 
@@ -41,6 +44,17 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
         mProfilePresenterImpl.retrieveEVUserProfile()
     }
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        activity.invalidateOptionsMenu()
+        setHasOptionsMenu(true)
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+    }
+
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -60,6 +74,18 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
         return view
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater!!.inflate(R.menu.menu_profile,menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item!!.itemId){
+            R.id.action_nav_edit_profile -> {
+                navToEditProfile()
+            }
+        }
+        return true
+    }
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {
         if (mListener != null) {
@@ -105,7 +131,8 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
     }
 
     override fun navToEditProfile() {
-
+        val editIntent = Intent(activity.applicationContext, EditProfileActivity::class.java)
+        startActivity(editIntent)
     }
 
     override fun getProfileData(data: EVUserProfile) {

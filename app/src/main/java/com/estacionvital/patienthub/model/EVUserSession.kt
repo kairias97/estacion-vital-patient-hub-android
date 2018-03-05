@@ -10,6 +10,15 @@ class EVUserSession {
     lateinit var userProfile: EVUserProfile
     private constructor()
 
+    fun verifyProfileData(name: String, lastName: String, email: String): Boolean{
+        if(name == userProfile.name && lastName == userProfile.last_name && email == userProfile.email){
+            return true
+        }
+        else{
+            return false
+        }
+    }
+
     companion object {
         val instance: EVUserSession by lazy { EVUserSession()}
     }
