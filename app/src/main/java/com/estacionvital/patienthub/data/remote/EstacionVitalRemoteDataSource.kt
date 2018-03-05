@@ -3,12 +3,11 @@ package com.estacionvital.patienthub.data.remote
 import android.util.Log
 import com.estacionvital.patienthub.BuildConfig
 import com.estacionvital.patienthub.data.api.EstacionVitalAPI
+import com.estacionvital.patienthub.data.remote.Callbacks.IEVProfileUpdateCallback
 import com.estacionvital.patienthub.data.remote.Callbacks.IEVRegistrationSubmittedCallback
+import com.estacionvital.patienthub.data.remote.Callbacks.IEVRetrieveProfileCallback
 import com.estacionvital.patienthub.data.remote.Callbacks.IValidateEVCredentialsCallback
-import com.estacionvital.patienthub.model.EVRegistrationRequest
-import com.estacionvital.patienthub.model.EVRegistrationResponse
-import com.estacionvital.patienthub.model.LoginRequest
-import com.estacionvital.patienthub.model.LoginResponse
+import com.estacionvital.patienthub.model.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -69,6 +68,52 @@ class EstacionVitalRemoteDataSource {
 
             }
 
+        })
+    }
+    fun retrieveEVUserProfile(token: String, callback: IEVRetrieveProfileCallback){
+        val authCall = EstacionVitalAPI.instance.service!!.retrieveProfileData(token)
+        authCall.enqueue(object: Callback<EVRetrieveProfileResponse>{
+            override fun onFailure(call: Call<EVRetrieveProfileResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug") {
+                    Log.e("EVRetrivingProfile error", t.toString())
+                }
+                callback.onFailure()
+            }
+
+            override fun onResponse(call: Call<EVRetrieveProfileResponse>?, response: Response<EVRetrieveProfileResponse>?) {
+                if(response!!.code() == 200){
+                    callback.onSuccess(response.body()!!)
+                }
+                else{
+                    if(BuildConfig.BUILD_TYPE == "debug") {
+                        Log.e("EVRetrieveingProfie error " + response.code().toString(), response.raw().body().toString())
+                    }
+                    callback.onFailure()
+                }
+            }
+        })
+    }
+    fun updateEVProfile(token: String, data: EVProfileUpdateRequest, callback: IEVProfileUpdateCallback){
+        val authCall = EstacionVitalAPI.instance.service!!.updateProfile(token, data)
+        authCall.enqueue(object: Callback<EVProfileUpdateResponse>{
+            override fun onResponse(call: Call<EVProfileUpdateResponse>?, response: Response<EVProfileUpdateResponse>?) {
+                if(response!!.code() == 200){
+                    callback.onSuccess(response.body()!!)
+                }
+                else{
+                    if(BuildConfig.BUILD_TYPE == "debug") {
+                        Log.e("EVUpdateProfie error " + response.code().toString(), response.raw().body().toString())
+                    }
+                    callback.onFailure()
+                }
+            }
+
+            override fun onFailure(call: Call<EVProfileUpdateResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug") {
+                    Log.e("EVRUpdateProfile error", t.toString())
+                }
+                callback.onFailure()
+            }
         })
     }
     companion object {
