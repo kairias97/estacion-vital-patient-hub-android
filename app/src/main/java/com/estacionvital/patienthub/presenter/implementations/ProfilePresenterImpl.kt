@@ -36,7 +36,8 @@ class ProfilePresenterImpl: IProfilePresenter {
                     }
 
                     override fun onFailure() {
-
+                        mProfileView.hideLoadingProgress()
+                        mProfileView.showErrorLoading()
                     }
                 })
     }

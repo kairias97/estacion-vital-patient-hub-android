@@ -7,4 +7,5 @@ interface IEditProfileView {
     fun showLoadingProgress()
     fun showError()
     fun hideProgress()
+    fun goBackToTop()
 }

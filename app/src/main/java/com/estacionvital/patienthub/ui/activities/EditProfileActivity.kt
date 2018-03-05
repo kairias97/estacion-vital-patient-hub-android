@@ -6,17 +6,22 @@ import android.support.v4.app.NavUtils
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import com.estacionvital.patienthub.R
+import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.EVUserSession
+import com.estacionvital.patienthub.presenter.implementations.EditProfilePresenterImpl
+import com.estacionvital.patienthub.presenter.implementations.ProfilePresenterImpl
 import com.estacionvital.patienthub.ui.views.IEditProfileView
 
-class EditProfileActivity : AppCompatActivity(), IEditProfileView {
-
+class EditProfileActivity : BaseActivity(), IEditProfileView {
     private lateinit var mButtonCancel: Button
     private lateinit var mButtonAccept: Button
     private lateinit var mTextName: EditText
     private lateinit var mTextLastName: EditText
     private lateinit var mTextEmail: EditText
+
+    private lateinit var mEditProfilePresenterImpl: EditProfilePresenterImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +49,8 @@ class EditProfileActivity : AppCompatActivity(), IEditProfileView {
         mButtonCancel.setOnClickListener{
             returnTop()
         }
+
+        mEditProfilePresenterImpl = EditProfilePresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -64,18 +71,23 @@ class EditProfileActivity : AppCompatActivity(), IEditProfileView {
             returnTop()
         }
         else{
-
+            showLoadingProgress()
+            mEditProfilePresenterImpl.updateProfile(mTextName.text.toString(), mTextLastName.text.toString(), mTextEmail.text.toString())
         }
     }
     override fun showLoadingProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        showProgressDialog(getString(R.string.updating_profile_progress))
     }
 
     override fun showError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Toast.makeText(this, getString(R.string.generic_500_error), Toast.LENGTH_SHORT).show()
     }
 
     override fun hideProgress() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        hideProgressDialog()
     }
+    override fun goBackToTop() {
+        returnTop()
+    }
+
 }

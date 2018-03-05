@@ -35,7 +35,8 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
                     }
 
                     override fun onFailure() {
-
+                        mMainDrawerView.hideLoadingProgress()
+                        mMainDrawerView.showError()
                     }
                 })
     }
