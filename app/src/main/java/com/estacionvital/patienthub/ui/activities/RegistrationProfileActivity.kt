@@ -16,11 +16,22 @@ import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.GenderEnum
 import com.estacionvital.patienthub.presenter.IRegistrationProfilePresenter
 import com.estacionvital.patienthub.presenter.implementations.RegistrationProfilePresenterImpl
+import com.estacionvital.patienthub.ui.fragments.DatePickerFragment
 import com.estacionvital.patienthub.ui.views.IRegistrationProfileView
+import com.estacionvital.patienthub.util.DateUtil
 import com.estacionvital.patienthub.util.toast
 import kotlinx.android.synthetic.main.activity_registration_profile.*
+import java.util.*
 
-class RegistrationProfileActivity : BaseActivity(), IRegistrationProfileView {
+
+class RegistrationProfileActivity : BaseActivity(), IRegistrationProfileView,
+                                    DatePickerFragment.DatePickerListener{
+    override fun OnDateSelected(year: Int, month: Int, day: Int) {
+        var birthDate = DateUtil.parseDateToFormat(year, month, day, "dd/MM/yyyy")
+        edit_text_birthDate.setText(birthDate)
+
+    }
+
     override fun navigateToMain() {
         val mainIntent = Intent(this, MainActivityDrawer::class.java)
         mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -79,6 +90,10 @@ class RegistrationProfileActivity : BaseActivity(), IRegistrationProfileView {
             mPresenter.registerEVAccount(name, lastName, email,birthDate, gender)
         }
 
+        edit_text_birthDate.setOnClickListener {
+            val datePickerFragment = DatePickerFragment.newInstance(this)
+            datePickerFragment.show(supportFragmentManager, "datePicker")
+        }
 
 
     }
