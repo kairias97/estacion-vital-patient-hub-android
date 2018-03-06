@@ -128,6 +128,9 @@
                     android:hint="@string/birthDate_hint_label"
                     android:inputType="date"
                     android:maxLines="1"
+                    android:drawableRight="@android:drawable/ic_menu_my_calendar"
+                    android:focusable="false"
+                    android:clickable="true"
 
                     />
             </android.support.design.widget.TextInputLayout>
