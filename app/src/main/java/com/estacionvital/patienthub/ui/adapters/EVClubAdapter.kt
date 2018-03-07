@@ -1,4 +1,4 @@
-package com.estacionvital.patienthub.ui.Adapters
+package com.estacionvital.patienthub.ui.adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -10,12 +10,12 @@ import com.estacionvital.patienthub.model.EVClub
 /**
  * Created by kevin on 26/2/2018.
  */
-public class EVClubAdapter: RecyclerView.Adapter<EVClubViewHolder> {
-    private lateinit var clubs: MutableList<EVClub>
-    private lateinit var listener: OnClubSelectedListener
+class EVClubAdapter: RecyclerView.Adapter<EVClubViewHolder> {
+    private var clubs: MutableList<EVClub>
+    private  var listener: OnClubSelectedListener
 
-    public interface OnClubSelectedListener{
-        fun OnClubItemClicked(club: EVClub)
+    interface OnClubSelectedListener{
+        fun onClubItemClicked(club: EVClub)
     }
     constructor(myDataSet: MutableList<EVClub>, listener: OnClubSelectedListener){
         this.clubs = myDataSet
@@ -32,7 +32,7 @@ public class EVClubAdapter: RecyclerView.Adapter<EVClubViewHolder> {
     }
 
     override fun onBindViewHolder(holder: EVClubViewHolder?, position: Int) {
-        (holder as EVClubViewHolder).bindData(clubs.get(position), this.listener)
+        (holder as EVClubViewHolder).bindData(clubs[position], this.listener)
     }
 
     override fun getItemViewType(position: Int): Int {

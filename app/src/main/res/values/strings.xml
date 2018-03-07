@@ -72,4 +72,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="action_nav_edit_profile">Editar Perfil</string>
     <string name="updating_profile_progress">Actualizando Registro</string>
+    <string name="article_categories_progress">Obteniendo categorías de artículos...</string>
+    <string name="title_fragment_categories">Categorías de Artículos</string>
 </resources>

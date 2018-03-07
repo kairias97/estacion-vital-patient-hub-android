@@ -1,6 +1,5 @@
 package com.estacionvital.patienthub.presenter.implementations
 
-import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.data.remote.Callbacks.IEVRetrieveProfileCallback
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.EVRetrieveProfileResponse
@@ -28,7 +27,7 @@ class ProfilePresenterImpl: IProfilePresenter {
                     override fun onSuccess(result: EVRetrieveProfileResponse) {
                         mProfileView.hideLoadingProgress()
                         if(result.status == "success"){
-                            mProfileView.getProfileData(result.data)
+                            mProfileView.setProfileData(result.data)
                         }
                         else{
                             mProfileView.showErrorLoading()

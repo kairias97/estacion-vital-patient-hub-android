@@ -9,6 +9,6 @@ interface IProfileFragmentView {
     fun showLoadingProgress()
     fun showErrorLoading()
     fun navToEditProfile()
-    fun getProfileData(data: EVUserProfile)
+    fun setProfileData(data: EVUserProfile)
     fun hideLoadingProgress()
 }

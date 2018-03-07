@@ -14,17 +14,20 @@ import android.widget.TextView
 import android.widget.Toast
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
+import com.estacionvital.patienthub.model.ArticleCategory
 import com.estacionvital.patienthub.model.EVUserProfile
 import com.estacionvital.patienthub.model.EVUserSession
 import com.estacionvital.patienthub.presenter.implementations.MainDrawerPresenterImpl
 import com.estacionvital.patienthub.presenter.implementations.ProfilePresenterImpl
 import com.estacionvital.patienthub.ui.fragmentViews.IProfileFragmentView
+import com.estacionvital.patienthub.ui.fragments.ArticleCategoryFragment
 import com.estacionvital.patienthub.ui.fragments.ProfileFragment
 import com.estacionvital.patienthub.ui.views.IMainDrawerView
+import com.estacionvital.patienthub.util.toast
 import kotlinx.android.synthetic.main.activity_main_drawer.*
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
-class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener, IMainDrawerView{
+class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener, IMainDrawerView{
 
     private lateinit var mtextName: TextView
     private lateinit var mtextPhone: TextView
@@ -90,7 +93,7 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
                 .commit()
     }
     private fun loadFragment(menuId: Int){
-        var fragment: Fragment = ProfileFragment()
+        var fragment: Fragment = Fragment()
         when(menuId){
             R.id.nav_home -> {
 
@@ -106,7 +109,30 @@ class MainActivityDrawer : AppCompatActivity(), NavigationView.OnNavigationItemS
 
             }
             R.id.nav_articles -> {
+                val activity = this
+                fragment = ArticleCategoryFragment.newInstance(object: ArticleCategoryFragment
+                .OnArticleCategoryInteraction{
+                    override fun onLoadingCategories() {
+                        activity.showProgressDialog(getString(R.string.article_categories_progress))
+                    }
 
+                    override fun onCategoriesLoaded() {
+                        activity.hideProgressDialog()
+                    }
+
+                    override fun onError(msg: String) {
+                        activity.toast(msg)
+                    }
+
+                    override fun showCustomMessage(msg: String) {
+                        activity.toast(msg)
+                    }
+
+                    override fun onCategorySelected(category: ArticleCategory) {
+                        activity.toast(category.description)
+                    }
+
+                })
             }
         }
         fragmentTransaction(fragment)

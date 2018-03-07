@@ -17,11 +17,11 @@ interface INetMobileService {
     fun sendSMSCode(@Body body: SendSMSRequest): Call<SendSMSResponse>
     @POST(URL_VALIDATE_PIN)
     fun validatePin(@Body body: ValidatePinRequest): Call<ValidatePinResponse>
-    @POST(URL_RETRIEVE_SUSCRIPTION_CATALOG)
+    @POST(URL_RETRIEVE_SUBSCRIPTION_CATALOG)
     fun retrieveSuscriptionCatalog(@Body body: SuscriptionCatalogRequest):Call<List<EVClub>>
-    @POST(URL_RETRIEVE_SUSCRIPTION_LIMIT)
+    @POST(URL_RETRIEVE_SUBSCRIPTION_LIMIT)
     fun retrieveSuscriptionLimit(@Body body: SuscriptionLimitRequest): Call<SuscriptionLimitResponse>
-    @POST(URL_RETRIVE_SUSCRIPTION_ACTIVE)
+    @POST(URL_RETRIEVE_SUBSCRIPTION_ACTIVE)
     fun retrieveSuscriptionActive(@Body body: SuscriptionActiveRequest): Call<List<SuscriptionActiveResponse>>
     @POST(URL_NEW_CLUB_SUBSCRIPTION)
     fun subscribeToEVClub(@Body body: ClubSubscriptionRequest): Call<ClubSubscriptionResponse>

@@ -11,7 +11,7 @@ import com.estacionvital.patienthub.model.EVClub
 import com.estacionvital.patienthub.model.RegistrationSession
 import com.estacionvital.patienthub.presenter.ISuscriptionCatalogPresenter
 import com.estacionvital.patienthub.presenter.implementations.ClubSubscriptionPresenterImpl
-import com.estacionvital.patienthub.ui.Adapters.EVClubAdapter
+import com.estacionvital.patienthub.ui.adapters.EVClubAdapter
 import com.estacionvital.patienthub.ui.views.IClubSubscriptionView
 import com.estacionvital.patienthub.util.NETMOBILE_AUTH_CREDENTIAL
 import com.estacionvital.patienthub.util.toast
@@ -123,7 +123,7 @@ class ClubSubscriptionActivity : BaseActivity(), IClubSubscriptionView, EVClubAd
         (mSuscriptionRecyclerView.adapter as EVClubAdapter)!!.notifyDataSetChanged()
     }
     //For item of mClubAdapter
-    override fun OnClubItemClicked(club: EVClub) {
+    override fun onClubItemClicked(club: EVClub) {
         mCatalogSuscriptionPresenter.validateSelectedClub(club)
     }
 
