@@ -1,5 +1,6 @@
 package com.estacionvital.patienthub.ui.activities
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -7,8 +8,6 @@ import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
@@ -18,8 +17,6 @@ import com.estacionvital.patienthub.model.ArticleCategory
 import com.estacionvital.patienthub.model.EVUserProfile
 import com.estacionvital.patienthub.model.EVUserSession
 import com.estacionvital.patienthub.presenter.implementations.MainDrawerPresenterImpl
-import com.estacionvital.patienthub.presenter.implementations.ProfilePresenterImpl
-import com.estacionvital.patienthub.ui.fragmentViews.IProfileFragmentView
 import com.estacionvital.patienthub.ui.fragments.ArticleCategoryFragment
 import com.estacionvital.patienthub.ui.fragments.ProfileFragment
 import com.estacionvital.patienthub.ui.views.IMainDrawerView
@@ -29,8 +26,8 @@ import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
 class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener, IMainDrawerView{
 
-    private lateinit var mtextName: TextView
-    private lateinit var mtextPhone: TextView
+    private lateinit var mTextName: TextView
+    private lateinit var mTextPhone: TextView
 
     private lateinit var navigationView: NavigationView
     private lateinit var mMainDrawerPresenterImpl: MainDrawerPresenterImpl
@@ -43,8 +40,8 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         navigationView = findViewById(R.id.nav_view)
         var headerView = navigationView.getHeaderView(0)
 
-        mtextName = headerView.findViewById(R.id.text_name)
-        mtextPhone = headerView.findViewById(R.id.text_phone)
+        mTextName = headerView.findViewById(R.id.text_name)
+        mTextPhone = headerView.findViewById(R.id.text_phone)
 
 
         fab.setOnClickListener { view ->
@@ -129,7 +126,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
                     }
 
                     override fun onCategorySelected(category: ArticleCategory) {
-                        activity.toast(category.description)
+                        navigateToArticleSelection(category)
                     }
 
                 })
@@ -138,6 +135,11 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         fragmentTransaction(fragment)
     }
 
+    private fun navigateToArticleSelection(category: ArticleCategory){
+        val targetIntent = Intent(this, ArticleSelectionActivity::class.java)
+        targetIntent.putExtra("articleCategory", category)
+        startActivity(targetIntent)
+    }
     override fun onFragmentInteraction(uri: Uri) {
         //a implementar
     }
@@ -157,8 +159,8 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
     override fun retrieveData(data: EVUserProfile) {
         EVUserSession.instance.userProfile = data
 
-        mtextName.text = "${EVUserSession.instance.userProfile.name} ${EVUserSession.instance.userProfile.last_name}"
-        mtextPhone.text = "${EVUserSession.instance.phoneNumber}"
+        mTextName.text = "${EVUserSession.instance.userProfile.name} ${EVUserSession.instance.userProfile.last_name}"
+        mTextPhone.text = "${EVUserSession.instance.phoneNumber}"
         Toast.makeText(this, "${data.name}", Toast.LENGTH_LONG)
     }
 }

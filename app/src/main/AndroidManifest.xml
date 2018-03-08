@@ -44,10 +44,14 @@
         <activity
             android:name=".ui.activities.MainActivityDrawer"
             android:label="@string/title_activity_main_drawer"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activities.EditProfileActivity"
-            android:parentActivityName=".ui.activities.MainActivityDrawer">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTop"/>
+        <activity
+            android:name=".ui.activities.EditProfileActivity"
+            android:parentActivityName=".ui.activities.MainActivityDrawer"></activity>
+        <activity android:name=".ui.activities.ArticleSelectionActivity"
+            android:parentActivityName=".ui.activities.MainActivityDrawer"
+            ></activity>
     </application>
 
 </manifest>

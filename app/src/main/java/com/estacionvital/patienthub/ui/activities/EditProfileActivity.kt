@@ -62,7 +62,7 @@ class EditProfileActivity : BaseActivity(), IEditProfileView {
         return true
     }
 
-    fun returnTop(){
+    private fun returnTop(){
         NavUtils.navigateUpFromSameTask(this)
     }
 
