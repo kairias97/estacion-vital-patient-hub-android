@@ -5,7 +5,9 @@ import android.util.Log
 import com.estacionvital.patienthub.BuildConfig
 import com.estacionvital.patienthub.data.api.EVBlogAPI
 import com.estacionvital.patienthub.data.remote.Callbacks.GetArticleCategoriesCallback
+import com.estacionvital.patienthub.data.remote.Callbacks.IArticlesByCategoryCallback
 import com.estacionvital.patienthub.model.ArticleCategoriesResponse
+import com.estacionvital.patienthub.model.ArticlesByCategoryResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -43,6 +45,29 @@ class EVBlogRemoteDataSource {
                     }
                 }
             }
+
+        })
+    }
+
+    fun getArticlesByCategory(categoryID: Int, callback: IArticlesByCategoryCallback){
+        val authCall = EVBlogAPI.instance.service!!.getArticlesByCategory(categoryID)
+        authCall.enqueue(object:Callback<ArticlesByCategoryResponse>{
+            override fun onFailure(call: Call<ArticlesByCategoryResponse>?, t: Throwable?) {
+                if (BuildConfig.BUILD_TYPE == "debug") {
+                   Log.e("getArticlesByCategory", t.toString())
+                }
+                callback.onFailure()
+            }
+
+            override fun onResponse(call: Call<ArticlesByCategoryResponse>?, response: Response<ArticlesByCategoryResponse>?) {
+                when (response?.code()) {
+                    200 -> callback.onSuccess(response.body()!!)
+                    else -> {
+                        callback.onFailure()
+                    }
+                }
+            }
+
 
         })
     }

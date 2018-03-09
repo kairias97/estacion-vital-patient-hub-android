@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.model.ArticleCategory
+import com.squareup.picasso.Picasso
 
 /**
  * Created by kevin on 5/3/2018.
@@ -42,7 +43,7 @@ class ArticleCategoryAdapter: RecyclerView.Adapter<ArticleCategoryViewHolder> {
     }
 
     override fun onBindViewHolder(holder: ArticleCategoryViewHolder?, position: Int) {
-        (holder as ArticleCategoryViewHolder).bindData(this.mArticleCategories.get(position), this.mListener)
+        (holder as ArticleCategoryViewHolder).bindData( this.mArticleCategories.get(position), this.mListener)
     }
 
 }

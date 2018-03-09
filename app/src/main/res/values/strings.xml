@@ -75,4 +75,5 @@
     <string name="article_categories_progress">Obteniendo categorías de artículos...</string>
     <string name="title_fragment_categories">Categorías de Artículos</string>
     <string name="title_activity_article_selection">%s</string>
+    <string name="blog_article_progress">Obteniendo artículos...</string>
 </resources>

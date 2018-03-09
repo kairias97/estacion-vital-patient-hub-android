@@ -15,5 +15,15 @@ class DateUtil {
             val date = c.time as Date
             return formatter.format(date)
         }
+        fun parseDateToFormat(date: Date, format: String): String{
+            val formatter = SimpleDateFormat(format)
+            return formatter.format(date)
+        }
+        fun parseDateStringToFormat(date: String, originFormat: String, targetFormat: String): String{
+            var formatter = SimpleDateFormat(originFormat)
+            val date = formatter.parse(date)
+            formatter = SimpleDateFormat(targetFormat)
+            return formatter.format(date)
+        }
     }
 }

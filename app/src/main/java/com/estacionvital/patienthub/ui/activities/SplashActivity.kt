@@ -9,6 +9,7 @@ import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.presenter.ISplashPresenter
 import com.estacionvital.patienthub.presenter.implementations.SplashPresenterImpl
 import com.estacionvital.patienthub.ui.views.ISplashView
+import com.squareup.picasso.Picasso
 
 class SplashActivity : BaseActivity(), ISplashView {
 
