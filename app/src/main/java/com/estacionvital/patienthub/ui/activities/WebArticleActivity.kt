@@ -30,19 +30,20 @@ class WebArticleActivity : AppCompatActivity() {
             mBlogWebView.loadUrl(article.url)
 
             mShareFab.setOnClickListener {
-                val share = Intent(android.content.Intent.ACTION_SEND)
-                share.type = "text/plain"
-                share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET)
-
-                share.putExtra(Intent.EXTRA_SUBJECT, article.title)
-                share.putExtra(Intent.EXTRA_TEXT, article.url)
-
-                startActivity(Intent.createChooser(share, getString(R.string.share_msg)))
+                shareArticle(article.title,
+                        article.url)
             }
         }
 
+    }
+    private fun shareArticle(subject:String, extraText: String) {
+        val share = Intent(android.content.Intent.ACTION_SEND)
+        share.type = "text/plain"
+        share.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET)
 
+        share.putExtra(Intent.EXTRA_SUBJECT, subject)
+        share.putExtra(Intent.EXTRA_TEXT, extraText)
 
-
+        startActivity(Intent.createChooser(share, getString(R.string.share_msg)))
     }
 }

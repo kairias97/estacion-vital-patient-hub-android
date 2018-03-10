@@ -10,7 +10,7 @@ import com.estacionvital.patienthub.ui.fragmentViews.IProfileFragmentView
 /**
  * Created by dusti on 03/03/2018.
  */
-class ProfilePresenterImpl: IProfilePresenter {
+class IProfilePresenter: IProfilePresenter {
 
     private val mProfileView: IProfileFragmentView
     private val mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource
@@ -22,6 +22,7 @@ class ProfilePresenterImpl: IProfilePresenter {
 
     override fun retrieveEVUserProfile() {
         val token = "Token token=${EVUserSession.instance.authToken}"
+        mProfileView.showLoadingProgress()
         mEstacionVitalRemoteDataSource.retrieveEVUserProfile(token,
                 object: IEVRetrieveProfileCallback{
                     override fun onSuccess(result: EVRetrieveProfileResponse) {

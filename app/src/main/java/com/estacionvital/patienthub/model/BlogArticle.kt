@@ -11,7 +11,7 @@ data class BlogArticle(@SerializedName("id") val id: Int,
                        @SerializedName("url") val url: String,
                        @SerializedName("title") val title: String,
                        @SerializedName("date") val date: String,
-                       @SerializedName("thumbnail") val thumbnail: String,
+                       @SerializedName("thumbnail") val thumbnail: String?,
                        @SerializedName("author") val author: BlogAuthor): Parcelable {
     constructor(parcel: Parcel) : this(
             parcel.readInt(),
@@ -19,7 +19,8 @@ data class BlogArticle(@SerializedName("id") val id: Int,
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readParcelable(BlogAuthor::class.java.classLoader))
+            parcel.readParcelable(BlogAuthor::class.java.classLoader)) {
+    }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(id)
@@ -43,4 +44,5 @@ data class BlogArticle(@SerializedName("id") val id: Int,
             return arrayOfNulls(size)
         }
     }
+
 }

@@ -5,4 +5,7 @@ package com.estacionvital.patienthub.presenter
  */
 interface IEditProfilePresenter {
     fun updateProfile(name: String, last_name: String, email: String)
+    fun validateNameInput(name: String)
+    fun validateLastNameInput(lastName: String)
+
 }

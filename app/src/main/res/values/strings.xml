@@ -77,4 +77,5 @@
     <string name="title_activity_article_selection">%s</string>
     <string name="blog_article_progress">Obteniendo artículos...</string>
     <string name="share_msg">Compartir artículo vía...</string>
+    <string name="profile_fetch_progress">Obteniendo información de perfil...</string>
 </resources>

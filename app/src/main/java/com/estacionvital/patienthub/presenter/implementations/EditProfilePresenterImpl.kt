@@ -7,15 +7,28 @@ import com.estacionvital.patienthub.model.EVProfileUpdateResponse
 import com.estacionvital.patienthub.model.EVUserSession
 import com.estacionvital.patienthub.presenter.IEditProfilePresenter
 import com.estacionvital.patienthub.ui.views.IEditProfileView
+import com.estacionvital.patienthub.util.RegexUtil
 
 /**
  * Created by dusti on 05/03/2018.
  */
 class EditProfilePresenterImpl: IEditProfilePresenter{
 
+
     private val mEditProfileView: IEditProfileView
     private val mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource
 
+    override fun validateNameInput(name: String) {
+        if (RegexUtil.instance.containsDigits(name)) {
+            mEditProfileView.updateNameInput(RegexUtil.instance.trimNumbersFromString(name))
+        }
+    }
+
+    override fun validateLastNameInput(lastName: String) {
+        if (RegexUtil.instance.containsDigits(lastName)) {
+            mEditProfileView.updateLastNameInput(RegexUtil.instance.trimNumbersFromString(lastName))
+        }
+    }
     constructor(editProfileView: IEditProfileView, estacionVitalRemoteDataSource: EstacionVitalRemoteDataSource){
         this.mEditProfileView = editProfileView
         this.mEstacionVitalRemoteDataSource = estacionVitalRemoteDataSource
@@ -28,6 +41,10 @@ class EditProfilePresenterImpl: IEditProfilePresenter{
                     override fun onSuccess(result: EVProfileUpdateResponse) {
                         mEditProfileView.hideProgress()
                         if(result.status == "success"){
+                            EVUserSession.instance.userProfile.email = email
+                            EVUserSession.instance.userProfile.last_name = last_name
+                            EVUserSession.instance.userProfile.name = name
+
                             mEditProfileView.goBackToTop()
                         }
                         else{

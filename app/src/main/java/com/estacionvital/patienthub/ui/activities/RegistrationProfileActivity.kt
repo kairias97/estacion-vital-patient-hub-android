@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Button
 import android.widget.RadioGroup
 import butterknife.BindView
@@ -19,6 +21,7 @@ import com.estacionvital.patienthub.presenter.implementations.RegistrationProfil
 import com.estacionvital.patienthub.ui.fragments.DatePickerFragment
 import com.estacionvital.patienthub.ui.views.IRegistrationProfileView
 import com.estacionvital.patienthub.util.DateUtil
+import com.estacionvital.patienthub.util.RegexUtil
 import com.estacionvital.patienthub.util.toast
 import kotlinx.android.synthetic.main.activity_registration_profile.*
 import java.util.*
@@ -26,6 +29,16 @@ import java.util.*
 
 class RegistrationProfileActivity : BaseActivity(), IRegistrationProfileView,
                                     DatePickerFragment.DatePickerListener{
+    override fun updateNameInput(name: String) {
+        edit_text_name.setText(name)
+        edit_text_name.setSelection(edit_text_name.text.toString().length)
+    }
+
+    override fun updateLastNameInput(lastName: String) {
+        edit_text_last_name.setText(lastName)
+        edit_text_last_name.setSelection(edit_text_last_name.text.toString().length)
+    }
+
     override fun OnDateSelected(year: Int, month: Int, day: Int) {
         var birthDate = DateUtil.parseDateToFormat(year, month, day, "dd/MM/yyyy")
         edit_text_birthDate.setText(birthDate)
@@ -94,6 +107,38 @@ class RegistrationProfileActivity : BaseActivity(), IRegistrationProfileView,
             val datePickerFragment = DatePickerFragment.newInstance(this)
             datePickerFragment.show(supportFragmentManager, "datePicker")
         }
+        edit_text_name.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                mPresenter.validateName(p0.toString())
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+
+            }
+
+        })
+        edit_text_last_name.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                mPresenter.validateLastName(p0.toString())
+
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+
+            }
+
+        })
 
 
     }

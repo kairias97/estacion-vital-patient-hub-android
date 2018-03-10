@@ -11,6 +11,9 @@ import com.estacionvital.patienthub.ui.views.IMainDrawerView
  * Created by dusti on 03/03/2018.
  */
 class MainDrawerPresenterImpl: IMainDrawerPresenter {
+    override fun retrieveLocalUserProfileSession() {
+        mMainDrawerView.setDrawerHeaderData( EVUserSession.instance.userProfile)
+    }
 
     private val mMainDrawerView : IMainDrawerView
     private val mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource
@@ -25,9 +28,9 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
         mEstacionVitalRemoteDataSource.retrieveEVUserProfile(token,
                 object: IEVRetrieveProfileCallback {
                     override fun onSuccess(result: EVRetrieveProfileResponse) {
-                        mMainDrawerView.hideLoadingProgress()
                         if(result.status == "success"){
-                            mMainDrawerView.retrieveData(result.data)
+                            EVUserSession.instance.userProfile = result.data
+                            mMainDrawerView.setDrawerHeaderData(EVUserSession.instance.userProfile)
                         }
                         else{
                             mMainDrawerView.showError()
@@ -35,7 +38,7 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
                     }
 
                     override fun onFailure() {
-                        mMainDrawerView.hideLoadingProgress()
+
                         mMainDrawerView.showError()
                     }
                 })

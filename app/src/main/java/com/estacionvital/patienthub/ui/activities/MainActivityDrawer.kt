@@ -1,7 +1,6 @@
 package com.estacionvital.patienthub.ui.activities
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
@@ -16,6 +15,7 @@ import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.ArticleCategory
 import com.estacionvital.patienthub.model.EVUserProfile
 import com.estacionvital.patienthub.model.EVUserSession
+import com.estacionvital.patienthub.presenter.IMainDrawerPresenter
 import com.estacionvital.patienthub.presenter.implementations.MainDrawerPresenterImpl
 import com.estacionvital.patienthub.ui.fragments.ArticleCategoryFragment
 import com.estacionvital.patienthub.ui.fragments.ProfileFragment
@@ -24,13 +24,22 @@ import com.estacionvital.patienthub.util.toast
 import kotlinx.android.synthetic.main.activity_main_drawer.*
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
-class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, ProfileFragment.OnFragmentInteractionListener, IMainDrawerView{
+class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
+        ProfileFragment.OnFragmentInteractionListener, IMainDrawerView{
+    override fun onLoadingProfile() {
+        this.showProgressDialog(getString(R.string.profile_fetch_progress))
+    }
+
+    override fun onProfileLoadingFinished() {
+        this.hideProgressDialog()
+        this.mMainDrawerPresenter.retrieveLocalUserProfileSession()
+    }
 
     private lateinit var mTextName: TextView
     private lateinit var mTextPhone: TextView
 
     private lateinit var navigationView: NavigationView
-    private lateinit var mMainDrawerPresenterImpl: MainDrawerPresenterImpl
+    private lateinit var mMainDrawerPresenter: IMainDrawerPresenter
     private lateinit var mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,8 +68,8 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
 
         mEstacionVitalRemoteDataSource = EstacionVitalRemoteDataSource.INSTANCE
 
-        mMainDrawerPresenterImpl = MainDrawerPresenterImpl(this, mEstacionVitalRemoteDataSource)
-        mMainDrawerPresenterImpl.retrieveEVUSerProfile()
+        mMainDrawerPresenter = MainDrawerPresenterImpl(this, mEstacionVitalRemoteDataSource)
+        mMainDrawerPresenter.retrieveEVUSerProfile()
 
         fragmentTransaction(ProfileFragment())
 
@@ -140,27 +149,16 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         targetIntent.putExtra("articleCategory", category)
         startActivity(targetIntent)
     }
-    override fun onFragmentInteraction(uri: Uri) {
-        //a implementar
-    }
 
-    override fun showLoadingProgress() {
-
-    }
-
-    override fun hideLoadingProgress() {
-
-    }
 
     override fun showError() {
-
+        this.toast(R.string.generic_500_error)
     }
 
-    override fun retrieveData(data: EVUserProfile) {
-        EVUserSession.instance.userProfile = data
+    override fun setDrawerHeaderData(data: EVUserProfile) {
 
         mTextName.text = "${EVUserSession.instance.userProfile.name} ${EVUserSession.instance.userProfile.last_name}"
         mTextPhone.text = "${EVUserSession.instance.phoneNumber}"
-        Toast.makeText(this, "${data.name}", Toast.LENGTH_LONG)
+        //Toast.makeText(this, "${data.name}", Toast.LENGTH_LONG)
     }
 }
