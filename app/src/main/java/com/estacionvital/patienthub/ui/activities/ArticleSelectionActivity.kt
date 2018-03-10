@@ -1,5 +1,6 @@
 package com.estacionvital.patienthub.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.NavUtils
 import android.support.v7.widget.LinearLayoutManager
@@ -55,7 +56,9 @@ class ArticleSelectionActivity : BaseActivity(), IArticleSelectionView,
     }
 
     override fun navigateToWebArticle(article: BlogArticle) {
-
+        val webIntent: Intent = Intent(this, WebArticleActivity::class.java)
+        webIntent.putExtra("article", article)
+        startActivity(webIntent)
     }
 
     override fun updateArticlesListUI(articles: MutableList<BlogArticle>) {

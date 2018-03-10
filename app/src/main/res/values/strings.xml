@@ -76,4 +76,5 @@
     <string name="title_fragment_categories">Categorías de Artículos</string>
     <string name="title_activity_article_selection">%s</string>
     <string name="blog_article_progress">Obteniendo artículos...</string>
+    <string name="share_msg">Compartir artículo vía...</string>
 </resources>
