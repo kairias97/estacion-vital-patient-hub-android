@@ -10,4 +10,7 @@ interface IMainDrawerView {
 
     fun showError()
     fun setDrawerHeaderData(data: EVUserProfile)
+    fun navigateToNumberVerification()
+    fun showLoggingOutProgress()
+    fun hideLoggingOutProgress()
 }

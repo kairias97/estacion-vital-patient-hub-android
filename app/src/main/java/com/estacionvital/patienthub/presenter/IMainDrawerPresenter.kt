@@ -6,4 +6,5 @@ package com.estacionvital.patienthub.presenter
 interface IMainDrawerPresenter {
     fun retrieveEVUSerProfile()
     fun retrieveLocalUserProfileSession()
+    fun logout()
 }

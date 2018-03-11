@@ -1,5 +1,7 @@
 package com.estacionvital.patienthub.ui.activities
 
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -9,8 +11,8 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import android.widget.TextView
-import android.widget.Toast
 import com.estacionvital.patienthub.R
+import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.ArticleCategory
 import com.estacionvital.patienthub.model.EVUserProfile
@@ -26,6 +28,20 @@ import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
 class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
         ProfileFragment.OnFragmentInteractionListener, IMainDrawerView{
+    override fun navigateToNumberVerification() {
+        val exitIntent = Intent(this, NumberVerificationActivity::class.java)
+        exitIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(exitIntent)
+    }
+
+    override fun showLoggingOutProgress() {
+        showProgressDialog(getString(R.string.logout_progress))
+    }
+
+    override fun hideLoggingOutProgress() {
+        hideProgressDialog()
+    }
+
     override fun onLoadingProfile() {
         this.showProgressDialog(getString(R.string.profile_fetch_progress))
     }
@@ -68,7 +84,11 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
 
         mEstacionVitalRemoteDataSource = EstacionVitalRemoteDataSource.INSTANCE
 
-        mMainDrawerPresenter = MainDrawerPresenterImpl(this, mEstacionVitalRemoteDataSource)
+        mMainDrawerPresenter = MainDrawerPresenterImpl(this, mEstacionVitalRemoteDataSource,
+                SharedPrefManager(
+                        getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
+                                Context.MODE_PRIVATE)
+                ))
         mMainDrawerPresenter.retrieveEVUSerProfile()
 
         fragmentTransaction(ProfileFragment())
@@ -102,7 +122,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         var fragment: Fragment = Fragment()
         when(menuId){
             R.id.nav_home -> {
-
+                this.supportActionBar?.title = getString(R.string.drawer_home)
             }
             R.id.nav_profile -> fragment = ProfileFragment()
             R.id.nav_chat_free -> {
@@ -140,10 +160,36 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
 
                 })
             }
+            R.id.nav_logout -> {
+                askForLogoutConfirmation()
+                return
+            }
         }
         fragmentTransaction(fragment)
     }
+    private fun askForLogoutConfirmation(){
+        this.showConfirmDialog(titleResId = R.string.dialog_title_logout,
+                iconResId = R.drawable.ic_logout_black_24dp,
+                messageResId = R.string.dialog_msg_logout,
+                positiveBtnResId = R.string.dialog_yes_logout,
+                negativeBtnResId = R.string.dialog_cancel,
+                negativeListener = object:DialogInterface.OnClickListener{
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                        uncheckNavOption(R.id.nav_logout)
+                    }
+                },
+                positiveListener = object:DialogInterface.OnClickListener{
+                    override fun onClick(p0: DialogInterface?, p1: Int) {
+                        mMainDrawerPresenter.logout()
+                    }
 
+                }
+                )
+    }
+    private fun uncheckNavOption(menuResId: Int){
+        navigationView.menu.findItem(menuResId).isChecked = false
+
+    }
     private fun navigateToArticleSelection(category: ArticleCategory){
         val targetIntent = Intent(this, ArticleSelectionActivity::class.java)
         targetIntent.putExtra("articleCategory", category)

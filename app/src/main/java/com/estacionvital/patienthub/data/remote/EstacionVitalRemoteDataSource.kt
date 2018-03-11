@@ -3,10 +3,7 @@ package com.estacionvital.patienthub.data.remote
 import android.util.Log
 import com.estacionvital.patienthub.BuildConfig
 import com.estacionvital.patienthub.data.api.EstacionVitalAPI
-import com.estacionvital.patienthub.data.remote.Callbacks.IEVProfileUpdateCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.IEVRegistrationSubmittedCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.IEVRetrieveProfileCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.IValidateEVCredentialsCallback
+import com.estacionvital.patienthub.data.remote.Callbacks.*
 import com.estacionvital.patienthub.model.*
 import retrofit2.Call
 import retrofit2.Callback
@@ -75,7 +72,7 @@ class EstacionVitalRemoteDataSource {
         authCall.enqueue(object: Callback<EVRetrieveProfileResponse>{
             override fun onFailure(call: Call<EVRetrieveProfileResponse>?, t: Throwable?) {
                 if(BuildConfig.BUILD_TYPE == "debug") {
-                    Log.e("EVRetrivingProfile error", t.toString())
+                    Log.e("EVRetrieve error", t.toString())
                 }
                 callback.onFailure()
             }
@@ -86,7 +83,7 @@ class EstacionVitalRemoteDataSource {
                 }
                 else{
                     if(BuildConfig.BUILD_TYPE == "debug") {
-                        Log.e("EVRetrieveingProfie error " + response.code().toString(), response.raw().body().toString())
+                        Log.e("EVRetrieve error " + response.code().toString(), response.raw().body().toString())
                     }
                     callback.onFailure()
                 }
@@ -114,6 +111,32 @@ class EstacionVitalRemoteDataSource {
                 }
                 callback.onFailure()
             }
+        })
+    }
+    fun logout(token: String, callback: ILogoutCallback){
+        val authCall = EstacionVitalAPI.instance.service!!.logout(token)
+        authCall.enqueue(object: Callback<LogoutResponse>{
+            override fun onFailure(call: Call<LogoutResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug") {
+                    Log.e("Logout error", t.toString())
+                }
+                callback.onFailure()
+            }
+
+            override fun onResponse(call: Call<LogoutResponse>?, response: Response<LogoutResponse>?) {
+                when (response!!.code()){
+                    200 -> {
+                        callback.onSuccess(response!!.body()!!)
+                    }
+                    else -> {
+                        if(BuildConfig.BUILD_TYPE == "debug") {
+                            Log.e("Logout unsuccessful", response.raw().body().toString())
+                        }
+                        callback.onFailure()
+                    }
+                }
+            }
+
         })
     }
     companion object {

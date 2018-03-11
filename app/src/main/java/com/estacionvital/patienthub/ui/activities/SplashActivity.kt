@@ -19,8 +19,12 @@ class SplashActivity : BaseActivity(), ISplashView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         supportActionBar?.hide()
-        mSplashPresenter = SplashPresenterImpl(this, SharedPrefManager(getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
-                Context.MODE_PRIVATE)))
+        mSplashPresenter = SplashPresenterImpl(this,
+                SharedPrefManager(
+                        getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
+                                Context.MODE_PRIVATE)
+                )
+        )
         mSplashPresenter!!.checkSession()
     }
 

@@ -78,4 +78,10 @@
     <string name="blog_article_progress">Obteniendo artículos...</string>
     <string name="share_msg">Compartir artículo vía...</string>
     <string name="profile_fetch_progress">Obteniendo información de perfil...</string>
+    <string name="drawer_logout">Cerrar sesión</string>
+    <string name="dialog_title_logout">¿Cerrar sesión?</string>
+    <string name="dialog_msg_logout">Su sesión actual se cerrará y volverá a la pantalla inicial de verificación de número para inicio de sesión.</string>
+    <string name="dialog_yes_logout">Cerrar sesión</string>
+    <string name="dialog_cancel">Cancelar</string>
+    <string name="logout_progress">Cerrar sesión</string>
 </resources>

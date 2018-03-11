@@ -36,4 +36,8 @@ class SharedPrefManager(private val mSharedPref: SharedPreferences) {
 
         PHONE_NUMBER
     }
+
+    fun clearPreferences() {
+        mSharedPref.edit().clear().commit()
+    }
 }

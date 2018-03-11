@@ -1,15 +1,9 @@
 package com.estacionvital.patienthub.data.api
 
 import com.estacionvital.patienthub.model.*
-import com.estacionvital.patienthub.util.URL_EV_LOGIN
-import com.estacionvital.patienthub.util.URL_EV_NEW_REGISTRATION
-import com.estacionvital.patienthub.util.URL_EV_RETRIEVE_PROFILE
-import com.estacionvital.patienthub.util.URL_EV_UPDATE_PROFILE
+import com.estacionvital.patienthub.util.*
 import retrofit2.Call
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 /**
  * Created by kevin on 25/2/2018.
@@ -25,4 +19,7 @@ interface IEstacionVitalService{
     @POST(URL_EV_UPDATE_PROFILE)
     fun updateProfile(@Header("Authorization") basicAuth: String,
                       @Body body: EVProfileUpdateRequest): Call<EVProfileUpdateResponse>
+    @DELETE(URL_EV_LOGOUT)
+    fun logout(@Header("Authorization") token: String): Call<LogoutResponse>
+
 }
