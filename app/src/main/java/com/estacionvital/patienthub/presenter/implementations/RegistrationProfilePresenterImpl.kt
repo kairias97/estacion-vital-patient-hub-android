@@ -13,6 +13,17 @@ import com.estacionvital.patienthub.util.RegexUtil
  * Created by kevin on 28/2/2018.
  */
 class RegistrationProfilePresenterImpl: IRegistrationProfilePresenter{
+    override fun validateName(name: String) {
+        if (RegexUtil.instance.containsDigits(name)) {
+            mRegistrationProfileView.updateNameInput(RegexUtil.instance.trimNumbersFromString(name))
+        }
+    }
+
+    override fun validateLastName(lastName: String) {
+        if (RegexUtil.instance.containsDigits(lastName)) {
+            mRegistrationProfileView.updateLastNameInput(RegexUtil.instance.trimNumbersFromString(lastName))
+        }
+    }
 
 
     private val mSharedPrefManager: SharedPrefManager

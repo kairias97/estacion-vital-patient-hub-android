@@ -2,22 +2,18 @@ package com.estacionvital.patienthub.ui.fragments
 
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.ContactsContract
 import android.support.design.widget.TextInputEditText
 import android.support.v4.app.Fragment
 import android.view.*
-import android.widget.TextView
-import android.widget.Toast
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.EVUserProfile
 import com.estacionvital.patienthub.model.EVUserSession
-import com.estacionvital.patienthub.presenter.implementations.ProfilePresenterImpl
+import com.estacionvital.patienthub.presenter.implementations.IProfilePresenter
 import com.estacionvital.patienthub.ui.activities.EditProfileActivity
-import com.estacionvital.patienthub.ui.activities.MainActivityDrawer
 import com.estacionvital.patienthub.ui.fragmentViews.IProfileFragmentView
+import com.estacionvital.patienthub.util.toast
 
 
 /**
@@ -34,14 +30,14 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
     private lateinit var mTextLastName: TextInputEditText
     private lateinit var mTextEmail: TextInputEditText
 
-    private lateinit var mProfilePresenterImpl: ProfilePresenterImpl
+    private lateinit var mProfilePresenter: IProfilePresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mProfilePresenterImpl = ProfilePresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE)
+        mProfilePresenter = IProfilePresenter(this, EstacionVitalRemoteDataSource.INSTANCE)
 
-        mProfilePresenterImpl.retrieveEVUserProfile()
+        mProfilePresenter.retrieveEVUserProfile()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -52,6 +48,7 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
 
     override fun onResume() {
         super.onResume()
+        mProfilePresenter.retrieveEVUserProfile()
 
     }
 
@@ -86,12 +83,7 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
         }
         return true
     }
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        if (mListener != null) {
-            mListener!!.onFragmentInteraction(uri)
-        }
-    }
+
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -108,26 +100,17 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
         mListener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
-     */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
+        fun onLoadingProfile()
+        fun onProfileLoadingFinished()
     }
 
     override fun showLoadingProgress() {
-
+        this.mListener?.onLoadingProfile()
     }
 
     override fun showErrorLoading() {
-
+        activity.toast(R.string.generic_500_error)
     }
 
     override fun navToEditProfile() {
@@ -135,7 +118,7 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
         startActivity(editIntent)
     }
 
-    override fun getProfileData(data: EVUserProfile) {
+    override fun setProfileData(data: EVUserProfile) {
         EVUserSession.instance.userProfile = data
 
         mTextName.setText(EVUserSession.instance.userProfile.name)
@@ -144,7 +127,7 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
     }
 
     override fun hideLoadingProgress() {
-
+        this.mListener?.onProfileLoadingFinished()
     }
 
     companion object {

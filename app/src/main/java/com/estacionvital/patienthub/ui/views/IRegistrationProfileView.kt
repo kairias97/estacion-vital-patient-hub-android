@@ -27,5 +27,8 @@ interface IRegistrationProfileView {
     fun showInvalidRegistrationDataMessage()
     fun navigateToMain()
 
+    fun updateNameInput(name: String)
+    fun updateLastNameInput(lastName: String)
+
 
 }

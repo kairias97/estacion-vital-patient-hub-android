@@ -13,4 +13,6 @@ interface IRegistrationProfilePresenter {
                           gender: GenderEnum
                           )
     fun retrievePhoneNumber(): String
+    fun validateName(name:String)
+    fun validateLastName(lastName: String)
 }

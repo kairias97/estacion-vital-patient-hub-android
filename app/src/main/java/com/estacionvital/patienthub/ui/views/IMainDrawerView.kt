@@ -7,8 +7,10 @@ import com.estacionvital.patienthub.model.EVUserProfile
  * Created by dusti on 03/03/2018.
  */
 interface IMainDrawerView {
-    fun showLoadingProgress()
-    fun hideLoadingProgress()
+
     fun showError()
-    fun retrieveData(data: EVUserProfile)
+    fun setDrawerHeaderData(data: EVUserProfile)
+    fun navigateToNumberVerification()
+    fun showLoggingOutProgress()
+    fun hideLoggingOutProgress()
 }

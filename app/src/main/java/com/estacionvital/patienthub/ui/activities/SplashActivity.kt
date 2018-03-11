@@ -9,6 +9,7 @@ import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.presenter.ISplashPresenter
 import com.estacionvital.patienthub.presenter.implementations.SplashPresenterImpl
 import com.estacionvital.patienthub.ui.views.ISplashView
+import com.squareup.picasso.Picasso
 
 class SplashActivity : BaseActivity(), ISplashView {
 
@@ -18,8 +19,12 @@ class SplashActivity : BaseActivity(), ISplashView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         supportActionBar?.hide()
-        mSplashPresenter = SplashPresenterImpl(this, SharedPrefManager(getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
-                Context.MODE_PRIVATE)))
+        mSplashPresenter = SplashPresenterImpl(this,
+                SharedPrefManager(
+                        getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
+                                Context.MODE_PRIVATE)
+                )
+        )
         mSplashPresenter!!.checkSession()
     }
 

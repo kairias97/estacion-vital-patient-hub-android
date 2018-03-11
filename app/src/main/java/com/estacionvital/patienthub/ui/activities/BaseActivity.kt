@@ -13,6 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import com.estacionvital.patienthub.R
 import android.app.ProgressDialog
+import android.content.DialogInterface
+
+
 
 
 
@@ -55,5 +58,20 @@ abstract class BaseActivity: AppCompatActivity(), IBaseView {
         supportActionBar?.setHomeAsUpIndicator(R.mipmap.ic_toolbar_home_logo)
 
 
+    }
+
+    protected fun showConfirmDialog(titleResId: Int, iconResId: Int, messageResId: Int,
+                                    positiveBtnResId: Int, negativeBtnResId: Int,
+                                    positiveListener: DialogInterface.OnClickListener,
+                                    negativeListener: DialogInterface.OnClickListener
+                                    ){
+        AlertDialog.Builder(this)
+                .setIcon(iconResId)
+                .setTitle(titleResId)
+                .setMessage(messageResId)
+                .setPositiveButton(positiveBtnResId, positiveListener)
+                .setNegativeButton(negativeBtnResId, negativeListener)
+                .create()
+                .show()
     }
 }

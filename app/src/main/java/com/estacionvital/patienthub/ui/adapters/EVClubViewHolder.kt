@@ -1,4 +1,4 @@
-package com.estacionvital.patienthub.ui.Adapters
+package com.estacionvital.patienthub.ui.adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -15,8 +15,8 @@ public class EVClubViewHolder: RecyclerView.ViewHolder {
     private lateinit var checkBox: CheckBox
 
     constructor(itemView: View) : super(itemView) {
-        checkBox = itemView.findViewById<CheckBox>(R.id.checkBox_club_suscribed)
-        textView = itemView.findViewById<TextView>(R.id.text_club_name)
+        checkBox = itemView.findViewById(R.id.checkBox_club_suscribed)
+        textView = itemView.findViewById(R.id.text_club_name)
 
     }
     fun bindData(viewModel: EVClub, listener: EVClubAdapter.OnClubSelectedListener){
@@ -30,11 +30,11 @@ public class EVClubViewHolder: RecyclerView.ViewHolder {
         }
         textView.setText(viewModel.name)
         //To handle the onclick as a whole
-        itemView.setOnClickListener(){
-            listener.OnClubItemClicked(viewModel)
+        itemView.setOnClickListener{
+            listener.onClubItemClicked(viewModel)
         }
-        checkBox.setOnClickListener(){
-            listener.OnClubItemClicked(viewModel)
+        checkBox.setOnClickListener{
+            listener.onClubItemClicked(viewModel)
         }
 
     }

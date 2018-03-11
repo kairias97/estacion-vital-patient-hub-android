@@ -8,4 +8,6 @@ interface IEditProfileView {
     fun showError()
     fun hideProgress()
     fun goBackToTop()
+    fun updateNameInput(name: String)
+    fun updateLastNameInput(lastName: String)
 }

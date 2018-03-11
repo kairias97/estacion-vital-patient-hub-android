@@ -16,6 +16,11 @@
             android:id="@+id/nav_articles"
             android:icon="@drawable/ic_reorder_black_24dp"
             android:title="@string/drawer_articles" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout_black_24dp"
+            android:title="@string/drawer_logout" />
+
         <item android:title="@string/drawer_chats_section">
             <menu>
                 <group android:checkableBehavior="single">

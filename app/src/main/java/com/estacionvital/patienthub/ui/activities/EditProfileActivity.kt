@@ -1,8 +1,10 @@
 package com.estacionvital.patienthub.ui.activities
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.TextInputEditText
 import android.support.v4.app.NavUtils
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
@@ -10,18 +12,29 @@ import android.widget.Toast
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.EVUserSession
+import com.estacionvital.patienthub.presenter.IEditProfilePresenter
 import com.estacionvital.patienthub.presenter.implementations.EditProfilePresenterImpl
-import com.estacionvital.patienthub.presenter.implementations.ProfilePresenterImpl
 import com.estacionvital.patienthub.ui.views.IEditProfileView
+import org.w3c.dom.Text
 
 class EditProfileActivity : BaseActivity(), IEditProfileView {
+    override fun updateNameInput(name: String) {
+        mNameEditText.setText(name)
+        mNameEditText.setSelection(mNameEditText.text.toString().length)
+    }
+
+    override fun updateLastNameInput(lastName: String) {
+        mLastNameEditText.setText(lastName)
+        mLastNameEditText.setSelection(mLastNameEditText.text.toString().length)
+    }
+
     private lateinit var mButtonCancel: Button
     private lateinit var mButtonAccept: Button
-    private lateinit var mTextName: EditText
-    private lateinit var mTextLastName: EditText
-    private lateinit var mTextEmail: EditText
+    private lateinit var mNameEditText: TextInputEditText
+    private lateinit var mLastNameEditText: TextInputEditText
+    private lateinit var mEmailEditText: TextInputEditText
 
-    private lateinit var mEditProfilePresenterImpl: EditProfilePresenterImpl
+    private lateinit var mEditProfilePresenter: IEditProfilePresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,16 +45,13 @@ class EditProfileActivity : BaseActivity(), IEditProfileView {
 
         supportActionBar!!.title = "Editar Perfil"
 
-        mButtonCancel = findViewById<Button>(R.id.edit_profile_cancel)
-        mButtonAccept = findViewById<Button>(R.id.edit_profile_accept)
-        mTextName = findViewById<EditText>(R.id.edit_text_name_profile)
-        mTextLastName = findViewById<EditText>(R.id.edit_text_last_name_profile)
-        mTextEmail = findViewById<EditText>(R.id.edit_text_email_profile)
+        mButtonCancel = findViewById(R.id.edit_profile_cancel)
+        mButtonAccept = findViewById(R.id.edit_profile_accept)
+        mNameEditText = findViewById(R.id.edit_text_name_profile)
+        mLastNameEditText = findViewById(R.id.edit_text_last_name_profile)
+        mEmailEditText = findViewById(R.id.edit_text_email_profile)
 
-        //setValues
-        mTextName.setText(EVUserSession.instance.userProfile.name)
-        mTextLastName.setText(EVUserSession.instance.userProfile.last_name)
-        mTextEmail.setText(EVUserSession.instance.userProfile.email)
+
 
         mButtonAccept.setOnClickListener{
             acceptPressed()
@@ -50,7 +60,42 @@ class EditProfileActivity : BaseActivity(), IEditProfileView {
             returnTop()
         }
 
-        mEditProfilePresenterImpl = EditProfilePresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE)
+        mEditProfilePresenter = EditProfilePresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE)
+
+        mNameEditText.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                mEditProfilePresenter.validateNameInput(p0.toString())
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
+
+        mLastNameEditText.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(p0: Editable?) {
+                mEditProfilePresenter.validateLastNameInput(p0.toString())
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+        })
+
+        //setValues
+        mNameEditText.setText(EVUserSession.instance.userProfile.name)
+        mLastNameEditText.setText(EVUserSession.instance.userProfile.last_name)
+        mEmailEditText.setText(EVUserSession.instance.userProfile.email)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -62,17 +107,17 @@ class EditProfileActivity : BaseActivity(), IEditProfileView {
         return true
     }
 
-    fun returnTop(){
+    private fun returnTop(){
         NavUtils.navigateUpFromSameTask(this)
     }
 
     fun acceptPressed(){
-        if(EVUserSession.instance.verifyProfileData(mTextName.text.toString(),mTextLastName.text.toString(),mTextEmail.text.toString())){
+        if(EVUserSession.instance.verifyProfileData(mNameEditText.text.toString(),mLastNameEditText.text.toString(),mEmailEditText.text.toString())){
             returnTop()
         }
         else{
             showLoadingProgress()
-            mEditProfilePresenterImpl.updateProfile(mTextName.text.toString(), mTextLastName.text.toString(), mTextEmail.text.toString())
+            mEditProfilePresenter.updateProfile(mNameEditText.text.toString(), mLastNameEditText.text.toString(), mEmailEditText.text.toString())
         }
     }
     override fun showLoadingProgress() {
