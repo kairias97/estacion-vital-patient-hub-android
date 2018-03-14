@@ -11,6 +11,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.ui.fragmentViews.IConversationHistoryFragmentView
+import com.estacionvital.patienthub.util.CHAT_FREE
+import com.estacionvital.patienthub.util.CHAT_PREMIUM
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
 /**
@@ -51,12 +53,20 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
         mFabButton.setOnClickListener {
             navigateToSpecialty()
         }
+        //asingacion del titulo en base al parametro pasado
+        if(mParam1 != null){
+            if(mParam1 == CHAT_FREE){
+                activity.title = "Chat Gratis"
+            }
+            else if(mParam1 == CHAT_PREMIUM){
+                activity.title = "Chat Premium"
+            }
+        }
         return view
     }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        activity.title = "Chat Gratis"
     }
 
     override fun onDetach() {

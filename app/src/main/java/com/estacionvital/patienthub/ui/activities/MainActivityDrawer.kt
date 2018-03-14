@@ -23,6 +23,8 @@ import com.estacionvital.patienthub.ui.fragments.ArticleCategoryFragment
 import com.estacionvital.patienthub.ui.fragments.ConversationHistoryFragment
 import com.estacionvital.patienthub.ui.fragments.ProfileFragment
 import com.estacionvital.patienthub.ui.views.IMainDrawerView
+import com.estacionvital.patienthub.util.CHAT_FREE
+import com.estacionvital.patienthub.util.CHAT_PREMIUM
 import com.estacionvital.patienthub.util.toast
 import kotlinx.android.synthetic.main.activity_main_drawer.*
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
@@ -128,7 +130,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
             R.id.nav_profile -> fragment = ProfileFragment()
             R.id.nav_chat_free -> {
                 val activity = this
-                fragment = ConversationHistoryFragment.newInstance("free", object: ConversationHistoryFragment
+                fragment = ConversationHistoryFragment.newInstance(CHAT_FREE, object: ConversationHistoryFragment
                 .OnConversationHistorytInteraction{
                     override fun onHistoryLoadingFinished() {
                         activity.hideProgressDialog()
@@ -144,7 +146,21 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
                 })
             }
             R.id.nav_chat_premium -> {
+                val activity = this
+                fragment = ConversationHistoryFragment.newInstance(CHAT_PREMIUM, object: ConversationHistoryFragment
+                .OnConversationHistorytInteraction{
+                    override fun onHistoryLoadingFinished() {
+                        activity.hideProgressDialog()
+                    }
 
+                    override fun onLoadingHistory() {
+                        activity.showProgressDialog(getString(R.string.chat_getting_conversations_history))
+                    }
+
+                    override fun navigateToSpecialty() {
+                        navigateToSpecialtySelection()
+                    }
+                })
             }
             R.id.nav_documents -> {
 
