@@ -3,11 +3,14 @@ package com.estacionvital.patienthub.ui.fragments
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import com.estacionvital.patienthub.R
+import com.estacionvital.patienthub.ui.fragmentViews.IConversationHistoryFragmentView
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
 /**
@@ -18,13 +21,15 @@ import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
  * Use the [ConversationHistoryFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ConversationHistoryFragment : Fragment() {
+class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView {
 
     // TODO: Rename and change types of parameters
     private var mParam1: String? = null
     private var mParam2: String? = null
 
     private var mListener: OnConversationHistorytInteraction? = null
+
+    private lateinit var mFabButton: FloatingActionButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,8 +44,13 @@ class ConversationHistoryFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        val view = inflater!!.inflate(R.layout.fragment_conversation_history, container, false)
         activity.fab.visibility = View.GONE
+        val view = inflater!!.inflate(R.layout.fragment_conversation_history, container, false)
+
+        mFabButton = view.findViewById<FloatingActionButton>(R.id.fab_chat_add)
+        mFabButton.setOnClickListener {
+            navigateToSpecialty()
+        }
         return view
     }
 
@@ -57,6 +67,11 @@ class ConversationHistoryFragment : Fragment() {
     interface OnConversationHistorytInteraction {
         fun onLoadingHistory()
         fun onHistoryLoadingFinished()
+        fun navigateToSpecialty()
+    }
+
+    override fun navigateToSpecialty() {
+        this.mListener?.navigateToSpecialty()
     }
 
     companion object {

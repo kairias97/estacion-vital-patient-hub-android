@@ -137,6 +137,10 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
                     override fun onLoadingHistory() {
                         activity.showProgressDialog(getString(R.string.chat_getting_conversations_history))
                     }
+
+                    override fun navigateToSpecialty() {
+                        navigateToSpecialtySelection()
+                    }
                 })
             }
             R.id.nav_chat_premium -> {
@@ -207,6 +211,10 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         startActivity(targetIntent)
     }
 
+    private fun navigateToSpecialtySelection(){
+        val targetIntent = Intent(this, SpecialtySelectionActivity::class.java)
+        startActivity(targetIntent)
+    }
 
     override fun showError() {
         this.toast(R.string.generic_500_error)
