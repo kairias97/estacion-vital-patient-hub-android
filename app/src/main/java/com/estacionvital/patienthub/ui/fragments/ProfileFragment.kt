@@ -14,6 +14,7 @@ import com.estacionvital.patienthub.presenter.implementations.IProfilePresenter
 import com.estacionvital.patienthub.ui.activities.EditProfileActivity
 import com.estacionvital.patienthub.ui.fragmentViews.IProfileFragmentView
 import com.estacionvital.patienthub.util.toast
+import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
 
 /**
@@ -68,6 +69,8 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
         mTextLastName.isFocusable = false
         mTextEmail.isFocusable = false
 
+
+        activity.fab.visibility = View.VISIBLE
         return view
     }
 

@@ -85,4 +85,5 @@
     <string name="dialog_cancel">Cancelar</string>
     <string name="logout_progress">Cerrar sesión</string>
     <string name="input_message_hint">Escribe un mensaje</string>
+    <string name="chat_getting_conversations_history">Obteniendo Historial de conversaciones...</string>
 </resources>

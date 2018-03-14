@@ -20,6 +20,7 @@ import com.estacionvital.patienthub.model.EVUserSession
 import com.estacionvital.patienthub.presenter.IMainDrawerPresenter
 import com.estacionvital.patienthub.presenter.implementations.MainDrawerPresenterImpl
 import com.estacionvital.patienthub.ui.fragments.ArticleCategoryFragment
+import com.estacionvital.patienthub.ui.fragments.ConversationHistoryFragment
 import com.estacionvital.patienthub.ui.fragments.ProfileFragment
 import com.estacionvital.patienthub.ui.views.IMainDrawerView
 import com.estacionvital.patienthub.util.toast
@@ -126,7 +127,17 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
             }
             R.id.nav_profile -> fragment = ProfileFragment()
             R.id.nav_chat_free -> {
+                val activity = this
+                fragment = ConversationHistoryFragment.newInstance("free", object: ConversationHistoryFragment
+                .OnConversationHistorytInteraction{
+                    override fun onHistoryLoadingFinished() {
+                        activity.hideProgressDialog()
+                    }
 
+                    override fun onLoadingHistory() {
+                        activity.showProgressDialog(getString(R.string.chat_getting_conversations_history))
+                    }
+                })
             }
             R.id.nav_chat_premium -> {
 
