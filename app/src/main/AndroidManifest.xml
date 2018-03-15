@@ -56,7 +56,9 @@
         <activity
             android:name=".ui.activities.WebArticleActivity"
             android:parentActivityName=".ui.activities.ArticleSelectionActivity" />
-        <activity android:name=".ui.activities.TwilioChatActivity" />
+        <activity
+            android:name=".ui.activities.TwilioChatActivity"
+            android:parentActivityName=".ui.activities.MainActivityDrawer"/>
         <activity
             android:name=".ui.activities.SpecialtySelectionActivity"
             android:parentActivityName=".ui.activities.MainActivityDrawer"></activity>

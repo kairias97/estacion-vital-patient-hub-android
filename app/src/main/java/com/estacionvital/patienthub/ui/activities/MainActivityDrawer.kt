@@ -61,6 +61,8 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
     private lateinit var mMainDrawerPresenter: IMainDrawerPresenter
     private lateinit var mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource
 
+    private lateinit var mTypeChat: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_drawer)
@@ -96,6 +98,8 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
 
         fragmentTransaction(ProfileFragment())
 
+        mTypeChat = ""
+
     }
 
     override fun onBackPressed() {
@@ -130,6 +134,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
             R.id.nav_profile -> fragment = ProfileFragment()
             R.id.nav_chat_free -> {
                 val activity = this
+                mTypeChat = CHAT_FREE
                 fragment = ConversationHistoryFragment.newInstance(CHAT_FREE, object: ConversationHistoryFragment
                 .OnConversationHistorytInteraction{
                     override fun onHistoryLoadingFinished() {
@@ -147,6 +152,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
             }
             R.id.nav_chat_premium -> {
                 val activity = this
+                mTypeChat = CHAT_PREMIUM
                 fragment = ConversationHistoryFragment.newInstance(CHAT_PREMIUM, object: ConversationHistoryFragment
                 .OnConversationHistorytInteraction{
                     override fun onHistoryLoadingFinished() {
@@ -229,6 +235,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
 
     private fun navigateToSpecialtySelection(){
         val targetIntent = Intent(this, SpecialtySelectionActivity::class.java)
+        targetIntent.putExtra("chatType", mTypeChat)
         startActivity(targetIntent)
     }
 
