@@ -84,4 +84,7 @@
     <string name="dialog_yes_logout">Cerrar sesión</string>
     <string name="dialog_cancel">Cancelar</string>
     <string name="logout_progress">Cerrar sesión</string>
+    <string name="previous">Anterior</string>
+    <string name="next">Siguiente</string>
+    <string name="placeholder_pager">Página %d de %d</string>
 </resources>

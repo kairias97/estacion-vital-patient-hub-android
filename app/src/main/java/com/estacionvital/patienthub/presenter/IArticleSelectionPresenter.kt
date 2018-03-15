@@ -5,4 +5,6 @@ package com.estacionvital.patienthub.presenter
  */
 interface IArticleSelectionPresenter {
     fun loadArticles(categoryID: Int)
+    fun onNextPageRequested()
+    fun onPreviousPageRequested()
 }

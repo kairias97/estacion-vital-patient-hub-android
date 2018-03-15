@@ -40,7 +40,11 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
     }
 
     override fun retrieveLocalUserProfileSession() {
-        mMainDrawerView.setDrawerHeaderData( EVUserSession.instance.userProfile)
+        if (EVUserSession.instance.userProfile != null) {
+            mMainDrawerView.setDrawerHeaderData( EVUserSession.instance.userProfile)
+
+        }
+
     }
 
     private val mMainDrawerView : IMainDrawerView
