@@ -26,3 +26,6 @@ const val URL_EV_BLOG_GET_ARTICLES_BY_CATEGORY = "get_category_posts/"
 //Endpoints API EV
 const val URL_EV_LOGIN: String = "auth/sign-in"
 const val URL_EV_LOGOUT: String = "auth/sign-out"
+
+//Pagination
+const val PAGE_SIZE_BLOG_ARTICLES = 3

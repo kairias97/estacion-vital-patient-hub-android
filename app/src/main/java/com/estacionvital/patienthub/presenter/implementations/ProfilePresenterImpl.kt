@@ -10,7 +10,7 @@ import com.estacionvital.patienthub.ui.fragmentViews.IProfileFragmentView
 /**
  * Created by dusti on 03/03/2018.
  */
-class IProfilePresenter: IProfilePresenter {
+class ProfilePresenterImpl: IProfilePresenter {
 
     private val mProfileView: IProfileFragmentView
     private val mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource

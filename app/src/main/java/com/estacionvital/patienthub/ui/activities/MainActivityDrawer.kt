@@ -28,6 +28,10 @@ import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
 class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelectedListener,
         ProfileFragment.OnFragmentInteractionListener, IMainDrawerView{
+    override fun onProfileLoadedSuccessfully(data: EVUserProfile) {
+        this.setDrawerHeaderData(data)
+    }
+
     override fun navigateToNumberVerification() {
         val exitIntent = Intent(this, NumberVerificationActivity::class.java)
         exitIntent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -48,7 +52,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
 
     override fun onProfileLoadingFinished() {
         this.hideProgressDialog()
-        this.mMainDrawerPresenter.retrieveLocalUserProfileSession()
+
     }
 
     private lateinit var mTextName: TextView
