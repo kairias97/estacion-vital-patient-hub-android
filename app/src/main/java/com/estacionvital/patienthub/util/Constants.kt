@@ -22,6 +22,7 @@ const val URL_EV_RETRIEVE_PROFILE = "user"
 const val URL_EV_UPDATE_PROFILE = "user/update"
 const val URL_EV_BLOG_GET_CATEGORIES = "get_category_index/"
 const val URL_EV_BLOG_GET_ARTICLES_BY_CATEGORY = "get_category_posts/"
+const val URL_EV_RETRIEVE_SPECIALTIES = "doctors/specialities/"
 
 //Endpoints API EV
 const val URL_EV_LOGIN: String = "auth/sign-in"

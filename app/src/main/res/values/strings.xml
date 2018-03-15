@@ -86,4 +86,8 @@
     <string name="logout_progress">Cerrar sesión</string>
     <string name="input_message_hint">Escribe un mensaje</string>
     <string name="chat_getting_conversations_history">Obteniendo Historial de conversaciones...</string>
+    <string name="loading_specialties_msg">Cargando Especialidades</string>
+    <string name="select_specialty_label">Selecciona una especialidad:</string>
+    <string name="select_specialty_button">Solicitar Chat</string>
+    <string name="cancel_specialty_button">Cancelar</string>
 </resources>

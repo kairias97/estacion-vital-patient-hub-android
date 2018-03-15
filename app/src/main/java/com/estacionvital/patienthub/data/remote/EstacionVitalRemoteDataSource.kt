@@ -139,6 +139,31 @@ class EstacionVitalRemoteDataSource {
 
         })
     }
+    fun retrieveSpecialtiesChat(token: String, callback: IEVRetrieveSpecialtiesCallback){
+        val authCall = EstacionVitalAPI.instance.service!!.retrieveSpecialties(token)
+        authCall.enqueue(object: Callback<EVSpecialtiesResponse>{
+            override fun onResponse(call: Call<EVSpecialtiesResponse>?, response: Response<EVSpecialtiesResponse>?) {
+                when(response!!.code()){
+                    200 -> {
+                        callback.onSuccess(response!!.body()!!)
+                    }
+                    else -> {
+                        if(BuildConfig.BUILD_TYPE == "debug") {
+                            Log.e("Retrieve Specialties unsuccessful", response.raw().body().toString())
+                        }
+                        callback.onFailure()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<EVSpecialtiesResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug") {
+                    Log.e("Retrieve Specialties unsuccessful", t.toString())
+                }
+                callback.onFailure()
+            }
+        })
+    }
     companion object {
         val INSTANCE: EstacionVitalRemoteDataSource by lazy { EstacionVitalRemoteDataSource()}
     }
