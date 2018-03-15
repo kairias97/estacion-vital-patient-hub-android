@@ -57,7 +57,8 @@ class BlogArticleAdapter: RecyclerView.Adapter<BlogArticleViewHolder> {
         if (pageNumber <= this.mPageCount!!) {
             val minIndex = (pageNumber - 1) * this.mPageSize!!
             var maxIndex = 0
-            if ((minIndex + (this.mPageSize!! - 1)) > this.mArticles.size) {
+            //Max index must be maximun this.mArticles.size - 1
+            if ((minIndex + (this.mPageSize!! - 1)) >= this.mArticles.size) {
                 maxIndex = this.mArticles.size
             } else {
                 maxIndex = minIndex +  this.mPageSize!!
