@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.NavUtils
 import android.view.MenuItem
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.EVSpecialtiesResponse
@@ -15,6 +17,7 @@ import com.estacionvital.patienthub.util.toast
 class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
 
     private lateinit var mSpecialtySelectionPresenter: ISpecialtySelectionPresenter
+    private lateinit var mSpinner: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,6 +27,8 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         supportActionBar!!.title = "Seleccione una especialidad"
+
+        mSpinner = findViewById<Spinner>(R.id.spinner_specialties)
 
         mSpecialtySelectionPresenter = SpecialtySelectionPresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE)
 
@@ -55,5 +60,8 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
     }
     override fun setSpecialtiesData(data: EVSpecialtiesResponse) {
         //settear el recycler
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.spinner_item, data.specialtes)
+        adapter.setDropDownViewResource(R.layout.spinner_item)
+        mSpinner.adapter = adapter
     }
 }

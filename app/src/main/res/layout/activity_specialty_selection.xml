@@ -37,6 +37,7 @@
                     app:layout_constraintRight_toRightOf="parent"/>
                 <Spinner
                     android:id="@+id/spinner_specialties"
+                    android:spinnerMode="dropdown"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/textView_specialty_select"
