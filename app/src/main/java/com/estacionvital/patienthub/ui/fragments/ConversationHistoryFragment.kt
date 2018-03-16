@@ -129,11 +129,19 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
                     override fun onClientSynchronization(p0: ChatClient.SynchronizationStatus?) {
                         //aca
                         if(p0!! == ChatClient.SynchronizationStatus.COMPLETED){
-                            EVChatSession.instance.chatClient.channels.getUserChannelsList(object: CallbackListener<Paginator<ChannelDescriptor>>(){
-                                override fun onSuccess(p0: Paginator<ChannelDescriptor>?){
+                            /*val channels: List<Channel> = EVChatSession.instance.chatClient.channels.subscribedChannels
+                            for (channel in channels) {
+                                Log.d(TAG, "Channel named: " + channel.friendlyName)
+                            }*/
+                            EVChatSession.instance.chatClient.channels.getPublicChannelsList(object: CallbackListener<Paginator<ChannelDescriptor>>(){
+                                override fun onSuccess(p0: Paginator<ChannelDescriptor>?) {
                                     for(channel: ChannelDescriptor in p0!!.items){
-                                        Log.d(TAG, "Channel named: ${channel.friendlyName}")
+                                        Log.d(TAG, "Channel named: " + channel.friendlyName);
                                     }
+                                }
+
+                                override fun onError(errorInfo: ErrorInfo?) {
+                                    super.onError(errorInfo)
                                 }
                             })
                         }
