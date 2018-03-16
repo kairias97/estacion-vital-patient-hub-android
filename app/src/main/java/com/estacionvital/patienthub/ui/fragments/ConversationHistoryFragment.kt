@@ -1,16 +1,19 @@
 package com.estacionvital.patienthub.ui.fragments
 
+import android.content.ContentValues.TAG
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
+import com.estacionvital.patienthub.model.EVChatSession
 import com.estacionvital.patienthub.model.EVRetrieveUserExaminationResponse
 import com.estacionvital.patienthub.model.EVUserSession
 import com.estacionvital.patienthub.presenter.IConversationHistoryPresenter
@@ -18,10 +21,8 @@ import com.estacionvital.patienthub.presenter.implementations.ConversationHistor
 import com.estacionvital.patienthub.ui.fragmentViews.IConversationHistoryFragmentView
 import com.estacionvital.patienthub.util.CHAT_FREE
 import com.estacionvital.patienthub.util.CHAT_PREMIUM
-import com.twilio.chat.CallbackListener
-import com.twilio.chat.ChatClient
-import com.twilio.chat.ChatClientListener
-import com.twilio.chat.ErrorInfo
+import com.estacionvital.patienthub.util.toast
+import com.twilio.chat.*
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
 /**
@@ -111,6 +112,7 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
 
     override fun setHistory(data: EVRetrieveUserExaminationResponse) {
         EVUserSession.instance.twilioToken = data.data.twilio_token
+        setTwilioClient()
     }
 
     private fun setTwilioClient(){
@@ -118,10 +120,77 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
         ChatClient.create(activity.applicationContext,EVUserSession.instance.twilioToken,
                 props, object: CallbackListener<ChatClient>(){
             override fun onSuccess(p0: ChatClient?) {
-                p0!!.setListener(object: ChatClientListener{
-                    override fun onClientSynchronization(p0: ChatClient.SynchronizationStatus?) {
-                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                EVChatSession.instance.chatClient = p0!!
+                EVChatSession.instance.chatClient.setListener(object: ChatClientListener{
+                    override fun onChannelDeleted(p0: Channel?) {
+
                     }
+
+                    override fun onClientSynchronization(p0: ChatClient.SynchronizationStatus?) {
+                        //aca
+                        if(p0!! == ChatClient.SynchronizationStatus.COMPLETED){
+                            EVChatSession.instance.chatClient.channels.getUserChannelsList(object: CallbackListener<Paginator<ChannelDescriptor>>(){
+                                override fun onSuccess(p0: Paginator<ChannelDescriptor>?){
+                                    for(channel: ChannelDescriptor in p0!!.items){
+                                        Log.d(TAG, "Channel named: ${channel.friendlyName}")
+                                    }
+                                }
+                            })
+                        }
+                    }
+
+                    override fun onNotificationSubscribed() {
+
+                    }
+
+                    override fun onUserSubscribed(p0: User?) {
+
+                    }
+
+                    override fun onChannelUpdated(p0: Channel?, p1: Channel.UpdateReason?) {
+
+                    }
+
+                    override fun onNotificationFailed(p0: ErrorInfo?) {
+
+                    }
+
+                    override fun onChannelJoined(p0: Channel?) {
+
+                    }
+
+                    override fun onChannelAdded(p0: Channel?) {
+
+                    }
+
+                    override fun onChannelSynchronizationChange(p0: Channel?) {
+
+                    }
+
+                    override fun onNotification(p0: String?, p1: String?) {
+
+                    }
+
+                    override fun onUserUnsubscribed(p0: User?) {
+
+                    }
+
+                    override fun onChannelInvited(p0: Channel?) {
+
+                    }
+
+                    override fun onConnectionStateChange(p0: ChatClient.ConnectionState?) {
+
+                    }
+
+                    override fun onError(p0: ErrorInfo?) {
+
+                    }
+
+                    override fun onUserUpdated(p0: User?, p1: User.UpdateReason?) {
+
+                    }
+
                 })
             }
 
