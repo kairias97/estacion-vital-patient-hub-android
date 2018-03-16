@@ -148,6 +148,10 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
                     override fun navigateToSpecialty() {
                         navigateToSpecialtySelection()
                     }
+
+                    override fun onHistoryLoadingError() {
+                        activity.toast(getString(R.string.generic_500_error))
+                    }
                 })
             }
             R.id.nav_chat_premium -> {
@@ -165,6 +169,10 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
 
                     override fun navigateToSpecialty() {
                         navigateToSpecialtySelection()
+                    }
+
+                    override fun onHistoryLoadingError() {
+                        activity.toast(getString(R.string.generic_500_error))
                     }
                 })
             }

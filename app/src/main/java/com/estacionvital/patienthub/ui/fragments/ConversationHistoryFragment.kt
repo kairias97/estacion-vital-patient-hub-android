@@ -10,9 +10,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.estacionvital.patienthub.R
+import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
+import com.estacionvital.patienthub.model.EVRetrieveUserExaminationResponse
+import com.estacionvital.patienthub.model.EVUserSession
+import com.estacionvital.patienthub.presenter.IConversationHistoryPresenter
+import com.estacionvital.patienthub.presenter.implementations.ConversationHistoryPresenterImpl
 import com.estacionvital.patienthub.ui.fragmentViews.IConversationHistoryFragmentView
 import com.estacionvital.patienthub.util.CHAT_FREE
 import com.estacionvital.patienthub.util.CHAT_PREMIUM
+import com.twilio.chat.CallbackListener
+import com.twilio.chat.ChatClient
+import com.twilio.chat.ChatClientListener
+import com.twilio.chat.ErrorInfo
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
 /**
@@ -25,19 +34,19 @@ import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
  */
 class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView {
 
-    // TODO: Rename and change types of parameters
     private var mParam1: String? = null
-    private var mParam2: String? = null
 
     private var mListener: OnConversationHistorytInteraction? = null
 
     private lateinit var mFabButton: FloatingActionButton
+    private lateinit var mConversationhistoryPresenter: IConversationHistoryPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             mParam1 = arguments.getString(ARG_PARAM1)
         }
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -53,6 +62,9 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
         mFabButton.setOnClickListener {
             navigateToSpecialty()
         }
+
+        mConversationhistoryPresenter = ConversationHistoryPresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE)
+        mConversationhistoryPresenter.retrieveConversationHistory()
         //asingacion del titulo en base al parametro pasado
         if(mParam1 != null){
             if(mParam1 == CHAT_FREE){
@@ -77,11 +89,46 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
     interface OnConversationHistorytInteraction {
         fun onLoadingHistory()
         fun onHistoryLoadingFinished()
+        fun onHistoryLoadingError()
         fun navigateToSpecialty()
     }
 
     override fun navigateToSpecialty() {
         this.mListener?.navigateToSpecialty()
+    }
+
+    override fun showLoadingProgress() {
+        this.mListener?.onLoadingHistory()
+    }
+
+    override fun hideLoading() {
+        this.mListener?.onHistoryLoadingFinished()
+    }
+
+    override fun showError() {
+        this.mListener?.onHistoryLoadingError()
+    }
+
+    override fun setHistory(data: EVRetrieveUserExaminationResponse) {
+        EVUserSession.instance.twilioToken = data.data.twilio_token
+    }
+
+    private fun setTwilioClient(){
+        val props: ChatClient.Properties = ChatClient.Properties.Builder().createProperties()
+        ChatClient.create(activity.applicationContext,EVUserSession.instance.twilioToken,
+                props, object: CallbackListener<ChatClient>(){
+            override fun onSuccess(p0: ChatClient?) {
+                p0!!.setListener(object: ChatClientListener{
+                    override fun onClientSynchronization(p0: ChatClient.SynchronizationStatus?) {
+                        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                    }
+                })
+            }
+
+            override fun onError(errorInfo: ErrorInfo?) {
+                super.onError(errorInfo)
+            }
+        })
     }
 
     companion object {
