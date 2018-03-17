@@ -129,21 +129,52 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
                     override fun onClientSynchronization(p0: ChatClient.SynchronizationStatus?) {
                         //aca
                         if(p0!! == ChatClient.SynchronizationStatus.COMPLETED){
-                            /*val channels: List<Channel> = EVChatSession.instance.chatClient.channels.subscribedChannels
+                            var users = EVChatSession.instance.chatClient.users.myUser
+                            Log.i("user", users.identity)
+                            val channels: List<Channel> = EVChatSession.instance.chatClient.channels.subscribedChannels
                             for (channel in channels) {
                                 Log.d(TAG, "Channel named: " + channel.friendlyName)
-                            }*/
-                            EVChatSession.instance.chatClient.channels.getPublicChannelsList(object: CallbackListener<Paginator<ChannelDescriptor>>(){
+                            }
+                            /*EVChatSession.instance.chatClient.channels.getPublicChannelsList(object: CallbackListener<Paginator<ChannelDescriptor>>(){
                                 override fun onSuccess(p0: Paginator<ChannelDescriptor>?) {
                                     for(channel: ChannelDescriptor in p0!!.items){
-                                        Log.d(TAG, "Channel named: " + channel.friendlyName);
+                                        if (channel.uniqueName == "2018-03-16 20:16:22 -0600__41eea3ff-eed0-4cad-b8da-923599cfe73f")
+                                        {
+                                            Log.d(TAG, "Channel named: " + channel.friendlyName);
+                                        }
+
                                     }
                                 }
 
                                 override fun onError(errorInfo: ErrorInfo?) {
                                     super.onError(errorInfo)
                                 }
-                            })
+                            })*/
+
+                            EVChatSession.instance.chatClient.channels.getChannel("2018-03-16 20:16:22 -0600__41eea3ff-eed0-4cad-b8da-923599cfe73f",
+                                    object: CallbackListener<Channel>(){
+                                        override fun onSuccess(p0: Channel?) {
+                                            p0!!.join(object: StatusListener(){
+                                                override fun onSuccess() {
+                                                    Log.i("channel", p0!!.createdBy)
+
+                                                    Log.i("channelList", p0!!.members.membersList.toString())
+                                                }
+
+                                                override fun onError(errorInfo: ErrorInfo?) {
+                                                    super.onError(errorInfo)
+                                                }
+
+                                            })
+
+                                        }
+
+                                        override fun onError(errorInfo: ErrorInfo?) {
+                                            super.onError(errorInfo)
+                                        }
+
+                                    })
+
                         }
                     }
 
