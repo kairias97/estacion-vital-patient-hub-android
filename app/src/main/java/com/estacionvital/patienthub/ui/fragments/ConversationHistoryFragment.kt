@@ -12,9 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import com.estacionvital.patienthub.R
+import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.EVChatSession
 import com.estacionvital.patienthub.model.EVRetrieveUserExaminationResponse
+import com.estacionvital.patienthub.model.EVUserExaminationData
 import com.estacionvital.patienthub.model.EVUserSession
 import com.estacionvital.patienthub.presenter.IConversationHistoryPresenter
 import com.estacionvital.patienthub.presenter.implementations.ConversationHistoryPresenterImpl
@@ -64,8 +66,8 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
             navigateToSpecialty()
         }
 
-        mConversationhistoryPresenter = ConversationHistoryPresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE)
-        mConversationhistoryPresenter.retrieveConversationHistory()
+        mConversationhistoryPresenter = ConversationHistoryPresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE, EVTwilioChatRemoteDataSource.instance)
+        mConversationhistoryPresenter.retrieveConversationHistory(activity.applicationContext)
         //asingacion del titulo en base al parametro pasado
         if(mParam1 != null){
             if(mParam1 == CHAT_FREE){
@@ -110,133 +112,12 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
         this.mListener?.onHistoryLoadingError()
     }
 
-    override fun setHistory(data: EVRetrieveUserExaminationResponse) {
-        EVUserSession.instance.twilioToken = data.data.twilio_token
-        setTwilioClient()
+    override fun setHistory(data: EVUserExaminationData) {
+        EVUserSession.instance.twilioToken = data.twilio_token
+        mConversationhistoryPresenter.setUpTwilioClient(activity.applicationContext,data.examinations)
     }
-
-    private fun setTwilioClient(){
-        val props: ChatClient.Properties = ChatClient.Properties.Builder().createProperties()
-        ChatClient.create(activity.applicationContext,EVUserSession.instance.twilioToken,
-                props, object: CallbackListener<ChatClient>(){
-            override fun onSuccess(p0: ChatClient?) {
-                EVChatSession.instance.chatClient = p0!!
-                EVChatSession.instance.chatClient.setListener(object: ChatClientListener{
-                    override fun onChannelDeleted(p0: Channel?) {
-
-                    }
-
-                    override fun onClientSynchronization(p0: ChatClient.SynchronizationStatus?) {
-                        //aca
-                        if(p0!! == ChatClient.SynchronizationStatus.COMPLETED){
-                            var users = EVChatSession.instance.chatClient.users.myUser
-                            Log.i("user", users.identity)
-                            val channels: List<Channel> = EVChatSession.instance.chatClient.channels.subscribedChannels
-                            for (channel in channels) {
-                                Log.d(TAG, "Channel named: " + channel.friendlyName)
-                            }
-                            /*EVChatSession.instance.chatClient.channels.getPublicChannelsList(object: CallbackListener<Paginator<ChannelDescriptor>>(){
-                                override fun onSuccess(p0: Paginator<ChannelDescriptor>?) {
-                                    for(channel: ChannelDescriptor in p0!!.items){
-                                        if (channel.uniqueName == "2018-03-16 20:16:22 -0600__41eea3ff-eed0-4cad-b8da-923599cfe73f")
-                                        {
-                                            Log.d(TAG, "Channel named: " + channel.friendlyName);
-                                        }
-
-                                    }
-                                }
-
-                                override fun onError(errorInfo: ErrorInfo?) {
-                                    super.onError(errorInfo)
-                                }
-                            })*/
-
-                            EVChatSession.instance.chatClient.channels.getChannel("2018-03-16 20:16:22 -0600__41eea3ff-eed0-4cad-b8da-923599cfe73f",
-                                    object: CallbackListener<Channel>(){
-                                        override fun onSuccess(p0: Channel?) {
-                                            p0!!.join(object: StatusListener(){
-                                                override fun onSuccess() {
-                                                    Log.i("channel", p0!!.createdBy)
-
-                                                    Log.i("channelList", p0!!.members.membersList.toString())
-                                                }
-
-                                                override fun onError(errorInfo: ErrorInfo?) {
-                                                    super.onError(errorInfo)
-                                                }
-
-                                            })
-
-                                        }
-
-                                        override fun onError(errorInfo: ErrorInfo?) {
-                                            super.onError(errorInfo)
-                                        }
-
-                                    })
-
-                        }
-                    }
-
-                    override fun onNotificationSubscribed() {
-
-                    }
-
-                    override fun onUserSubscribed(p0: User?) {
-
-                    }
-
-                    override fun onChannelUpdated(p0: Channel?, p1: Channel.UpdateReason?) {
-
-                    }
-
-                    override fun onNotificationFailed(p0: ErrorInfo?) {
-
-                    }
-
-                    override fun onChannelJoined(p0: Channel?) {
-
-                    }
-
-                    override fun onChannelAdded(p0: Channel?) {
-
-                    }
-
-                    override fun onChannelSynchronizationChange(p0: Channel?) {
-
-                    }
-
-                    override fun onNotification(p0: String?, p1: String?) {
-
-                    }
-
-                    override fun onUserUnsubscribed(p0: User?) {
-
-                    }
-
-                    override fun onChannelInvited(p0: Channel?) {
-
-                    }
-
-                    override fun onConnectionStateChange(p0: ChatClient.ConnectionState?) {
-
-                    }
-
-                    override fun onError(p0: ErrorInfo?) {
-
-                    }
-
-                    override fun onUserUpdated(p0: User?, p1: User.UpdateReason?) {
-
-                    }
-
-                })
-            }
-
-            override fun onError(errorInfo: ErrorInfo?) {
-                super.onError(errorInfo)
-            }
-        })
+    override fun getChannels(data: List<Channel>) {
+        activity.toast(data[0].uniqueName)
     }
 
     companion object {
