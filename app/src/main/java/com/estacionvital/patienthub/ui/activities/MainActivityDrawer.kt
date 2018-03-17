@@ -20,8 +20,11 @@ import com.estacionvital.patienthub.model.EVUserSession
 import com.estacionvital.patienthub.presenter.IMainDrawerPresenter
 import com.estacionvital.patienthub.presenter.implementations.MainDrawerPresenterImpl
 import com.estacionvital.patienthub.ui.fragments.ArticleCategoryFragment
+import com.estacionvital.patienthub.ui.fragments.ConversationHistoryFragment
 import com.estacionvital.patienthub.ui.fragments.ProfileFragment
 import com.estacionvital.patienthub.ui.views.IMainDrawerView
+import com.estacionvital.patienthub.util.CHAT_FREE
+import com.estacionvital.patienthub.util.CHAT_PREMIUM
 import com.estacionvital.patienthub.util.toast
 import kotlinx.android.synthetic.main.activity_main_drawer.*
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
@@ -62,6 +65,8 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
     private lateinit var mMainDrawerPresenter: IMainDrawerPresenter
     private lateinit var mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource
 
+    private lateinit var mTypeChat: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_drawer)
@@ -97,6 +102,8 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
 
         fragmentTransaction(ProfileFragment())
 
+        mTypeChat = ""
+
     }
 
     override fun onBackPressed() {
@@ -130,10 +137,48 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
             }
             R.id.nav_profile -> fragment = ProfileFragment()
             R.id.nav_chat_free -> {
+                val activity = this
+                mTypeChat = CHAT_FREE
+                fragment = ConversationHistoryFragment.newInstance(CHAT_FREE, object: ConversationHistoryFragment
+                .OnConversationHistorytInteraction{
+                    override fun onHistoryLoadingFinished() {
+                        activity.hideProgressDialog()
+                    }
 
+                    override fun onLoadingHistory() {
+                        activity.showProgressDialog(getString(R.string.chat_getting_conversations_history))
+                    }
+
+                    override fun navigateToSpecialty() {
+                        navigateToSpecialtySelection()
+                    }
+
+                    override fun onHistoryLoadingError() {
+                        activity.toast(getString(R.string.generic_500_error))
+                    }
+                })
             }
             R.id.nav_chat_premium -> {
+                val activity = this
+                mTypeChat = CHAT_PREMIUM
+                fragment = ConversationHistoryFragment.newInstance(CHAT_PREMIUM, object: ConversationHistoryFragment
+                .OnConversationHistorytInteraction{
+                    override fun onHistoryLoadingFinished() {
+                        activity.hideProgressDialog()
+                    }
 
+                    override fun onLoadingHistory() {
+                        activity.showProgressDialog(getString(R.string.chat_getting_conversations_history))
+                    }
+
+                    override fun navigateToSpecialty() {
+                        navigateToSpecialtySelection()
+                    }
+
+                    override fun onHistoryLoadingError() {
+                        activity.toast(getString(R.string.generic_500_error))
+                    }
+                })
             }
             R.id.nav_documents -> {
 
@@ -200,6 +245,11 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         startActivity(targetIntent)
     }
 
+    private fun navigateToSpecialtySelection(){
+        val targetIntent = Intent(this, SpecialtySelectionActivity::class.java)
+        targetIntent.putExtra("chatType", mTypeChat)
+        startActivity(targetIntent)
+    }
 
     override fun showError() {
         this.toast(R.string.generic_500_error)

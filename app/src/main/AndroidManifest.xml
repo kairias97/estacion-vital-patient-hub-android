@@ -50,13 +50,18 @@
             android:name=".ui.activities.EditProfileActivity"
             android:parentActivityName=".ui.activities.MainActivityDrawer" />
         <activity
-            android:launchMode="singleTop"
             android:name=".ui.activities.ArticleSelectionActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ui.activities.MainActivityDrawer" />
-        <activity android:name=".ui.activities.WebArticleActivity"
-            android:parentActivityName=".ui.activities.ArticleSelectionActivity"
-            ></activity>
-
+        <activity
+            android:name=".ui.activities.WebArticleActivity"
+            android:parentActivityName=".ui.activities.ArticleSelectionActivity" />
+        <activity
+            android:name=".ui.activities.TwilioChatActivity"
+            android:parentActivityName=".ui.activities.MainActivityDrawer"/>
+        <activity
+            android:name=".ui.activities.SpecialtySelectionActivity"
+            android:parentActivityName=".ui.activities.MainActivityDrawer"></activity>
     </application>
 
 </manifest>

@@ -5,6 +5,7 @@ import com.estacionvital.patienthub.BuildConfig
 import com.estacionvital.patienthub.data.api.EstacionVitalAPI
 import com.estacionvital.patienthub.data.remote.Callbacks.*
 import com.estacionvital.patienthub.model.*
+import com.estacionvital.patienthub.util.EXAMINATION_TYPE_CHAT
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -137,6 +138,56 @@ class EstacionVitalRemoteDataSource {
                 }
             }
 
+        })
+    }
+    fun retrieveSpecialtiesChat(token: String, callback: IEVRetrieveSpecialtiesCallback){
+        val authCall = EstacionVitalAPI.instance.service!!.retrieveSpecialties(token)
+        authCall.enqueue(object: Callback<EVSpecialtiesResponse>{
+            override fun onResponse(call: Call<EVSpecialtiesResponse>?, response: Response<EVSpecialtiesResponse>?) {
+                when(response!!.code()){
+                    200 -> {
+                        callback.onSuccess(response!!.body()!!)
+                    }
+                    else -> {
+                        if(BuildConfig.BUILD_TYPE == "debug") {
+                            Log.e("Retrieve Specialties unsuccessful", response.raw().body().toString())
+                        }
+                        callback.onFailure()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<EVSpecialtiesResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug") {
+                    Log.e("Retrieve Specialties unsuccessful", t.toString())
+                }
+                callback.onFailure()
+            }
+        })
+    }
+    fun retrieveExaminationsHistory(token: String, callback: IEVRetrieveUserExaminationsHIstoryCalllback){
+        val authCall = EstacionVitalAPI.instance.service!!.retrieveExaminations(token, EVRetrieveUserExaminationRequest(EXAMINATION_TYPE_CHAT))
+        authCall.enqueue(object: Callback<EVRetrieveUserExaminationResponse>{
+            override fun onResponse(call: Call<EVRetrieveUserExaminationResponse>?, response: Response<EVRetrieveUserExaminationResponse>?) {
+                when(response!!.code()){
+                    200 -> {
+                        callback.onSuccess(response!!.body()!!)
+                    }
+                    else -> {
+                        if(BuildConfig.BUILD_TYPE == "debug") {
+                            Log.e("Retrieve Examinations history unsuccessful", response.raw().body().toString())
+                        }
+                        callback.onFailure()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<EVRetrieveUserExaminationResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug") {
+                    Log.e("Retrieve Examinations history unsuccessful", t.toString())
+                }
+                callback.onFailure()
+            }
         })
     }
     companion object {

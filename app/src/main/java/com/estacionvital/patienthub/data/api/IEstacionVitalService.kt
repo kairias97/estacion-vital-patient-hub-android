@@ -21,5 +21,9 @@ interface IEstacionVitalService{
                       @Body body: EVProfileUpdateRequest): Call<EVProfileUpdateResponse>
     @DELETE(URL_EV_LOGOUT)
     fun logout(@Header("Authorization") token: String): Call<LogoutResponse>
+    @GET(URL_EV_RETRIEVE_SPECIALTIES)
+    fun retrieveSpecialties(@Header("Authorization") token: String): Call<EVSpecialtiesResponse>
+    @POST(URL_EV_RETRIEVE_EXAMINATIONS)
+    fun retrieveExaminations(@Header("Authorization") token: String, @Body body: EVRetrieveUserExaminationRequest): Call<EVRetrieveUserExaminationResponse>
 
 }

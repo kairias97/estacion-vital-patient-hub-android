@@ -15,6 +15,7 @@ import com.estacionvital.patienthub.presenter.IArticleCategoryPresenter
 import com.estacionvital.patienthub.presenter.implementations.ArticleCategoryPresenterImpl
 import com.estacionvital.patienthub.ui.adapters.ArticleCategoryAdapter
 import com.estacionvital.patienthub.ui.fragmentViews.IArticleCategoryFragment
+import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
 /**
  * Created by kevin on 6/3/2018.
@@ -41,7 +42,7 @@ class ArticleCategoryFragment: Fragment(), IArticleCategoryFragment,
         mCategoriesRecyclerView.layoutManager = LinearLayoutManager(activity)
         mCategoriesRecyclerView.setHasFixedSize(true)
         mCategoriesRecyclerView.adapter = ArticleCategoryAdapter( ArrayList(), this)
-
+        activity.fab.visibility = View.VISIBLE
         return view
     }
     override fun onAttach(context: Context?) {
