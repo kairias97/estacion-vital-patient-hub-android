@@ -10,7 +10,7 @@ import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.EVUserProfile
 import com.estacionvital.patienthub.model.EVUserSession
-import com.estacionvital.patienthub.presenter.implementations.IProfilePresenter
+import com.estacionvital.patienthub.presenter.implementations.ProfilePresenterImpl
 import com.estacionvital.patienthub.ui.activities.EditProfileActivity
 import com.estacionvital.patienthub.ui.fragmentViews.IProfileFragmentView
 import com.estacionvital.patienthub.util.toast
@@ -31,12 +31,12 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
     private lateinit var mTextLastName: TextInputEditText
     private lateinit var mTextEmail: TextInputEditText
 
-    private lateinit var mProfilePresenter: IProfilePresenter
+    private lateinit var mProfilePresenter: ProfilePresenterImpl
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mProfilePresenter = IProfilePresenter(this, EstacionVitalRemoteDataSource.INSTANCE)
+        mProfilePresenter = ProfilePresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE)
 
         mProfilePresenter.retrieveEVUserProfile()
     }
@@ -106,6 +106,7 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
     interface OnFragmentInteractionListener {
         fun onLoadingProfile()
         fun onProfileLoadingFinished()
+        fun onProfileLoadedSuccessfully(data: EVUserProfile)
     }
 
     override fun showLoadingProgress() {
@@ -127,6 +128,7 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
         mTextName.setText(EVUserSession.instance.userProfile.name)
         mTextLastName.setText(EVUserSession.instance.userProfile.last_name)
         mTextEmail.setText(EVUserSession.instance.userProfile.email)
+        mListener?.onProfileLoadedSuccessfully(data)
     }
 
     override fun hideLoadingProgress() {

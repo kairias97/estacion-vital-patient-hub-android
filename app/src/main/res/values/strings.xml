@@ -84,10 +84,15 @@
     <string name="dialog_yes_logout">Cerrar sesión</string>
     <string name="dialog_cancel">Cancelar</string>
     <string name="logout_progress">Cerrar sesión</string>
+
     <string name="input_message_hint">Escribe un mensaje</string>
     <string name="chat_getting_conversations_history">Obteniendo Historial de conversaciones...</string>
     <string name="loading_specialties_msg">Cargando Especialidades</string>
     <string name="select_specialty_label">Selecciona una especialidad:</string>
     <string name="select_specialty_button">Solicitar Chat</string>
     <string name="cancel_specialty_button">Cancelar</string>
+
+    <string name="previous">Anterior</string>
+    <string name="next">Siguiente</string>
+    <string name="placeholder_pager">Página %d de %d</string>
 </resources>

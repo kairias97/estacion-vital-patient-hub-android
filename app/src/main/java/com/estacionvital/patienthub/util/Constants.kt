@@ -29,6 +29,7 @@ const val URL_EV_RETRIEVE_EXAMINATIONS = "user/examinations/"
 const val URL_EV_LOGIN: String = "auth/sign-in"
 const val URL_EV_LOGOUT: String = "auth/sign-out"
 
+
 //Constantes para el tipo de chat
 const val CHAT_FREE: String = "free"
 const val CHAT_PREMIUM: String = "premium"
@@ -36,3 +37,6 @@ const val CHAT_PREMIUM: String = "premium"
 //Constantes para el tipo de examinacion
 const val EXAMINATION_TYPE_CHAT = "chat"
 const val EXAMINATION_TYPE_VIDEO = "video"
+//Pagination
+const val PAGE_SIZE_BLOG_ARTICLES = 3
+

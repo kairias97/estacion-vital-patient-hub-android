@@ -6,6 +6,9 @@ import android.support.v4.app.NavUtils
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.MenuItem
+import android.view.View
+import android.widget.Button
+import android.widget.TextView
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.remote.EVBlogRemoteDataSource
 import com.estacionvital.patienthub.model.ArticleCategory
@@ -18,11 +21,67 @@ import com.estacionvital.patienthub.util.toast
 
 class ArticleSelectionActivity : BaseActivity(), IArticleSelectionView,
     BlogArticleAdapter.OnArticleInteractionListener{
+    override fun showPreviousPageButton() {
+        if (mPreviousPageButton.visibility != View.VISIBLE) {
+            mPreviousPageButton.visibility = View.VISIBLE
+        }
+
+    }
+
+    override fun showNextPageButton() {
+        if (mNextPageButton.visibility != View.VISIBLE) {
+            mNextPageButton.visibility = View.VISIBLE
+        }
+    }
+
+    override fun hidePreviousPageButton() {
+        if (mPreviousPageButton.visibility != View.GONE) {
+            mPreviousPageButton.visibility = View.GONE
+        }
+    }
+
+    override fun hideNextPageButton() {
+        if (mNextPageButton.visibility != View.GONE) {
+            mNextPageButton.visibility = View.GONE
+        }
+    }
+
+    override fun requestNextPage() {
+        (mArticlesRecyclerView.adapter as BlogArticleAdapter).nextPage()
+        (mArticlesRecyclerView.adapter as BlogArticleAdapter).notifyDataSetChanged()
+
+    }
+
+    override fun requestPreviousPage() {
+        (mArticlesRecyclerView.adapter as BlogArticleAdapter).previousPage()
+        (mArticlesRecyclerView.adapter as BlogArticleAdapter).notifyDataSetChanged()
+    }
+
+    override fun getCurrentArticlePage(): Int {
+        return (mArticlesRecyclerView.adapter as BlogArticleAdapter).getCurrentPage()
+    }
+
+    override fun getMaxArticlePage(): Int {
+        return (mArticlesRecyclerView.adapter as BlogArticleAdapter).getPageCount()
+    }
+
+    override fun getPageSize(): Int {
+        return (mArticlesRecyclerView.adapter as BlogArticleAdapter).getPageSize()
+    }
+
+    override fun updatePagerIndicator(currentPage: Int, maxPage: Int) {
+        mPagerIndicadorTextView.text = getString(R.string.placeholder_pager).format(currentPage,
+                maxPage)
+    }
+
     override fun onArticleItemClicked(article: BlogArticle) {
         navigateToWebArticle(article)
     }
 
     private lateinit var mArticlesRecyclerView: RecyclerView
+    private lateinit var mPreviousPageButton: Button
+    private lateinit var mNextPageButton: Button
+    private lateinit var mPagerIndicadorTextView: TextView
     private lateinit var mArticleSelectionPresenter: IArticleSelectionPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,10 +93,21 @@ class ArticleSelectionActivity : BaseActivity(), IArticleSelectionView,
         supportActionBar!!.setHomeAsUpIndicator(R.drawable.ic_arrow_back_white_24dp)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         mArticlesRecyclerView = findViewById(R.id.recycler_articles)
+        mPagerIndicadorTextView = findViewById(R.id.text_pager_indicator)
+        mPreviousPageButton = findViewById(R.id.button_previous)
+        mNextPageButton = findViewById(R.id.button_next)
+
+        mPreviousPageButton.setOnClickListener {
+            mArticleSelectionPresenter.onPreviousPageRequested()
+        }
+
+        mNextPageButton.setOnClickListener{
+            mArticleSelectionPresenter.onNextPageRequested()
+        }
         mArticlesRecyclerView.setHasFixedSize(true)
         mArticlesRecyclerView.layoutManager = LinearLayoutManager(this)
         mArticlesRecyclerView.adapter = BlogArticleAdapter(ArrayList<BlogArticle>(), this)
-
+        mPagerIndicadorTextView.text = getString(R.string.placeholder_pager).format(0,0)
         if (intent.extras != null) {
             category = intent.extras.getParcelable("articleCategory")
             supportActionBar!!.title = String.format(getString(R.string.title_activity_article_selection),
@@ -61,8 +131,8 @@ class ArticleSelectionActivity : BaseActivity(), IArticleSelectionView,
         startActivity(webIntent)
     }
 
-    override fun updateArticlesListUI(articles: MutableList<BlogArticle>) {
-        (mArticlesRecyclerView.adapter as BlogArticleAdapter).setArticles(articles)
+    override fun updateArticlesListUI(articles: MutableList<BlogArticle>, pageSize: Int) {
+        (mArticlesRecyclerView.adapter as BlogArticleAdapter).setArticles(articles, pageSize)
         (mArticlesRecyclerView.adapter as BlogArticleAdapter).notifyDataSetChanged()
     }
 
