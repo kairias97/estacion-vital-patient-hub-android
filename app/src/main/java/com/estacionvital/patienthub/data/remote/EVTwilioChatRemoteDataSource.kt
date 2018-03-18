@@ -89,13 +89,10 @@ class EVTwilioChatRemoteDataSource {
     }
     fun callSubscribedChannels(callback: IEVTwilioCallSubscribedChannelsCallBack){
         val channels: List<Channel> = EVChatSession.instance.chatClient.channels.subscribedChannels
-        channels[0].friendlyName
-        channels[0].uniqueName
         if(channels.count()==0){
             callback.onFailure()
         }
         else if(channels.count()>0){
-            channels[0]
             callback.onSuccess(channels)
         }
     }

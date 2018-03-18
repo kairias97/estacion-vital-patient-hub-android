@@ -1,5 +1,6 @@
 package com.estacionvital.patienthub.ui.fragmentViews
 
+import com.estacionvital.patienthub.model.EVChannel
 import com.estacionvital.patienthub.model.EVRetrieveUserExaminationResponse
 import com.estacionvital.patienthub.model.EVUserExaminationData
 import com.twilio.chat.Channel
@@ -13,5 +14,5 @@ interface IConversationHistoryFragmentView {
     fun hideLoading()
     fun showError()
     fun setHistory(data: EVUserExaminationData)
-    fun getChannels(data: List<Channel>)
+    fun getChannels(data: List<EVChannel>)
 }

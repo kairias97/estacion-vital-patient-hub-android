@@ -14,10 +14,7 @@ import android.widget.Button
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
-import com.estacionvital.patienthub.model.EVChatSession
-import com.estacionvital.patienthub.model.EVRetrieveUserExaminationResponse
-import com.estacionvital.patienthub.model.EVUserExaminationData
-import com.estacionvital.patienthub.model.EVUserSession
+import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.IConversationHistoryPresenter
 import com.estacionvital.patienthub.presenter.implementations.ConversationHistoryPresenterImpl
 import com.estacionvital.patienthub.ui.fragmentViews.IConversationHistoryFragmentView
@@ -116,8 +113,8 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
         EVUserSession.instance.twilioToken = data.twilio_token
         mConversationhistoryPresenter.setUpTwilioClient(activity.applicationContext,data.examinations)
     }
-    override fun getChannels(data: List<Channel>) {
-        activity.toast(data[0].uniqueName)
+    override fun getChannels(data: List<EVChannel>) {
+        activity.toast("Se traen los canales")
     }
 
     companion object {

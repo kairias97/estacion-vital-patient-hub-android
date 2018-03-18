@@ -1,6 +1,7 @@
 package com.estacionvital.patienthub.presenter.implementations
 
 import android.content.Context
+import android.util.Log
 import com.estacionvital.patienthub.data.remote.Callbacks.IEVRetrieveUserExaminationsHIstoryCalllback
 import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioCallSubscribedChannelsCallBack
 import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioClientCallback
@@ -57,7 +58,26 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
         mEVTwilioChatRemoteDataSource.callSubscribedChannels(object: IEVTwilioCallSubscribedChannelsCallBack{
             override fun onSuccess(channels: List<Channel>) {
                 mConverstaionHistoryFragmentView.hideLoading()
-                mConverstaionHistoryFragmentView.getChannels(channels)
+                var list: MutableList<EVChannel> = ArrayList<EVChannel>()
+                for(channel in data){
+                    var newChannel = EVChannel()
+                    newChannel.status = channel.finished
+                    newChannel.type = channel.service_type
+                    newChannel.unique_name = channel.channel_name
+
+                    for(twilioChannel in channels){
+                        twilioChannel.uniqueName
+                        channel.channel_name
+                        Log.i("uniqueName Twilio: ", twilioChannel.uniqueName.toString())
+                        if(twilioChannel.uniqueName.toString() == channel.channel_name){
+                            newChannel.twilioChannel = twilioChannel
+                        }
+                    }
+                    if(newChannel.twilioChannel != null){
+                        list.add(newChannel)
+                    }
+                }
+                mConverstaionHistoryFragmentView.getChannels(list)
             }
 
             override fun onFailure() {
