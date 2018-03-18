@@ -22,7 +22,7 @@ class EVTwilioChatRemoteDataSource {
 
                     override fun onClientSynchronization(p0: ChatClient.SynchronizationStatus?) {
                         //aca
-                        if(p0!! == ChatClient.SynchronizationStatus.CHANNELS_COMPLETED){
+                        if(p0!! == ChatClient.SynchronizationStatus.COMPLETED || p0!! == ChatClient.SynchronizationStatus.CHANNELS_COMPLETED){
                             callback.onSuccess()
                         }
                     }

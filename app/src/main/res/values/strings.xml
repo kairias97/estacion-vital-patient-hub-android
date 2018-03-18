@@ -95,4 +95,6 @@
     <string name="previous">Anterior</string>
     <string name="next">Siguiente</string>
     <string name="placeholder_pager">Página %d de %d</string>
+    <string name="no_register_label">Aún no existen registros</string>
+    <string name="channel_name">Estacion Vital</string>
 </resources>

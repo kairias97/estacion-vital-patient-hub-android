@@ -57,7 +57,6 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
     override fun callSubscribedChannels(data: List<EVUserExamination>) {
         mEVTwilioChatRemoteDataSource.callSubscribedChannels(object: IEVTwilioCallSubscribedChannelsCallBack{
             override fun onSuccess(channels: List<Channel>) {
-                mConverstaionHistoryFragmentView.hideLoading()
                 var list: MutableList<EVChannel> = ArrayList<EVChannel>()
                 for(channel in data){
                     var newChannel = EVChannel()
@@ -77,7 +76,7 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
                         list.add(newChannel)
                     }
                 }
-                mConverstaionHistoryFragmentView.getChannels(list)
+                mConverstaionHistoryFragmentView.setChannelList(list)
             }
 
             override fun onFailure() {

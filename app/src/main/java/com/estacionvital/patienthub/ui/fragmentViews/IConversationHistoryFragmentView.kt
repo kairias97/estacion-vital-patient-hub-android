@@ -14,5 +14,5 @@ interface IConversationHistoryFragmentView {
     fun hideLoading()
     fun showError()
     fun setHistory(data: EVUserExaminationData)
-    fun getChannels(data: List<EVChannel>)
+    fun setChannelList(data: MutableList<EVChannel>)
 }

@@ -6,17 +6,21 @@ import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.TextView
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.IConversationHistoryPresenter
 import com.estacionvital.patienthub.presenter.implementations.ConversationHistoryPresenterImpl
+import com.estacionvital.patienthub.ui.adapters.ConversationHistoryAdapter
 import com.estacionvital.patienthub.ui.fragmentViews.IConversationHistoryFragmentView
 import com.estacionvital.patienthub.util.CHAT_FREE
 import com.estacionvital.patienthub.util.CHAT_PREMIUM
@@ -32,14 +36,19 @@ import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
  * Use the [ConversationHistoryFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView {
+class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView, ConversationHistoryAdapter.OnChannelSelectedListener {
 
     private var mParam1: String? = null
 
     private var mListener: OnConversationHistorytInteraction? = null
 
     private lateinit var mFabButton: FloatingActionButton
+    private lateinit var mTextViewNoRegister: TextView
+    private lateinit var mRecyclerView: RecyclerView
     private lateinit var mConversationhistoryPresenter: IConversationHistoryPresenter
+
+    private lateinit var mConversationHistoryAdapter: ConversationHistoryAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +71,18 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
         mFabButton.setOnClickListener {
             navigateToSpecialty()
         }
+        mTextViewNoRegister = view.findViewById<TextView>(R.id.textView_register_none)
+        mTextViewNoRegister.visibility = View.GONE
+        mRecyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
         mConversationhistoryPresenter = ConversationHistoryPresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE, EVTwilioChatRemoteDataSource.instance)
         mConversationhistoryPresenter.retrieveConversationHistory(activity.applicationContext)
+
+        mConversationHistoryAdapter = ConversationHistoryAdapter(ArrayList<EVChannel>(),this)
+        mRecyclerView.adapter = mConversationHistoryAdapter
+        mRecyclerView.layoutManager = LinearLayoutManager(activity)
+        mRecyclerView.setHasFixedSize(true)
+
         //asingacion del titulo en base al parametro pasado
         if(mParam1 != null){
             if(mParam1 == CHAT_FREE){
@@ -113,8 +131,43 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
         EVUserSession.instance.twilioToken = data.twilio_token
         mConversationhistoryPresenter.setUpTwilioClient(activity.applicationContext,data.examinations)
     }
-    override fun getChannels(data: List<EVChannel>) {
-        activity.toast("Se traen los canales")
+    override fun setChannelList(data: MutableList<EVChannel>) {
+        var list: MutableList<EVChannel> = ArrayList<EVChannel>()
+        if(mParam1 == CHAT_FREE){
+            for(channel in data){
+                if(channel.type=="free"){
+                    list.add(channel)
+                }
+            }
+            if(list.count()>0){
+                (mRecyclerView.adapter as? ConversationHistoryAdapter)!!.setChannelsList(list)
+                (mRecyclerView.adapter as? ConversationHistoryAdapter)!!.notifyDataSetChanged()
+                mTextViewNoRegister.visibility = View.GONE
+            }
+            else{
+                mTextViewNoRegister.visibility = View.VISIBLE
+            }
+        }
+        else if(mParam1 == CHAT_PREMIUM){
+            for(channel in data){
+                if(channel.type=="paid"){
+                    list.add(channel)
+                }
+            }
+            if(list.count()>0){
+                (mRecyclerView.adapter as? ConversationHistoryAdapter)!!.setChannelsList(list)
+                (mRecyclerView.adapter as? ConversationHistoryAdapter)!!.notifyDataSetChanged()
+                mTextViewNoRegister.visibility = View.GONE
+            }
+            else{
+                mTextViewNoRegister.visibility = View.VISIBLE
+            }
+        }
+        hideLoading()
+    }
+    //del adapter
+    override fun onChannelItemSelected(channel: EVChannel) {
+        activity.toast("Se selecciona el canal")
     }
 
     companion object {

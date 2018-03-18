@@ -47,7 +47,6 @@ class EVClubAdapter: RecyclerView.Adapter<EVClubViewHolder> {
     }
     fun getSelectedClubs(): List<EVClub>{
         return this.clubs.filter { it.isSelected || it.isRemoteRegistered}
-
     }
 
     fun setClub(club: EVClub){
