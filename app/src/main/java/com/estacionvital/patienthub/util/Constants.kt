@@ -25,6 +25,7 @@ const val URL_EV_BLOG_GET_ARTICLES_BY_CATEGORY = "get_category_posts/"
 const val URL_EV_RETRIEVE_SPECIALTIES = "doctors/specialities/"
 const val URL_EV_RETRIEVE_EXAMINATIONS = "user/examinations/"
 const val URL_EV_RETRIEVE_DOCTORS_AVAILABILITY = "doctors/availability/"
+const val URL_EV_CREATE_NEW_EXAMINATION = "examination/new/"
 
 //Endpoints API EV
 const val URL_EV_LOGIN: String = "auth/sign-in"

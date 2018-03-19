@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import com.estacionvital.patienthub.R
+import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.EVSpecialtiesResponse
 import com.estacionvital.patienthub.presenter.ISpecialtySelectionPresenter
@@ -19,6 +20,7 @@ import com.estacionvital.patienthub.ui.views.ISpecialtySelectionView
 import com.estacionvital.patienthub.util.CHAT_FREE
 import com.estacionvital.patienthub.util.CHAT_PREMIUM
 import com.estacionvital.patienthub.util.toast
+import com.twilio.chat.Channel
 
 class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
 
@@ -26,6 +28,7 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
     private lateinit var mSpinner: Spinner
     private lateinit var mAcceptButton: Button
     private lateinit var mCancelButton: Button
+    private lateinit var service_type: String
 
     private lateinit var mTypeChat: String
     private lateinit var selected: String
@@ -43,7 +46,7 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
         mAcceptButton = findViewById<Button>(R.id.button_selected_specialty)
         mCancelButton = findViewById<Button>(R.id.button_cancel_specialty)
 
-        mSpecialtySelectionPresenter = SpecialtySelectionPresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE)
+        mSpecialtySelectionPresenter = SpecialtySelectionPresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE, EVTwilioChatRemoteDataSource.instance)
 
         mSpecialtySelectionPresenter.retrieveSpecialtiesChat()
 
@@ -55,12 +58,14 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
             //faltaria verificar el parametro para ver si es chat free o premium, en caso de ser premium mostrar dialogo
             if(mTypeChat == CHAT_FREE){
                 selected = mSpinner.selectedItem.toString()
-                navigateToChatWindow(selected)
+                service_type = "free"
+                mSpecialtySelectionPresenter.createNewExamination(selected,service_type)
             }
             else if(mTypeChat == CHAT_PREMIUM){
                 //falta agregar verificar disponibilidad, por el momento tendra el mismo comportamiento
                 //igualmente, al ser premium, nos faltaria ver como mandarlo al activity de modo de pago
                 selected = mSpinner.selectedItem.toString()
+                service_type = "paid"
                 mSpecialtySelectionPresenter.retrieveDoctorAvailability(selected)
 
             }
@@ -92,6 +97,10 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
         this.showProgressDialog(getString(R.string.loading_doctor_availability))
     }
 
+    override fun showCreatingExaminationProgress() {
+        this.showProgressDialog(getString(R.string.loading_examination_creation))
+    }
+
     override fun showErrorLoading() {
         this.toast(getString(R.string.generic_500_error))
     }
@@ -116,7 +125,7 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
                     positiveListener = object:DialogInterface.OnClickListener{
                         override fun onClick(dialog: DialogInterface?, which: Int) {
                             dialog!!.dismiss()
-                            navigateToChatWindow(selected)
+                            mSpecialtySelectionPresenter.createNewExamination(selected,service_type)
                         }
                     },
                     negativeListener = object:DialogInterface.OnClickListener{
@@ -126,10 +135,18 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
                     })
         }
         else{
-            navigateToChatWindow(selected)
+            mSpecialtySelectionPresenter.createNewExamination(selected, service_type)
         }
     }
-    private fun navigateToChatWindow(selected: String){
+
+    override fun getCreatedRoomID(data: String) {
+        mSpecialtySelectionPresenter.joinEVTwilioRoom(data)
+    }
+
+    override fun prepareToNavigateToChat(data: Channel) {
+        navigateToChatWindow(selected, data.uniqueName)
+    }
+    private fun navigateToChatWindow(selected: String, room_id: String){
         val intentChatWindow = Intent(this, TwilioChatActivity::class.java)
         intentChatWindow.putExtra("chatType", mTypeChat)
         intentChatWindow.putExtra("specialtySelected", selected)

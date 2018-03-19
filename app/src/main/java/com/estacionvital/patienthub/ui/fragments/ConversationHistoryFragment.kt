@@ -55,7 +55,6 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
         if (arguments != null) {
             mParam1 = arguments.getString(ARG_PARAM1)
         }
-
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -93,6 +92,11 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
             }
         }
         return view
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mConversationhistoryPresenter.retrieveConversationHistory(activity.applicationContext)
     }
 
     override fun onAttach(context: Context?) {

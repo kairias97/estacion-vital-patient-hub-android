@@ -1,6 +1,7 @@
 package com.estacionvital.patienthub.ui.views
 
 import com.estacionvital.patienthub.model.EVSpecialtiesResponse
+import com.twilio.chat.Channel
 
 /**
  * Created by dusti on 15/03/2018.
@@ -8,8 +9,11 @@ import com.estacionvital.patienthub.model.EVSpecialtiesResponse
 interface ISpecialtySelectionView {
     fun showProgressDialog()
     fun showAvailabilityProgressDialog()
+    fun showCreatingExaminationProgress()
     fun hideLoading()
     fun showErrorLoading()
     fun setSpecialtiesData(data: EVSpecialtiesResponse)
     fun getDoctorAvailability(data: Boolean)
+    fun getCreatedRoomID(data: String)
+    fun prepareToNavigateToChat(data: Channel)
 }

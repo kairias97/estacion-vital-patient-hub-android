@@ -10,82 +10,88 @@ import com.twilio.chat.*
  */
 class EVTwilioChatRemoteDataSource {
     fun setupTwilioClient(twilio_token: String, context: Context, callback: IEVTwilioClientCallback){
-        val props: ChatClient.Properties = ChatClient.Properties.Builder().createProperties()
-        ChatClient.create(context, twilio_token,
-                props, object: CallbackListener<ChatClient>(){
-            override fun onSuccess(p0: ChatClient?) {
-                EVChatSession.instance.chatClient = p0!!
-                EVChatSession.instance.chatClient.setListener(object: ChatClientListener {
-                    override fun onChannelDeleted(p0: Channel?) {
+        if(EVChatSession.instance.isChatClientCreated){
+            callback.onSuccess()
+        }
+        else{
+            val props: ChatClient.Properties = ChatClient.Properties.Builder().createProperties()
+            ChatClient.create(context, twilio_token,
+                    props, object: CallbackListener<ChatClient>(){
+                override fun onSuccess(p0: ChatClient?) {
+                    EVChatSession.instance.chatClient = p0!!
+                    EVChatSession.instance.chatClient.setListener(object: ChatClientListener {
+                        override fun onChannelDeleted(p0: Channel?) {
 
-                    }
-
-                    override fun onClientSynchronization(p0: ChatClient.SynchronizationStatus?) {
-                        //aca
-                        if(p0!! == ChatClient.SynchronizationStatus.COMPLETED || p0!! == ChatClient.SynchronizationStatus.CHANNELS_COMPLETED){
-                            callback.onSuccess()
                         }
-                    }
 
-                    override fun onNotificationSubscribed() {
+                        override fun onClientSynchronization(p0: ChatClient.SynchronizationStatus?) {
+                            //aca
+                            if(p0!! == ChatClient.SynchronizationStatus.COMPLETED || p0!! == ChatClient.SynchronizationStatus.CHANNELS_COMPLETED){
+                                EVChatSession.instance.isChatClientCreated = true
+                                callback.onSuccess()
+                            }
+                        }
 
-                    }
+                        override fun onNotificationSubscribed() {
 
-                    override fun onUserSubscribed(p0: User?) {
+                        }
 
-                    }
+                        override fun onUserSubscribed(p0: User?) {
 
-                    override fun onChannelUpdated(p0: Channel?, p1: Channel.UpdateReason?) {
+                        }
 
-                    }
+                        override fun onChannelUpdated(p0: Channel?, p1: Channel.UpdateReason?) {
 
-                    override fun onNotificationFailed(p0: ErrorInfo?) {
+                        }
 
-                    }
+                        override fun onNotificationFailed(p0: ErrorInfo?) {
 
-                    override fun onChannelJoined(p0: Channel?) {
+                        }
 
-                    }
+                        override fun onChannelJoined(p0: Channel?) {
 
-                    override fun onChannelAdded(p0: Channel?) {
+                        }
 
-                    }
+                        override fun onChannelAdded(p0: Channel?) {
 
-                    override fun onChannelSynchronizationChange(p0: Channel?) {
+                        }
 
-                    }
+                        override fun onChannelSynchronizationChange(p0: Channel?) {
 
-                    override fun onNotification(p0: String?, p1: String?) {
+                        }
 
-                    }
+                        override fun onNotification(p0: String?, p1: String?) {
 
-                    override fun onUserUnsubscribed(p0: User?) {
+                        }
 
-                    }
+                        override fun onUserUnsubscribed(p0: User?) {
 
-                    override fun onChannelInvited(p0: Channel?) {
+                        }
 
-                    }
+                        override fun onChannelInvited(p0: Channel?) {
 
-                    override fun onConnectionStateChange(p0: ChatClient.ConnectionState?) {
+                        }
 
-                    }
+                        override fun onConnectionStateChange(p0: ChatClient.ConnectionState?) {
 
-                    override fun onError(p0: ErrorInfo?) {
+                        }
 
-                    }
+                        override fun onError(p0: ErrorInfo?) {
 
-                    override fun onUserUpdated(p0: User?, p1: User.UpdateReason?) {
+                        }
 
-                    }
+                        override fun onUserUpdated(p0: User?, p1: User.UpdateReason?) {
 
-                })
-            }
+                        }
 
-            override fun onError(errorInfo: ErrorInfo?) {
-                super.onError(errorInfo)
-            }
-        })
+                    })
+                }
+
+                override fun onError(errorInfo: ErrorInfo?) {
+                    super.onError(errorInfo)
+                }
+            })
+        }
     }
     fun callSubscribedChannels(callback: IEVTwilioCallSubscribedChannelsCallBack){
         val channels: List<Channel> = EVChatSession.instance.chatClient.channels.subscribedChannels

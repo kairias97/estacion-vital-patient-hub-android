@@ -6,4 +6,6 @@ package com.estacionvital.patienthub.presenter
 interface ISpecialtySelectionPresenter {
     fun retrieveSpecialtiesChat()
     fun retrieveDoctorAvailability(specialty: String)
+    fun createNewExamination(specialty: String, service_type: String)
+    fun joinEVTwilioRoom(room: String)
 }

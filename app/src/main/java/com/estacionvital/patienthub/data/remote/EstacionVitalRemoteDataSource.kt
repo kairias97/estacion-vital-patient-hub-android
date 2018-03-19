@@ -215,6 +215,31 @@ class EstacionVitalRemoteDataSource {
             }
         })
     }
+    fun createNewExamination(token: String, specialty: String, service_type: String, callback: IEVCreateNewExaminationCallBack){
+        val authCall = EstacionVitalAPI.instance.service!!.createNewExamination(token, EVCreateNewExaminationRequest(specialty, EXAMINATION_TYPE_CHAT, service_type))
+        authCall.enqueue(object: Callback<EVCreateNewExaminationResponse>{
+            override fun onResponse(call: Call<EVCreateNewExaminationResponse>?, response: Response<EVCreateNewExaminationResponse>?) {
+                when(response!!.code()){
+                    200 -> {
+                        callback.onSuccess(response!!.body()!!)
+                    }
+                    else -> {
+                        if(BuildConfig.BUILD_TYPE == "debug") {
+                            Log.e("Create new room unsuccessful", response.raw().body().toString())
+                        }
+                        callback.onFailure()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<EVCreateNewExaminationResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug") {
+                    Log.e("Create new room unsuccessful", t.toString())
+                }
+                callback.onFailure()
+            }
+        })
+    }
     companion object {
         val INSTANCE: EstacionVitalRemoteDataSource by lazy { EstacionVitalRemoteDataSource()}
     }

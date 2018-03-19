@@ -7,6 +7,7 @@ import com.twilio.chat.ChatClient
  */
 class EVChatSession {
     lateinit var chatClient: ChatClient
+    var isChatClientCreated: Boolean = false
 
     companion object {
         val instance: EVChatSession by lazy { EVChatSession() }
