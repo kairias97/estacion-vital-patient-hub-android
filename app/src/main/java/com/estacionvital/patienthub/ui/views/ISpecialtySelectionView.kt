@@ -7,7 +7,9 @@ import com.estacionvital.patienthub.model.EVSpecialtiesResponse
  */
 interface ISpecialtySelectionView {
     fun showProgressDialog()
+    fun showAvailabilityProgressDialog()
     fun hideLoading()
     fun showErrorLoading()
     fun setSpecialtiesData(data: EVSpecialtiesResponse)
+    fun getDoctorAvailability(data: Boolean)
 }

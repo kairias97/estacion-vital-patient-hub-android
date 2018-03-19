@@ -97,4 +97,8 @@
     <string name="placeholder_pager">Página %d de %d</string>
     <string name="no_register_label">Aún no existen registros</string>
     <string name="channel_name">Estacion Vital</string>
+    <string name="loading_doctor_availability">Verificando disponibilidad de doctor</string>
+    <string name="title_confirmation_doctor_available">No hay doctor disponible</string>
+    <string name="message_no_doctor_available">No se encuentran doctores disponibles en su especialidad seleccionada, sin embargo puede crear un nuevo chat y esperar la respuesta del doctor.</string>
+    <string name="dialog_yes_no_doctor_available">Continuar</string>
 </resources>

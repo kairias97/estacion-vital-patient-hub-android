@@ -5,4 +5,5 @@ package com.estacionvital.patienthub.presenter
  */
 interface ISpecialtySelectionPresenter {
     fun retrieveSpecialtiesChat()
+    fun retrieveDoctorAvailability(specialty: String)
 }

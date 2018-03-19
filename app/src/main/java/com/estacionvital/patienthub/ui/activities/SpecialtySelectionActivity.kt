@@ -1,5 +1,7 @@
 package com.estacionvital.patienthub.ui.activities
 
+import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -26,6 +28,7 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
     private lateinit var mCancelButton: Button
 
     private lateinit var mTypeChat: String
+    private lateinit var selected: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,14 +54,15 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
         mAcceptButton.setOnClickListener {
             //faltaria verificar el parametro para ver si es chat free o premium, en caso de ser premium mostrar dialogo
             if(mTypeChat == CHAT_FREE){
-                val selected: String = mSpinner.selectedItem.toString()
+                selected = mSpinner.selectedItem.toString()
                 navigateToChatWindow(selected)
             }
             else if(mTypeChat == CHAT_PREMIUM){
                 //falta agregar verificar disponibilidad, por el momento tendra el mismo comportamiento
                 //igualmente, al ser premium, nos faltaria ver como mandarlo al activity de modo de pago
-                val selected: String = mSpinner.selectedItem.toString()
-                navigateToChatWindow(selected)
+                selected = mSpinner.selectedItem.toString()
+                mSpecialtySelectionPresenter.retrieveDoctorAvailability(selected)
+
             }
         }
         mCancelButton.setOnClickListener {
@@ -84,6 +88,10 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
         this.showProgressDialog(getString(R.string.loading_specialties_msg))
     }
 
+    override fun showAvailabilityProgressDialog() {
+        this.showProgressDialog(getString(R.string.loading_doctor_availability))
+    }
+
     override fun showErrorLoading() {
         this.toast(getString(R.string.generic_500_error))
     }
@@ -96,6 +104,30 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
         val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.spinner_item, data.specialtes)
         adapter.setDropDownViewResource(R.layout.spinner_item)
         mSpinner.adapter = adapter
+    }
+
+    override fun getDoctorAvailability(data: Boolean) {
+        if(data == false){
+            this.showConfirmDialog(titleResId = R.string.title_confirmation_doctor_available,
+                    iconResId = R.drawable.ic_error_black_24dp,
+                    messageResId = R.string.message_no_doctor_available,
+                    positiveBtnResId = R.string.dialog_yes_no_doctor_available,
+                    negativeBtnResId = R.string.dialog_cancel,
+                    positiveListener = object:DialogInterface.OnClickListener{
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+                            dialog!!.dismiss()
+                            navigateToChatWindow(selected)
+                        }
+                    },
+                    negativeListener = object:DialogInterface.OnClickListener{
+                        override fun onClick(dialog: DialogInterface?, which: Int) {
+                            dialog!!.dismiss()
+                        }
+                    })
+        }
+        else{
+            navigateToChatWindow(selected)
+        }
     }
     private fun navigateToChatWindow(selected: String){
         val intentChatWindow = Intent(this, TwilioChatActivity::class.java)

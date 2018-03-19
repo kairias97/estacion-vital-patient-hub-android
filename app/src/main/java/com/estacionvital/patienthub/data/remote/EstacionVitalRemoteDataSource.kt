@@ -190,6 +190,31 @@ class EstacionVitalRemoteDataSource {
             }
         })
     }
+    fun retrieveDoctorsAvailability(token: String, specialty: String, callback: IEVRetrieveDoctorsAvailabilityCallBack){
+        val authCall = EstacionVitalAPI.instance.service!!.retrieveDoctorsAvailability(token, EVRetrieveDoctorsAvailabilityRequest(specialty))
+        authCall.enqueue(object: Callback<EVRetrieveDoctorsAvailabilityResponse>{
+            override fun onResponse(call: Call<EVRetrieveDoctorsAvailabilityResponse>?, response: Response<EVRetrieveDoctorsAvailabilityResponse>?) {
+                when(response!!.code()){
+                    200 -> {
+                        callback.onSuccess(response!!.body()!!)
+                    }
+                    else -> {
+                        if(BuildConfig.BUILD_TYPE == "debug") {
+                            Log.e("Retrieve Doctor's Availability unsuccessful", response.raw().body().toString())
+                        }
+                        callback.onFailure()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<EVRetrieveDoctorsAvailabilityResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug") {
+                    Log.e("Retrieve Doctor's Availability unsuccessful", t.toString())
+                }
+                callback.onFailure()
+            }
+        })
+    }
     companion object {
         val INSTANCE: EstacionVitalRemoteDataSource by lazy { EstacionVitalRemoteDataSource()}
     }
