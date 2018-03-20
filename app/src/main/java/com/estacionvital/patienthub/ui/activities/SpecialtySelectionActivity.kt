@@ -149,7 +149,8 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
     private fun navigateToChatWindow(selected: String, room_id: String){
         val intentChatWindow = Intent(this, TwilioChatActivity::class.java)
         intentChatWindow.putExtra("chatType", mTypeChat)
-        intentChatWindow.putExtra("specialtySelected", selected)
+        intentChatWindow.putExtra("specialty", selected)
+        intentChatWindow.putExtra("room_id",room_id)
         startActivity(intentChatWindow)
     }
 }

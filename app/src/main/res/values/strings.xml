@@ -102,4 +102,5 @@
     <string name="message_no_doctor_available">No se encuentran doctores disponibles en su especialidad seleccionada, sin embargo puede crear un nuevo chat y esperar la respuesta del doctor.</string>
     <string name="dialog_yes_no_doctor_available">Continuar</string>
     <string name="loading_examination_creation">Creando nueva conversación...</string>
+    <string name="loading_messages_channel">Cargando mensajes de la conversación</string>
 </resources>

@@ -143,6 +143,18 @@ class EVTwilioChatRemoteDataSource {
 
         })
     }
+    fun getLastMessagesFromChannel(channel: Channel, callback: IEVTwilioGetLastMessagesFromChannelCalBack){
+        channel.messages.getLastMessages(50, object: CallbackListener<List<Message>>(){
+            override fun onSuccess(p0: List<Message>?) {
+                callback.onSuccess(p0!!)
+            }
+
+            override fun onError(errorInfo: ErrorInfo?) {
+                super.onError(errorInfo)
+                callback.onFailure()
+            }
+        })
+    }
     companion object {
         val instance: EVTwilioChatRemoteDataSource by lazy { EVTwilioChatRemoteDataSource() }
     }

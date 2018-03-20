@@ -19,7 +19,7 @@ class ConversationHistoryViewHolder: RecyclerView.ViewHolder {
         mTextViewDate = itemView.findViewById<TextView>(R.id.textView_channel_date)
     }
     fun bindData(viewModel: EVChannel, listener: ConversationHistoryAdapter.OnChannelSelectedListener){
-        mTextViewName.setText(viewModel.twilioChannel!!.friendlyName)
+        mTextViewName.text = "Chat con ${viewModel.specialty}"
         if(viewModel.twilioChannel != null){
             val date = viewModel.twilioChannel!!.dateCreated.substring(0,viewModel.twilioChannel!!.dateCreated.length-4)
             mTextViewDate.text = DateUtil.parseDateStringToFormat(date,"yyyy-MM-dd'T'HH:mm:ss","dd/MM/yyyy")

@@ -63,11 +63,9 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
                     newChannel.status = channel.finished
                     newChannel.type = channel.service_type
                     newChannel.unique_name = channel.channel_name
+                    newChannel.specialty = channel.specialty
 
                     for(twilioChannel in channels){
-                        twilioChannel.uniqueName
-                        channel.channel_name
-                        Log.i("uniqueName Twilio: ", twilioChannel.uniqueName.toString())
                         if(twilioChannel.uniqueName.toString() == channel.channel_name){
                             newChannel.twilioChannel = twilioChannel
                         }

@@ -2,6 +2,7 @@ package com.estacionvital.patienthub.ui.fragments
 
 import android.content.ContentValues.TAG
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
@@ -20,6 +21,7 @@ import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.IConversationHistoryPresenter
 import com.estacionvital.patienthub.presenter.implementations.ConversationHistoryPresenterImpl
+import com.estacionvital.patienthub.ui.activities.TwilioChatActivity
 import com.estacionvital.patienthub.ui.adapters.ConversationHistoryAdapter
 import com.estacionvital.patienthub.ui.fragmentViews.IConversationHistoryFragmentView
 import com.estacionvital.patienthub.util.CHAT_FREE
@@ -138,9 +140,10 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
     override fun setChannelList(data: MutableList<EVChannel>) {
         var list: MutableList<EVChannel> = ArrayList<EVChannel>()
         if(mParam1 == CHAT_FREE){
-            for(channel in data){
+            for(channel in data.reversed()){
                 if(channel.type=="free"){
                     list.add(channel)
+                    break
                 }
             }
             if(list.count()>0){
@@ -153,7 +156,7 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
             }
         }
         else if(mParam1 == CHAT_PREMIUM){
-            for(channel in data){
+            for(channel in data.reversed()){
                 if(channel.type=="paid"){
                     list.add(channel)
                 }
@@ -171,7 +174,11 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
     }
     //del adapter
     override fun onChannelItemSelected(channel: EVChannel) {
-        activity.toast("Se selecciona el canal")
+        val targetIntent: Intent = Intent(activity.applicationContext, TwilioChatActivity::class.java)
+        targetIntent.putExtra("chatType",mParam1)
+        targetIntent.putExtra("room_id", channel.unique_name)
+        targetIntent.putExtra("specialty", channel.specialty)
+        startActivity(targetIntent)
     }
 
     companion object {
