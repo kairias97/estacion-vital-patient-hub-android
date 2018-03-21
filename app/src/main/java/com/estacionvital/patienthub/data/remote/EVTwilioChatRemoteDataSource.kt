@@ -155,6 +155,53 @@ class EVTwilioChatRemoteDataSource {
             }
         })
     }
+    fun subscribeToAddedMessages(channel: Channel, callback: IEVTwilioMessageAddedCallBack){
+        channel.addListener(object: ChannelListener{
+            override fun onMemberDeleted(p0: Member?) {
+
+            }
+
+            override fun onTypingEnded(p0: Member?) {
+
+            }
+
+            override fun onMessageDeleted(p0: Message?) {
+
+            }
+
+            override fun onMemberAdded(p0: Member?) {
+
+            }
+
+            override fun onTypingStarted(p0: Member?) {
+
+            }
+
+            override fun onSynchronizationChanged(p0: Channel?) {
+
+            }
+
+            override fun onMessageUpdated(p0: Message?, p1: Message.UpdateReason?) {
+
+            }
+
+            override fun onMemberUpdated(p0: Member?, p1: Member.UpdateReason?) {
+
+            }
+
+            override fun onMessageAdded(p0: Message?) {
+                callback.onSuccess(p0!!)
+            }
+        })
+    }
+    fun sendMesage(channel: Channel, body: String, callback: IEVTwilioSendMessageCallBack){
+        channel.messages.sendMessage(Message.options().withBody(body),object: CallbackListener<Message>(){
+            override fun onSuccess(p0: Message?) {
+                callback.onSuccess()
+            }
+
+        })
+    }
     companion object {
         val instance: EVTwilioChatRemoteDataSource by lazy { EVTwilioChatRemoteDataSource() }
     }

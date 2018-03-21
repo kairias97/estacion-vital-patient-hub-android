@@ -12,4 +12,6 @@ interface ITwilioChatView {
     fun showErrorLoading()
     fun getChannelFromID(channel: Channel)
     fun getMessagesFromChannel(messages: MutableList<Message>)
+    fun getNewMessage(message: Message)
+    fun sendMessage(body: String)
 }

@@ -8,4 +8,6 @@ import com.twilio.chat.Channel
 interface ITwilioChatrPresenter {
     fun retrieveChannel(roomID: String)
     fun retrieveMessages(channel: Channel)
+    fun setChannelListener(channel: Channel)
+    fun sendMessage(channel: Channel, body: String)
 }

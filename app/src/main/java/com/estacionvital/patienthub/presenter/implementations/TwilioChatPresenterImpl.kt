@@ -2,6 +2,8 @@ package com.estacionvital.patienthub.presenter.implementations
 
 import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioFindChannelByIDCallback
 import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioGetLastMessagesFromChannelCalBack
+import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioMessageAddedCallBack
+import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioSendMessageCallBack
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.model.EVChatSession
 import com.estacionvital.patienthub.presenter.ITwilioChatrPresenter
@@ -49,6 +51,35 @@ class TwilioChatPresenterImpl: ITwilioChatrPresenter {
 
                 override fun onFailure() {
                     mTwilioChatView.hideLoading()
+                    mTwilioChatView.showErrorLoading()
+                }
+            })
+        }
+    }
+
+    override fun setChannelListener(channel: Channel) {
+        if(EVChatSession.instance.isChatClientCreated){
+            mEVTwilioChatRemoteDataSource.subscribeToAddedMessages(channel, object: IEVTwilioMessageAddedCallBack{
+                override fun onSuccess(message: Message) {
+                    mTwilioChatView.getNewMessage(message)
+                }
+
+                override fun onFailure() {
+                    mTwilioChatView.showErrorLoading()
+                }
+            })
+        }
+    }
+
+    override fun sendMessage(channel: Channel, body: String) {
+        if(EVChatSession.instance.isChatClientCreated){
+            mEVTwilioChatRemoteDataSource.sendMesage(channel,body,object: IEVTwilioSendMessageCallBack{
+                override fun onSuccess() {
+
+                }
+
+                override fun onFailure() {
+
                     mTwilioChatView.showErrorLoading()
                 }
             })
