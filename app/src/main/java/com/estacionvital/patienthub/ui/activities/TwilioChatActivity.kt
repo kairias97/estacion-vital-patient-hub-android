@@ -25,6 +25,7 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
     private lateinit var mTypeChat: String
     private lateinit var mSpecialtySelected: String
     private lateinit var mRoomID: String
+    private var mIsFinished: Boolean = false
     private lateinit var mTwilioChatPresenter: ITwilioChatrPresenter
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mMessageAdapter: MessageAdapter
@@ -43,6 +44,9 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
             mTypeChat = intent.extras.getString("chatType")
             mSpecialtySelected = intent.extras.getString("specialty")
             mRoomID = intent.extras.getString("room_id")
+            if(intent.hasExtra("isFinished")){
+                mIsFinished = intent.extras.getBoolean("isFinished")
+            }
         }
 
         supportActionBar!!.title = "Chat con ${mSpecialtySelected}"
@@ -50,6 +54,11 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
         mRecyclerView = findViewById<RecyclerView>(R.id.recycler_messages)
         messageTxt = findViewById<EditText>(R.id.edit_text_message)
         sendBtn = findViewById<ImageButton>(R.id.image_button_send)
+
+        if(mIsFinished){
+            messageTxt.isEnabled = false
+            messageTxt.keyListener = null
+        }
 
         sendBtn.setOnClickListener{
             val message = messageTxt.text.toString()

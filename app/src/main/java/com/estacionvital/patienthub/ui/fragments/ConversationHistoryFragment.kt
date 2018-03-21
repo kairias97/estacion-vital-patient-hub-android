@@ -178,6 +178,7 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
         targetIntent.putExtra("chatType",mParam1)
         targetIntent.putExtra("room_id", channel.unique_name)
         targetIntent.putExtra("specialty", channel.specialty)
+        targetIntent.putExtra("isFinished", channel.status)
         startActivity(targetIntent)
     }
 
