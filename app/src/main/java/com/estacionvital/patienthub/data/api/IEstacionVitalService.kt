@@ -29,4 +29,6 @@ interface IEstacionVitalService{
     fun retrieveDoctorsAvailability(@Header("Authorization") token: String, @Body body: EVRetrieveDoctorsAvailabilityRequest): Call<EVRetrieveDoctorsAvailabilityResponse>
     @POST(URL_EV_CREATE_NEW_EXAMINATION)
     fun createNewExamination(@Header("Authorization") token: String, @Body body: EVCreateNewExaminationRequest): Call<EVCreateNewExaminationResponse>
+    @POST(URL_EV_VALIDATE_COUPON)
+    fun validateCoupon(@Header("Authorization") token: String, @Body body: EVValidateCouponRequest): Call<EVValidateCouponResponse>
 }

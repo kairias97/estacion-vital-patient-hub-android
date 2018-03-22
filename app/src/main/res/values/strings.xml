@@ -103,4 +103,5 @@
     <string name="dialog_yes_no_doctor_available">Continuar</string>
     <string name="loading_examination_creation">Creando nueva conversación...</string>
     <string name="loading_messages_channel">Cargando mensajes de la conversación</string>
+    <string name="message_validating_coupon">Validando cupon...</string>
 </resources>

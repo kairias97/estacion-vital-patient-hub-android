@@ -58,10 +58,11 @@
             android:parentActivityName=".ui.activities.ArticleSelectionActivity" />
         <activity
             android:name=".ui.activities.TwilioChatActivity"
-            android:parentActivityName=".ui.activities.MainActivityDrawer"/>
+            android:parentActivityName=".ui.activities.MainActivityDrawer" />
         <activity
             android:name=".ui.activities.SpecialtySelectionActivity"
-            android:parentActivityName=".ui.activities.MainActivityDrawer"></activity>
+            android:parentActivityName=".ui.activities.MainActivityDrawer" />
+        <activity android:name=".ui.activities.ValidateCouponActivity"></activity>
     </application>
 
 </manifest>

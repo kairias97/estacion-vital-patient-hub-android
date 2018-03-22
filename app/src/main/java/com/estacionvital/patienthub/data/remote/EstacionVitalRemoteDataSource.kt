@@ -240,6 +240,31 @@ class EstacionVitalRemoteDataSource {
             }
         })
     }
+    fun validateCoupon(token: String, coupon: String, callback: IEVValidateCouponCallBack){
+        val authCall = EstacionVitalAPI.instance.service!!.validateCoupon(token, EVValidateCouponRequest(coupon))
+        authCall.enqueue(object: Callback<EVValidateCouponResponse>{
+            override fun onResponse(call: Call<EVValidateCouponResponse>?, response: Response<EVValidateCouponResponse>?) {
+                when(response!!.code()){
+                    200 -> {
+                        callback.onSuccess(response!!.body()!!)
+                    }
+                    else -> {
+                        if(BuildConfig.BUILD_TYPE == "debug") {
+                            Log.e("Validate coupon unsuccessful", response.raw().body().toString())
+                        }
+                        callback.onFailure()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<EVValidateCouponResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug") {
+                    Log.e("Validate coupon unsuccessful", t.toString())
+                }
+                callback.onFailure()
+            }
+        })
+    }
     companion object {
         val INSTANCE: EstacionVitalRemoteDataSource by lazy { EstacionVitalRemoteDataSource()}
     }
