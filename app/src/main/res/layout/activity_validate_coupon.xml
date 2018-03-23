@@ -4,6 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.estacionvital.patienthub.ui.activities.ValidateCouponActivity">
+    tools:context="com.estacionvital.patienthubestacionvital.ui.activities.ValidateCouponActivity">
 
 </android.support.constraint.ConstraintLayout>

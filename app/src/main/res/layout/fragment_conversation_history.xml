@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.estacionvital.patienthub.ui.fragments.ConversationHistoryFragment">
+    tools:context="com.estacionvital.patienthubestacionvital.ui.fragments.ConversationHistoryFragment">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
