@@ -43,3 +43,4 @@ const val EXAMINATION_TYPE_VIDEO = "video"
 //Pagination
 const val PAGE_SIZE_BLOG_ARTICLES = 3
 
+const val EXTRA_CHANNEL_SID = "C_SID"
