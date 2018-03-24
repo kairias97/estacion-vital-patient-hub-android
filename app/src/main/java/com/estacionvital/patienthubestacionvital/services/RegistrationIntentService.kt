@@ -13,6 +13,8 @@ import com.estacionvital.patienthubestacionvital.model.EVChatSession
 import com.estacionvital.patienthubestacionvital.util.REGISTRATION_COMPLETE
 
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.messaging.FirebaseMessaging
+import com.twilio.chat.ErrorInfo
 import com.twilio.chat.StatusListener
 
 import java.io.IOException
@@ -40,6 +42,11 @@ class RegistrationIntentService : IntentService("RegistrationIntentService") {
                 override fun onSuccess() {
                     Log.i("success fcm", "Token registered succesfully")
                 }
+
+                override fun onError(errorInfo: ErrorInfo?) {
+                    super.onError(errorInfo)
+                }
+
 
             })
 
@@ -71,9 +78,9 @@ class RegistrationIntentService : IntentService("RegistrationIntentService") {
      */
     @Throws(IOException::class)
     private fun subscribeTopics(token: String?) {
-        // for (String topic : TOPICS) {
-        //     FirebaseMessaging.getInstance().subscribeToTopic("/topics/"+topic);
-        // }
+         for (topic in TOPICS) {
+            FirebaseMessaging.getInstance().subscribeToTopic("/topics/"+topic)
+        }
     }
 
     companion object {

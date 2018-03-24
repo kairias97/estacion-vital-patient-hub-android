@@ -23,6 +23,10 @@ import com.estacionvital.patienthubestacionvital.ui.fragmentViews.IConversationH
 import com.estacionvital.patienthubestacionvital.util.CHAT_FREE
 import com.estacionvital.patienthubestacionvital.util.CHAT_PREMIUM
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
+import com.google.android.gms.cast.CastRemoteDisplayLocalService.startService
+import com.estacionvital.patienthubestacionvital.services.RegistrationIntentService
+
+
 
 /**
  * A simple [Fragment] subclass.
@@ -165,6 +169,8 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
             }
         }
         hideLoading()
+        val intent = Intent(activity.applicationContext, RegistrationIntentService::class.java)
+        activity.startService(intent)
     }
     //del adapter
     override fun onChannelItemSelected(channel: EVChannel) {
