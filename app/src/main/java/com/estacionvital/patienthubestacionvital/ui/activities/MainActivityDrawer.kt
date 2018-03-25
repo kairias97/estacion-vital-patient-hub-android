@@ -187,6 +187,8 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
                 fragment = DocumentHistoryFragment.newInstance(object: DocumentHistoryFragment.DocumentHistoryFragmentListener {
                     override fun onDocumentSelected(document: Document) {
                         activity.toast("Documento seleccionado: ${document.specialty}")
+                        val intent = Intent(activity, WebDocumentActivity::class.java)
+                        startActivity(intent)
                     }
 
                     override fun onDocumentLoadingStarted() {
