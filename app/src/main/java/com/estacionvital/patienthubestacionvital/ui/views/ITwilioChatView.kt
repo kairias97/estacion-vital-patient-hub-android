@@ -6,7 +6,7 @@ import com.twilio.chat.Message
 /**
  * Created by dusti on 20/03/2018.
  */
-interface ITwilioChatView {
+interface ITwilioChatView : IBaseView{
     fun showMessageLoading()
     fun hideLoading()
     fun showErrorLoading()

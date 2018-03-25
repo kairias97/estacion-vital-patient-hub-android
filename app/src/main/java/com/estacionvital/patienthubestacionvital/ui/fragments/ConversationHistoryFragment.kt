@@ -12,6 +12,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.estacionvital.patienthubestacionvital.R
+import com.estacionvital.patienthubestacionvital.data.local.SharedPrefManager
 import com.estacionvital.patienthubestacionvital.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthubestacionvital.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthubestacionvital.model.*
@@ -25,7 +26,7 @@ import com.estacionvital.patienthubestacionvital.util.CHAT_PREMIUM
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 import com.google.android.gms.cast.CastRemoteDisplayLocalService.startService
 import com.estacionvital.patienthubestacionvital.services.RegistrationIntentService
-
+import com.estacionvital.patienthubestacionvital.ui.activities.BaseActivity
 
 
 /**
@@ -50,6 +51,9 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
     private lateinit var mConversationHistoryAdapter: ConversationHistoryAdapter
 
 
+    override fun showExpirationMessage() {
+        (activity as BaseActivity).showExpirationMessage()
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -74,7 +78,11 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
         mTextViewNoRegister.visibility = View.GONE
         mRecyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
 
-        mConversationhistoryPresenter = ConversationHistoryPresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE, EVTwilioChatRemoteDataSource.instance)
+        mConversationhistoryPresenter = ConversationHistoryPresenterImpl(SharedPrefManager(
+                activity.getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
+                        Context.MODE_PRIVATE)
+        )
+                ,this, EstacionVitalRemoteDataSource.INSTANCE, EVTwilioChatRemoteDataSource.instance)
         mConversationhistoryPresenter.retrieveConversationHistory(activity.applicationContext)
 
         mConversationHistoryAdapter = ConversationHistoryAdapter(ArrayList<EVChannel>(),this)

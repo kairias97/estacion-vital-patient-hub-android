@@ -5,7 +5,7 @@ import com.estacionvital.patienthubestacionvital.model.EVUserProfile
 /**
  * Created by dusti on 03/03/2018.
  */
-interface IMainDrawerView {
+interface IMainDrawerView : IBaseView{
 
     fun showError()
     fun setDrawerHeaderData(data: EVUserProfile)

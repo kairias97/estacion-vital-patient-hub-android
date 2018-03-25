@@ -8,4 +8,5 @@ import com.estacionvital.patienthubestacionvital.model.EVCreateNewExaminationRes
 interface IEVCreateNewExaminationCallBack {
     fun onSuccess(response: EVCreateNewExaminationResponse)
     fun onFailure()
+    fun onTokenExpired()
 }

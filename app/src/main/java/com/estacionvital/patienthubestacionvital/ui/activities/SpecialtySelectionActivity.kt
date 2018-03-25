@@ -1,5 +1,6 @@
 package com.estacionvital.patienthubestacionvital.ui.activities
 
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import com.estacionvital.patienthubestacionvital.R
+import com.estacionvital.patienthubestacionvital.data.local.SharedPrefManager
 import com.estacionvital.patienthubestacionvital.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthubestacionvital.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthubestacionvital.model.EVSpecialtiesResponse
@@ -44,7 +46,10 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
         mAcceptButton = findViewById<Button>(R.id.button_selected_specialty)
         mCancelButton = findViewById<Button>(R.id.button_cancel_specialty)
 
-        mSpecialtySelectionPresenter = SpecialtySelectionPresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE, EVTwilioChatRemoteDataSource.instance)
+        mSpecialtySelectionPresenter = SpecialtySelectionPresenterImpl(SharedPrefManager(
+                getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
+                        Context.MODE_PRIVATE)
+        ),this, EstacionVitalRemoteDataSource.INSTANCE, EVTwilioChatRemoteDataSource.instance)
 
         mSpecialtySelectionPresenter.retrieveSpecialtiesChat()
 

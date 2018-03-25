@@ -5,7 +5,7 @@ import com.estacionvital.patienthubestacionvital.model.EVClub
 /**
  * Created by dusti on 26/02/2018.
  */
-interface IClubSubscriptionView {
+interface IClubSubscriptionView: IBaseView {
     fun showInternalErrorMessage()
     fun showLimitSubscriptionMessage()
     fun showRetrievingCatalogProcess()

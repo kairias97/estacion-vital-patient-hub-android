@@ -1,5 +1,6 @@
 package com.estacionvital.patienthubestacionvital.ui.activities
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.NavUtils
@@ -7,6 +8,7 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import com.estacionvital.patienthubestacionvital.R
+import com.estacionvital.patienthubestacionvital.data.local.SharedPrefManager
 import com.estacionvital.patienthubestacionvital.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthubestacionvital.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthubestacionvital.presenter.IValidateCouponPresenter
@@ -32,7 +34,10 @@ class ValidateCouponActivity : BaseActivity(), IValidateCouponView {
 
         supportActionBar!!.title = "Ingrese su cupón"
 
-        mValidateCouponPresenter = ValidateCouponPresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE, EVTwilioChatRemoteDataSource.instance)
+        mValidateCouponPresenter = ValidateCouponPresenterImpl(SharedPrefManager(
+                getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
+                        Context.MODE_PRIVATE)
+        ),this, EstacionVitalRemoteDataSource.INSTANCE, EVTwilioChatRemoteDataSource.instance)
         mVerifyButton = findViewById<Button>(R.id.button_verify)
         mCouponEditText = findViewById<EditText>(R.id.edit_text_coupon)
         if(intent.extras != null){

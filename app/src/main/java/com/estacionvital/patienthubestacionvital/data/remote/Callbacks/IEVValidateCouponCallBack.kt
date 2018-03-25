@@ -8,4 +8,5 @@ import com.estacionvital.patienthubestacionvital.model.EVValidateCouponResponse
 interface IEVValidateCouponCallBack {
     fun onSuccess(response: EVValidateCouponResponse)
     fun onFailure()
+    fun onTokenExpired()
 }

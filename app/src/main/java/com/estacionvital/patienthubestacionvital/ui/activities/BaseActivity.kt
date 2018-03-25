@@ -10,10 +10,8 @@ import io.fabric.sdk.android.Fabric
 import com.estacionvital.patienthubestacionvital.R
 import android.app.ProgressDialog
 import android.content.DialogInterface
-
-
-
-
+import android.content.Intent
+import com.estacionvital.patienthubestacionvital.util.toast
 
 
 /**
@@ -22,6 +20,7 @@ import android.content.DialogInterface
 abstract class BaseActivity: AppCompatActivity(), IBaseView {
 
     protected var mProgressDialog: ProgressDialog? = null
+
     override fun showProgressDialog(msg:String) {
         //Show progress dialog here
         if (mProgressDialog == null) {
@@ -43,6 +42,14 @@ abstract class BaseActivity: AppCompatActivity(), IBaseView {
             mProgressDialog = null
         }
 
+    }
+
+    override fun showExpirationMessage() {
+        this.toast(R.string.session_expired_msg)
+
+        val startIntent = Intent(this, NumberVerificationActivity::class.java)
+        startIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(startIntent)
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

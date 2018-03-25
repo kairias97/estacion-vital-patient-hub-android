@@ -1,5 +1,6 @@
 package com.estacionvital.patienthubestacionvital.presenter.implementations
 
+import com.estacionvital.patienthubestacionvital.data.local.SharedPrefManager
 import com.estacionvital.patienthubestacionvital.data.remote.Callbacks.IEVCreateNewExaminationCallBack
 import com.estacionvital.patienthubestacionvital.data.remote.Callbacks.IEVTwilioFindChannelByIDCallback
 import com.estacionvital.patienthubestacionvital.data.remote.Callbacks.IEVTwilioJoinChannelCallBack
@@ -17,21 +18,32 @@ import com.twilio.chat.Channel
  * Created by dusti on 22/03/2018.
  */
 class ValidateCouponPresenterImpl: IValidateCouponPresenter {
+    override fun expireSession() {
+        mSharedPrefManager.clearPreferences()
+        mValidateCouponView.showExpirationMessage()
+    }
 
     private val mValidateCouponView: IValidateCouponView
     private val mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource
     private val mEVTwilioChatRemoteDataSource: EVTwilioChatRemoteDataSource
+    private val mSharedPrefManager: SharedPrefManager
 
-    constructor(validateCouponView: IValidateCouponView, estacionVitalRemoteDataSource: EstacionVitalRemoteDataSource, evTwilioChatRemoteDataSource: EVTwilioChatRemoteDataSource){
+    constructor(sharedPrefManager: SharedPrefManager,validateCouponView: IValidateCouponView, estacionVitalRemoteDataSource: EstacionVitalRemoteDataSource, evTwilioChatRemoteDataSource: EVTwilioChatRemoteDataSource){
         this.mValidateCouponView = validateCouponView
         this.mEstacionVitalRemoteDataSource = estacionVitalRemoteDataSource
         this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDataSource
+        this.mSharedPrefManager = sharedPrefManager
     }
 
     override fun validateCoupon(coupon: String) {
         mValidateCouponView.showValidateLoading()
         val token = "Token token=${EVUserSession.instance.authToken}"
         mEstacionVitalRemoteDataSource.validateCoupon(token, coupon, object: IEVValidateCouponCallBack{
+            override fun onTokenExpired() {
+                mValidateCouponView.hideLoading()
+                expireSession()
+            }
+
             override fun onSuccess(response: EVValidateCouponResponse) {
                 mValidateCouponView.hideLoading()
                 mValidateCouponView.isValid(response.valid)
@@ -48,7 +60,13 @@ class ValidateCouponPresenterImpl: IValidateCouponPresenter {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mValidateCouponView.showCreatingRoomLoading()
         mEstacionVitalRemoteDataSource.createNewExamination(token, specialty, service_type, object: IEVCreateNewExaminationCallBack {
+            override fun onTokenExpired() {
+                mValidateCouponView.hideLoading()
+                expireSession()
+            }
+
             override fun onSuccess(response: EVCreateNewExaminationResponse) {
+                mValidateCouponView.hideLoading()
                 mValidateCouponView.getCreatedRoomID(response.room)
             }
 

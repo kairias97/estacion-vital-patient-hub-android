@@ -1,5 +1,6 @@
 package com.estacionvital.patienthubestacionvital.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -8,10 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.estacionvital.patienthubestacionvital.R
+import com.estacionvital.patienthubestacionvital.data.local.SharedPrefManager
 import com.estacionvital.patienthubestacionvital.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthubestacionvital.model.Document
 import com.estacionvital.patienthubestacionvital.presenter.IDocumentHistoryPresenter
 import com.estacionvital.patienthubestacionvital.presenter.implementations.DocumentHistoryPresenterImpl
+import com.estacionvital.patienthubestacionvital.ui.activities.BaseActivity
 import com.estacionvital.patienthubestacionvital.ui.adapters.EVDocumentAdapter
 import com.estacionvital.patienthubestacionvital.ui.fragmentViews.IDocumentHistoryFragmentView
 
@@ -24,6 +27,9 @@ class DocumentHistoryFragment: Fragment(), IDocumentHistoryFragmentView {
     private lateinit var mDocumentRecycler: RecyclerView
     private lateinit var mPresenter: IDocumentHistoryPresenter
 
+    override fun showExpirationMessage() {
+        (activity as BaseActivity).showExpirationMessage()
+    }
     interface DocumentHistoryFragmentListener {
         fun onDocumentLoadingStarted()
         fun onDocumentLoadingFinished()
@@ -42,7 +48,11 @@ class DocumentHistoryFragment: Fragment(), IDocumentHistoryFragmentView {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.mPresenter = DocumentHistoryPresenterImpl(EstacionVitalRemoteDataSource.INSTANCE, this)
+        this.mPresenter = DocumentHistoryPresenterImpl(SharedPrefManager(
+                activity.getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
+                        Context.MODE_PRIVATE)
+        )
+                ,EstacionVitalRemoteDataSource.INSTANCE, this)
         this.mPresenter.loadDocuments()
     }
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {

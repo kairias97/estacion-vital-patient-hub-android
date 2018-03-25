@@ -5,7 +5,7 @@ import com.estacionvital.patienthubestacionvital.model.BlogArticle
 /**
  * Created by kevin on 9/3/2018.
  */
-interface IArticleSelectionView {
+interface IArticleSelectionView : IBaseView{
     fun showArticlesLoadingProgress()
     fun hideArticlesLoadingProgress()
     fun navigateToWebArticle(article: BlogArticle)

@@ -82,6 +82,9 @@ class EstacionVitalRemoteDataSource {
                 if(response!!.code() == 200){
                     callback.onSuccess(response.body()!!)
                 }
+                else if(response!!.code() == 401 || response!!.code() == 403) {
+                    callback.onTokenExpired()
+                }
                 else{
                     if(BuildConfig.BUILD_TYPE == "debug") {
                         Log.e("EVRetrieve error " + response.code().toString(), response.raw().body().toString())
@@ -97,6 +100,9 @@ class EstacionVitalRemoteDataSource {
             override fun onResponse(call: Call<EVProfileUpdateResponse>?, response: Response<EVProfileUpdateResponse>?) {
                 if(response!!.code() == 200){
                     callback.onSuccess(response.body()!!)
+                }
+                else if(response!!.code() == 401 || response!!.code() == 403) {
+                    callback.onTokenExpired()
                 }
                 else{
                     if(BuildConfig.BUILD_TYPE == "debug") {
@@ -129,6 +135,9 @@ class EstacionVitalRemoteDataSource {
                     200 -> {
                         callback.onSuccess(response!!.body()!!)
                     }
+                    401, 403 -> {
+                        callback.onTokenExpired()
+                    }
                     else -> {
                         if(BuildConfig.BUILD_TYPE == "debug") {
                             Log.e("Logout unsuccessful", response.raw().body().toString())
@@ -148,9 +157,12 @@ class EstacionVitalRemoteDataSource {
                     200 -> {
                         callback.onSuccess(response!!.body()!!)
                     }
+                    401, 403 -> {
+                        callback.onTokenExpired()
+                    }
                     else -> {
                         if(BuildConfig.BUILD_TYPE == "debug") {
-                            Log.e("Retrieve Specialties unsuccessful", response.raw().body().toString())
+                            Log.e("Error", response.raw().body().toString())
                         }
                         callback.onFailure()
                     }
@@ -159,7 +171,7 @@ class EstacionVitalRemoteDataSource {
 
             override fun onFailure(call: Call<EVSpecialtiesResponse>?, t: Throwable?) {
                 if(BuildConfig.BUILD_TYPE == "debug") {
-                    Log.e("Retrieve Specialties unsuccessful", t.toString())
+                    Log.e("Failure", t.toString())
                 }
                 callback.onFailure()
             }
@@ -173,9 +185,12 @@ class EstacionVitalRemoteDataSource {
                     200 -> {
                         callback.onSuccess(response!!.body()!!)
                     }
+                    401, 403 -> {
+                        callback.onTokenExpired()
+                    }
                     else -> {
                         if(BuildConfig.BUILD_TYPE == "debug") {
-                            Log.e("Retrieve Examinations history unsuccessful", response.raw().body().toString())
+                            Log.e("Error", response.raw().body().toString())
                         }
                         callback.onFailure()
                     }
@@ -184,7 +199,7 @@ class EstacionVitalRemoteDataSource {
 
             override fun onFailure(call: Call<EVRetrieveUserExaminationResponse>?, t: Throwable?) {
                 if(BuildConfig.BUILD_TYPE == "debug") {
-                    Log.e("Retrieve Examinations history unsuccessful", t.toString())
+                    Log.e("Failure", t.toString())
                 }
                 callback.onFailure()
             }
@@ -198,9 +213,12 @@ class EstacionVitalRemoteDataSource {
                     200 -> {
                         callback.onSuccess(response!!.body()!!)
                     }
+                    401, 403 -> {
+                        callback.onTokenExpired()
+                    }
                     else -> {
                         if(BuildConfig.BUILD_TYPE == "debug") {
-                            Log.e("Retrieve Doctor's Availability unsuccessful", response.raw().body().toString())
+                            Log.e("Failure", response.raw().body().toString())
                         }
                         callback.onFailure()
                     }
@@ -209,7 +227,7 @@ class EstacionVitalRemoteDataSource {
 
             override fun onFailure(call: Call<EVRetrieveDoctorsAvailabilityResponse>?, t: Throwable?) {
                 if(BuildConfig.BUILD_TYPE == "debug") {
-                    Log.e("Retrieve Doctor's Availability unsuccessful", t.toString())
+                    Log.e("Failure", t.toString())
                 }
                 callback.onFailure()
             }
@@ -223,9 +241,12 @@ class EstacionVitalRemoteDataSource {
                     200 -> {
                         callback.onSuccess(response!!.body()!!)
                     }
+                    401, 403 -> {
+                        callback.onTokenExpired()
+                    }
                     else -> {
                         if(BuildConfig.BUILD_TYPE == "debug") {
-                            Log.e("Create new room unsuccessful", response.raw().body().toString())
+                            Log.e("Error", response.raw().body().toString())
                         }
                         callback.onFailure()
                     }
@@ -234,7 +255,7 @@ class EstacionVitalRemoteDataSource {
 
             override fun onFailure(call: Call<EVCreateNewExaminationResponse>?, t: Throwable?) {
                 if(BuildConfig.BUILD_TYPE == "debug") {
-                    Log.e("Create new room unsuccessful", t.toString())
+                    Log.e("Failure", t.toString())
                 }
                 callback.onFailure()
             }
@@ -248,9 +269,12 @@ class EstacionVitalRemoteDataSource {
                     200 -> {
                         callback.onSuccess(response!!.body()!!)
                     }
+                    401, 403 -> {
+                        callback.onTokenExpired()
+                    }
                     else -> {
                         if(BuildConfig.BUILD_TYPE == "debug") {
-                            Log.e("Validate coupon unsuccessful", response.raw().body().toString())
+                            Log.e("Error", response.raw().body().toString())
                         }
                         callback.onFailure()
                     }
@@ -259,7 +283,7 @@ class EstacionVitalRemoteDataSource {
 
             override fun onFailure(call: Call<EVValidateCouponResponse>?, t: Throwable?) {
                 if(BuildConfig.BUILD_TYPE == "debug") {
-                    Log.e("Validate coupon unsuccessful", t.toString())
+                    Log.e("Failure", t.toString())
                 }
                 callback.onFailure()
             }
@@ -281,6 +305,9 @@ class EstacionVitalRemoteDataSource {
                 when(response!!.code()){
                     200 -> {
                         callback.onSuccess(response!!.body()!!)
+                    }
+                    401, 403 -> {
+                        callback.onTokenExpired()
                     }
                     else -> {
                         if(BuildConfig.BUILD_TYPE == "debug") {

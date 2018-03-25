@@ -1,5 +1,6 @@
 package com.estacionvital.patienthubestacionvital.ui.activities
 
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.TextInputEditText
 import android.support.v4.app.NavUtils
@@ -9,6 +10,7 @@ import android.view.MenuItem
 import android.widget.Button
 import android.widget.Toast
 import com.estacionvital.patienthubestacionvital.R
+import com.estacionvital.patienthubestacionvital.data.local.SharedPrefManager
 import com.estacionvital.patienthubestacionvital.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthubestacionvital.model.EVUserSession
 import com.estacionvital.patienthubestacionvital.presenter.IEditProfilePresenter
@@ -58,7 +60,10 @@ class EditProfileActivity : BaseActivity(), IEditProfileView {
             returnTop()
         }
 
-        mEditProfilePresenter = EditProfilePresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE)
+        mEditProfilePresenter = EditProfilePresenterImpl(SharedPrefManager(
+                getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
+                        Context.MODE_PRIVATE)
+        ),this, EstacionVitalRemoteDataSource.INSTANCE)
 
         mNameEditText.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(p0: Editable?) {

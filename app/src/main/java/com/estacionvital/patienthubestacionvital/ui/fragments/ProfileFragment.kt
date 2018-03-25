@@ -7,10 +7,12 @@ import android.support.design.widget.TextInputEditText
 import android.support.v4.app.Fragment
 import android.view.*
 import com.estacionvital.patienthubestacionvital.R
+import com.estacionvital.patienthubestacionvital.data.local.SharedPrefManager
 import com.estacionvital.patienthubestacionvital.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthubestacionvital.model.EVUserProfile
 import com.estacionvital.patienthubestacionvital.model.EVUserSession
 import com.estacionvital.patienthubestacionvital.presenter.implementations.ProfilePresenterImpl
+import com.estacionvital.patienthubestacionvital.ui.activities.BaseActivity
 import com.estacionvital.patienthubestacionvital.ui.activities.EditProfileActivity
 import com.estacionvital.patienthubestacionvital.ui.fragmentViews.IProfileFragmentView
 import com.estacionvital.patienthubestacionvital.util.toast
@@ -26,6 +28,12 @@ import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
  * create an instance of this fragment.
  */
 class ProfileFragment : Fragment(), IProfileFragmentView {
+
+
+    override fun showExpirationMessage() {
+        (activity as BaseActivity).showExpirationMessage()
+    }
+
     private var mListener: OnFragmentInteractionListener? = null
     private lateinit var mTextName: TextInputEditText
     private lateinit var mTextLastName: TextInputEditText
@@ -36,7 +44,11 @@ class ProfileFragment : Fragment(), IProfileFragmentView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        mProfilePresenter = ProfilePresenterImpl(this, EstacionVitalRemoteDataSource.INSTANCE)
+        mProfilePresenter = ProfilePresenterImpl(SharedPrefManager(
+                activity.getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
+                        Context.MODE_PRIVATE)
+        )
+                ,this, EstacionVitalRemoteDataSource.INSTANCE)
 
         mProfilePresenter.retrieveEVUserProfile()
     }

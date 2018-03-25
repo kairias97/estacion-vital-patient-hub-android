@@ -1,5 +1,6 @@
 package com.estacionvital.patienthubestacionvital.presenter.implementations
 
+import com.estacionvital.patienthubestacionvital.data.local.SharedPrefManager
 import com.estacionvital.patienthubestacionvital.data.remote.Callbacks.IEVProfileUpdateCallback
 import com.estacionvital.patienthubestacionvital.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthubestacionvital.model.EVProfileUpdateRequest
@@ -13,11 +14,15 @@ import com.estacionvital.patienthubestacionvital.util.RegexUtil
  * Created by dusti on 05/03/2018.
  */
 class EditProfilePresenterImpl: IEditProfilePresenter{
+    override fun expireSession() {
+        mSharedPrefManager.clearPreferences()
+        mEditProfileView.showExpirationMessage()
+    }
 
 
     private val mEditProfileView: IEditProfileView
     private val mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource
-
+    private val mSharedPrefManager: SharedPrefManager
     override fun validateNameInput(name: String) {
         if (RegexUtil.instance.containsDigits(name)) {
             mEditProfileView.updateNameInput(RegexUtil.instance.trimNumbersFromString(name))
@@ -29,8 +34,9 @@ class EditProfilePresenterImpl: IEditProfilePresenter{
             mEditProfileView.updateLastNameInput(RegexUtil.instance.trimNumbersFromString(lastName))
         }
     }
-    constructor(editProfileView: IEditProfileView, estacionVitalRemoteDataSource: EstacionVitalRemoteDataSource){
+    constructor(sharedPrefManager: SharedPrefManager, editProfileView: IEditProfileView, estacionVitalRemoteDataSource: EstacionVitalRemoteDataSource){
         this.mEditProfileView = editProfileView
+        this.mSharedPrefManager = sharedPrefManager
         this.mEstacionVitalRemoteDataSource = estacionVitalRemoteDataSource
     }
 
@@ -38,6 +44,11 @@ class EditProfilePresenterImpl: IEditProfilePresenter{
         val token = "Token token=${EVUserSession.instance.authToken}"
         mEstacionVitalRemoteDataSource.updateEVProfile(token, EVProfileUpdateRequest(name, last_name, email),
                 object: IEVProfileUpdateCallback{
+                    override fun onTokenExpired() {
+                        mEditProfileView.hideProgress()
+                        expireSession()
+                    }
+
                     override fun onSuccess(result: EVProfileUpdateResponse) {
                         mEditProfileView.hideProgress()
                         if(result.status == "success"){

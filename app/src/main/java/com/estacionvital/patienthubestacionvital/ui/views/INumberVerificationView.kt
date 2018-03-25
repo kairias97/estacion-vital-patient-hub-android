@@ -3,7 +3,7 @@ package com.estacionvital.patienthubestacionvital.ui.views
 /**
  * Created by dusti on 23/02/2018.
  */
-interface INumberVerificationView {
+interface INumberVerificationView : IBaseView{
     //Input validations
     fun showNumberRequiredMessage()
     fun showNumberInputInvalidMessage()
