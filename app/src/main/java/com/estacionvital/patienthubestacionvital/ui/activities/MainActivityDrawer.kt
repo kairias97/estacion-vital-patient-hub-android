@@ -15,12 +15,14 @@ import com.estacionvital.patienthubestacionvital.R
 import com.estacionvital.patienthubestacionvital.data.local.SharedPrefManager
 import com.estacionvital.patienthubestacionvital.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthubestacionvital.model.ArticleCategory
+import com.estacionvital.patienthubestacionvital.model.Document
 import com.estacionvital.patienthubestacionvital.model.EVUserProfile
 import com.estacionvital.patienthubestacionvital.model.EVUserSession
 import com.estacionvital.patienthubestacionvital.presenter.IMainDrawerPresenter
 import com.estacionvital.patienthubestacionvital.presenter.implementations.MainDrawerPresenterImpl
 import com.estacionvital.patienthubestacionvital.ui.fragments.ArticleCategoryFragment
 import com.estacionvital.patienthubestacionvital.ui.fragments.ConversationHistoryFragment
+import com.estacionvital.patienthubestacionvital.ui.fragments.DocumentHistoryFragment
 import com.estacionvital.patienthubestacionvital.ui.fragments.ProfileFragment
 import com.estacionvital.patienthubestacionvital.ui.views.IMainDrawerView
 import com.estacionvital.patienthubestacionvital.util.CHAT_FREE
@@ -181,7 +183,27 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
                 })
             }
             R.id.nav_documents -> {
+                val activity = this
+                fragment = DocumentHistoryFragment.newInstance(object: DocumentHistoryFragment.DocumentHistoryFragmentListener {
+                    override fun onDocumentSelected(document: Document) {
+                        activity.toast("Documento seleccionado: ${document.specialty}")
+                        val intent = Intent(activity, WebDocumentActivity::class.java)
+                        startActivity(intent)
+                    }
 
+                    override fun onDocumentLoadingStarted() {
+                        activity.showProgressDialog(getString(R.string.document_progress))
+                    }
+
+                    override fun onDocumentLoadingFinished() {
+                        activity.hideProgressDialog()
+                    }
+
+                    override fun onDocumentLoadingError() {
+                       activity.toast(R.string.document_fetch_error)
+                    }
+
+                })
             }
             R.id.nav_articles -> {
                 val activity = this

@@ -4,16 +4,16 @@ import com.estacionvital.patienthubestacionvital.data.remote.Callbacks.GetArticl
 import com.estacionvital.patienthubestacionvital.data.remote.EVBlogRemoteDataSource
 import com.estacionvital.patienthubestacionvital.model.ArticleCategoriesResponse
 import com.estacionvital.patienthubestacionvital.presenter.IArticleCategoryPresenter
-import com.estacionvital.patienthubestacionvital.ui.fragmentViews.IArticleCategoryFragment
+import com.estacionvital.patienthubestacionvital.ui.fragmentViews.IArticleCategoryFragmentView
 
 /**
  * Created by kevin on 6/3/2018.
  */
 class ArticleCategoryPresenterImpl: IArticleCategoryPresenter {
-    private val mCategoriesView: IArticleCategoryFragment
+    private val mCategoriesView: IArticleCategoryFragmentView
     private val mEVBlogRemoteDataSource: EVBlogRemoteDataSource
 
-    constructor(categoriesView: IArticleCategoryFragment,
+    constructor(categoriesView: IArticleCategoryFragmentView,
                 evBlogRemoteDataSource: EVBlogRemoteDataSource){
         this.mCategoriesView = categoriesView
         this.mEVBlogRemoteDataSource = evBlogRemoteDataSource
