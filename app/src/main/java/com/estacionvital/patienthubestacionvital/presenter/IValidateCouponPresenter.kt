@@ -5,4 +5,6 @@ package com.estacionvital.patienthubestacionvital.presenter
  */
 interface IValidateCouponPresenter {
     fun validateCoupon(coupon: String)
+    fun createNewExamination(specialty: String, service_type: String)
+    fun joinEVTwilioRoom(room_id: String)
 }
