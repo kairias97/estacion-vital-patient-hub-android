@@ -1,6 +1,7 @@
 package com.estacionvital.patienthubestacionvital.presenter.implementations
 
 import android.content.Context
+import com.estacionvital.patienthubestacionvital.data.local.SharedPrefManager
 import com.estacionvital.patienthubestacionvital.data.remote.Callbacks.IEVRetrieveUserExaminationsHIstoryCalllback
 import com.estacionvital.patienthubestacionvital.data.remote.Callbacks.IEVTwilioCallSubscribedChannelsCallBack
 import com.estacionvital.patienthubestacionvital.data.remote.Callbacks.IEVTwilioClientCallback
@@ -15,21 +16,31 @@ import com.twilio.chat.Channel
  * Created by dusti on 16/03/2018.
  */
 class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
+    override fun expireSession() {
+        mSharedPrefManager.clearPreferences()
+        mConverstaionHistoryFragmentView.showExpirationMessage()
+    }
 
     private val mConverstaionHistoryFragmentView: IConversationHistoryFragmentView
     private val mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource
     private val mEVTwilioChatRemoteDataSource: EVTwilioChatRemoteDataSource
+    private val mSharedPrefManager:SharedPrefManager
 
-    constructor(conversationHistoryFragmentView: IConversationHistoryFragmentView, estacionVitalRemoteDataSource: EstacionVitalRemoteDataSource, evTwilioChatRemoteDataSource: EVTwilioChatRemoteDataSource){
+    constructor(sharedPrefManager: SharedPrefManager ,conversationHistoryFragmentView: IConversationHistoryFragmentView, estacionVitalRemoteDataSource: EstacionVitalRemoteDataSource, evTwilioChatRemoteDataSource: EVTwilioChatRemoteDataSource){
         this.mConverstaionHistoryFragmentView = conversationHistoryFragmentView
         this.mEstacionVitalRemoteDataSource = estacionVitalRemoteDataSource
         this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDataSource
+        this.mSharedPrefManager = sharedPrefManager
     }
 
     override fun retrieveConversationHistory(context: Context) {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mConverstaionHistoryFragmentView.showLoadingProgress()
         mEstacionVitalRemoteDataSource.retrieveExaminationsHistory(token, object: IEVRetrieveUserExaminationsHIstoryCalllback{
+            override fun onTokenExpired() {
+                expireSession()
+            }
+
             override fun onSuccess(response: EVRetrieveUserExaminationResponse) {
                 mConverstaionHistoryFragmentView.setHistory(response.data)
             }

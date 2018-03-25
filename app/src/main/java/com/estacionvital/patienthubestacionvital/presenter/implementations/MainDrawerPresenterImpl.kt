@@ -14,10 +14,20 @@ import com.estacionvital.patienthubestacionvital.ui.views.IMainDrawerView
  * Created by dusti on 03/03/2018.
  */
 class MainDrawerPresenterImpl: IMainDrawerPresenter {
+    override fun expireSession() {
+        mSharedPrefManager.clearPreferences()
+        mMainDrawerView.showExpirationMessage()
+    }
+
     override fun logout() {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mMainDrawerView.showLoggingOutProgress()
         mEstacionVitalRemoteDataSource.logout(token, object: ILogoutCallback{
+            override fun onTokenExpired() {
+                mMainDrawerView.hideLoggingOutProgress()
+                expireSession()
+            }
+
             override fun onSuccess(response: LogoutResponse) {
                 mMainDrawerView.hideLoggingOutProgress()
                 if (response.status == "success") {
@@ -61,6 +71,10 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mEstacionVitalRemoteDataSource.retrieveEVUserProfile(token,
                 object: IEVRetrieveProfileCallback {
+                    override fun onTokenExpired() {
+                        expireSession()
+                    }
+
                     override fun onSuccess(result: EVRetrieveProfileResponse) {
                         if(result.status == "success"){
                             EVUserSession.instance.userProfile = result.data

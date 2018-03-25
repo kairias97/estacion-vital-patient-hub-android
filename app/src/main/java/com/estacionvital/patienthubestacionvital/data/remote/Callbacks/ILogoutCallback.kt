@@ -8,4 +8,5 @@ import com.estacionvital.patienthubestacionvital.model.LogoutResponse
 interface ILogoutCallback {
     fun onSuccess(response: LogoutResponse)
     fun onFailure()
+    fun onTokenExpired()
 }

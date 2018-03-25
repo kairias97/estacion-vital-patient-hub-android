@@ -8,4 +8,5 @@ import com.estacionvital.patienthubestacionvital.model.EVSpecialtiesResponse
 interface IEVRetrieveSpecialtiesCallback {
     fun onSuccess(response: EVSpecialtiesResponse)
     fun onFailure()
+    fun onTokenExpired()
 }

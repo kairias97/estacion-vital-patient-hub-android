@@ -5,7 +5,7 @@ import com.twilio.chat.Channel
 /**
  * Created by dusti on 22/03/2018.
  */
-interface IValidateCouponView {
+interface IValidateCouponView : IBaseView{
     fun showValidateLoading()
     fun showCreatingRoomLoading()
     fun getCreatedRoomID(data: String)

@@ -8,4 +8,5 @@ import com.estacionvital.patienthubestacionvital.model.EVRetrieveUserExamination
 interface IEVRetrieveUserExaminationsHIstoryCalllback {
     fun onSuccess(response: EVRetrieveUserExaminationResponse)
     fun onFailure()
+    fun onTokenExpired()
 }

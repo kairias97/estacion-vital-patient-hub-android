@@ -8,4 +8,5 @@ import com.estacionvital.patienthubestacionvital.model.DocumentsResponse
 interface IGetDocumentsCallback {
     fun onSuccess(response: DocumentsResponse)
     fun onFailure()
+    fun onTokenExpired()
 }

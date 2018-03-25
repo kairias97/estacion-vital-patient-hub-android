@@ -3,7 +3,7 @@ package com.estacionvital.patienthubestacionvital.ui.views
 /**
  * Created by kevin on 28/2/2018.
  */
-interface IRegistrationProfileView {
+interface IRegistrationProfileView: IBaseView {
     //Required Messages
     fun showNameRequiredMessage()
     fun showLastNameRequiredMessage()

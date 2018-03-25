@@ -6,7 +6,7 @@ import com.twilio.chat.Channel
 /**
  * Created by dusti on 15/03/2018.
  */
-interface ISpecialtySelectionView {
+interface ISpecialtySelectionView: IBaseView {
     fun showProgressDialog()
     fun showAvailabilityProgressDialog()
     fun showCreatingExaminationProgress()

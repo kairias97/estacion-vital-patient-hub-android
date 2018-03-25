@@ -113,5 +113,6 @@
     <string name="message_payment_method">Estimado cliente, escoja el método de pago a utilizar por favor</string>
     <string name="dialog_coupon">Tengo un cupón</string>
     <string name="dialog_credit_card">Tarjeta de crédito</string>
+    <string name="session_expired_msg">Su sesión ha caducado</string>
 
 </resources>

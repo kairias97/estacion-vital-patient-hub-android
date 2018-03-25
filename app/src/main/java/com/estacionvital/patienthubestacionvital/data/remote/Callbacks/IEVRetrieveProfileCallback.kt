@@ -8,4 +8,6 @@ import com.estacionvital.patienthubestacionvital.model.EVRetrieveProfileResponse
 interface IEVRetrieveProfileCallback {
     fun onSuccess(result: EVRetrieveProfileResponse)
     fun onFailure()
+
+    fun onTokenExpired()
 }

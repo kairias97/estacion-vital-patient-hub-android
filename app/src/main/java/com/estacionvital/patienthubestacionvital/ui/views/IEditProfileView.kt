@@ -3,7 +3,7 @@ package com.estacionvital.patienthubestacionvital.ui.views
 /**
  * Created by dusti on 04/03/2018.
  */
-interface IEditProfileView {
+interface IEditProfileView : IBaseView{
     fun showLoadingProgress()
     fun showError()
     fun hideProgress()

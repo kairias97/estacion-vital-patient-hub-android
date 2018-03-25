@@ -11,7 +11,7 @@ import android.widget.EditText
 import android.widget.ImageButton
 import com.estacionvital.patienthubestacionvital.R
 import com.estacionvital.patienthubestacionvital.data.remote.EVTwilioChatRemoteDataSource
-import com.estacionvital.patienthubestacionvital.presenter.ITwilioChatrPresenter
+import com.estacionvital.patienthubestacionvital.presenter.ITwilioChatPresenter
 import com.estacionvital.patienthubestacionvital.presenter.implementations.TwilioChatPresenterImpl
 import com.estacionvital.patienthubestacionvital.ui.adapters.MessageAdapter
 import com.estacionvital.patienthubestacionvital.ui.views.ITwilioChatView
@@ -25,7 +25,7 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
     private lateinit var mSpecialtySelected: String
     private lateinit var mRoomID: String
     private var mIsFinished: Boolean = false
-    private lateinit var mTwilioChatPresenter: ITwilioChatrPresenter
+    private lateinit var mTwilioChatPresenter: ITwilioChatPresenter
     private lateinit var mRecyclerView: RecyclerView
     private lateinit var mMessageAdapter: MessageAdapter
     private lateinit var mCurrentChannel: Channel

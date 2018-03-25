@@ -3,7 +3,7 @@ package com.estacionvital.patienthubestacionvital.ui.views
 /**
  * Created by dusti on 24/02/2018.
  */
-interface IConfirmationCodeVerificationView {
+interface IConfirmationCodeVerificationView : IBaseView{
     //Input validations
     fun showCodeRequiredMessage()
     fun hideCodeInputMessage()

@@ -6,7 +6,7 @@ import com.estacionvital.patienthubestacionvital.data.remote.Callbacks.IEVTwilio
 import com.estacionvital.patienthubestacionvital.data.remote.Callbacks.IEVTwilioSendMessageCallBack
 import com.estacionvital.patienthubestacionvital.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthubestacionvital.model.EVChatSession
-import com.estacionvital.patienthubestacionvital.presenter.ITwilioChatrPresenter
+import com.estacionvital.patienthubestacionvital.presenter.ITwilioChatPresenter
 import com.estacionvital.patienthubestacionvital.ui.views.ITwilioChatView
 import com.twilio.chat.Channel
 import com.twilio.chat.Message
@@ -14,7 +14,7 @@ import com.twilio.chat.Message
 /**
  * Created by dusti on 20/03/2018.
  */
-class TwilioChatPresenterImpl: ITwilioChatrPresenter {
+class TwilioChatPresenterImpl: ITwilioChatPresenter {
     private val mTwilioChatView: ITwilioChatView
     private val mEVTwilioChatRemoteDataSource: EVTwilioChatRemoteDataSource
 
