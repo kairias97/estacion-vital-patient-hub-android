@@ -104,4 +104,6 @@
     <string name="loading_examination_creation">Creando nueva conversación...</string>
     <string name="loading_messages_channel">Cargando mensajes de la conversación</string>
     <string name="message_validating_coupon">Validando cupon...</string>
+    <string name="document_progress">Cargando documentos...</string>
+    <string name="document_fetch_error">Ocurrió un error al cargar los documentos</string>
 </resources>

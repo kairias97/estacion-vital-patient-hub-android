@@ -14,13 +14,13 @@ import com.estacionvital.patienthubestacionvital.model.ArticleCategory
 import com.estacionvital.patienthubestacionvital.presenter.IArticleCategoryPresenter
 import com.estacionvital.patienthubestacionvital.presenter.implementations.ArticleCategoryPresenterImpl
 import com.estacionvital.patienthubestacionvital.ui.adapters.ArticleCategoryAdapter
-import com.estacionvital.patienthubestacionvital.ui.fragmentViews.IArticleCategoryFragment
+import com.estacionvital.patienthubestacionvital.ui.fragmentViews.IArticleCategoryFragmentView
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
 /**
  * Created by kevin on 6/3/2018.
  */
-class ArticleCategoryFragment: Fragment(), IArticleCategoryFragment,
+class ArticleCategoryFragment: Fragment(), IArticleCategoryFragmentView,
         ArticleCategoryAdapter.OnCategorySelectedListener {
     override fun onCategoryItemClicked(category: ArticleCategory) {
         this.mListener?.onCategorySelected(category)

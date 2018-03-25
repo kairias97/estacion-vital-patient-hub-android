@@ -265,6 +265,34 @@ class EstacionVitalRemoteDataSource {
             }
         })
     }
+
+
+    fun getDocuments(token: String, callback: IGetDocumentsCallback){
+        val authCall = EstacionVitalAPI.instance.service!!.getDocuments(token)
+        authCall.enqueue(object: Callback<DocumentsResponse>{
+            override fun onFailure(call: Call<DocumentsResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug") {
+                    Log.e("failure", t.toString())
+                }
+                callback.onFailure()
+            }
+
+            override fun onResponse(call: Call<DocumentsResponse>?, response: Response<DocumentsResponse>?) {
+                when(response!!.code()){
+                    200 -> {
+                        callback.onSuccess(response!!.body()!!)
+                    }
+                    else -> {
+                        if(BuildConfig.BUILD_TYPE == "debug") {
+                            Log.e("Not 200", response.raw().body().toString())
+                        }
+                        callback.onFailure()
+                    }
+                }
+            }
+
+        })
+    }
     companion object {
         val INSTANCE: EstacionVitalRemoteDataSource by lazy { EstacionVitalRemoteDataSource()}
     }

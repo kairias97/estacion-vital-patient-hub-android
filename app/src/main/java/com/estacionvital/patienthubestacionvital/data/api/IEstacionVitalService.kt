@@ -31,4 +31,6 @@ interface IEstacionVitalService{
     fun createNewExamination(@Header("Authorization") token: String, @Body body: EVCreateNewExaminationRequest): Call<EVCreateNewExaminationResponse>
     @POST(URL_EV_VALIDATE_COUPON)
     fun validateCoupon(@Header("Authorization") token: String, @Body body: EVValidateCouponRequest): Call<EVValidateCouponResponse>
+    @GET(URL_EV_GET_DOCUMENTS)
+    fun getDocuments(@Header("Authorization") token: String): Call<DocumentsResponse>
 }
