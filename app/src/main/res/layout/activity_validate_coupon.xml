@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.estacionvital.patienthubestacionvital.ui.activities.ValidateCouponActivity">
+    tools:context="com.estacionvital.patienthubestacionvital.ui.activities.ValidateCouponActivity"
+    android:background="@color/colorPrimaryDark">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
@@ -14,6 +15,65 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"></android.support.v7.widget.CardView>
+        android:layout_marginRight="16dp">
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/text_info_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:text="@string/label_validate_coupon"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"></TextView>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/text_input_layout_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_info_msg"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/errorAppearance"
+                >
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/edit_text_coupon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/coupon_label"
+                    android:inputType="text"
+                    android:maxLength="8"
+                    />
+            </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/button_verify"
+                android:theme="@style/PrimaryFlatButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="1"
+                android:height="36dp"
+                android:padding="8dp"
+                android:text="@string/verify_number"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/text_input_layout_coupon" />
+        </android.support.constraint.ConstraintLayout>
+
+
+
+    </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

@@ -58,6 +58,7 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
                 selected = mSpinner.selectedItem.toString()
                 service_type = "free"
                 mSpecialtySelectionPresenter.createNewExamination(selected,service_type)
+                //prepareToNavigateToCoupon(selected, service_type)
             }
             else if(mTypeChat == CHAT_PREMIUM){
                 //falta agregar verificar disponibilidad, por el momento tendra el mismo comportamiento
@@ -85,6 +86,11 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
     }
     private fun returnTop(){
         NavUtils.navigateUpFromSameTask(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mSpecialtySelectionPresenter.retrieveSpecialtiesChat()
     }
 
     override fun showProgressDialog() {
@@ -123,7 +129,8 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
                     positiveListener = object:DialogInterface.OnClickListener{
                         override fun onClick(dialog: DialogInterface?, which: Int) {
                             dialog!!.dismiss()
-                            mSpecialtySelectionPresenter.createNewExamination(selected,service_type)
+                            //mSpecialtySelectionPresenter.createNewExamination(selected,service_type)
+                            paymentMethodDialog()
                         }
                     },
                     negativeListener = object:DialogInterface.OnClickListener{
@@ -133,8 +140,10 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
                     })
         }
         else{
-            mSpecialtySelectionPresenter.createNewExamination(selected, service_type)
+            //mSpecialtySelectionPresenter.createNewExamination(selected, service_type)
+            paymentMethodDialog()
         }
+        hideLoading()
     }
 
     override fun getCreatedRoomID(data: String) {
@@ -143,6 +152,37 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
 
     override fun prepareToNavigateToChat(data: Channel) {
         navigateToChatWindow(selected, data.uniqueName)
+    }
+
+    override fun prepareToNavigateToCoupon(specialty: String, typeChat: String) {
+        val intentTarget = Intent(this, ValidateCouponActivity::class.java)
+        intentTarget.putExtra("chatType", typeChat)
+        intentTarget.putExtra("specialty", specialty)
+        startActivity(intentTarget)
+    }
+
+    override fun prepareToNavigateToCreditCard(specialty: String, typeChat: String) {
+        val intentTarget = Intent(this, ValidateCreditCardActivity::class.java)
+        startActivity(intentTarget)
+    }
+    private fun paymentMethodDialog(){
+        this.showConfirmDialog(titleResId = R.string.title_payment_method,
+                iconResId = R.drawable.ic_error_black_24dp,
+                messageResId = R.string.message_payment_method,
+                positiveBtnResId = R.string.dialog_coupon,
+                negativeBtnResId = R.string.dialog_credit_card,
+                positiveListener = object:DialogInterface.OnClickListener{
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        dialog!!.dismiss()
+                        prepareToNavigateToCoupon(selected, service_type)
+                    }
+                },
+                negativeListener = object:DialogInterface.OnClickListener{
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        dialog!!.dismiss()
+                        prepareToNavigateToCreditCard(selected, service_type)
+                    }
+                })
     }
     private fun navigateToChatWindow(selected: String, room_id: String){
         val intentChatWindow = Intent(this, TwilioChatActivity::class.java)

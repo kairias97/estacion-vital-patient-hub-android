@@ -15,5 +15,7 @@ interface ISpecialtySelectionView {
     fun setSpecialtiesData(data: EVSpecialtiesResponse)
     fun getDoctorAvailability(data: Boolean)
     fun getCreatedRoomID(data: String)
+    fun prepareToNavigateToCoupon(specialty: String, typeChat: String)
+    fun prepareToNavigateToCreditCard(specialty: String, typeChat: String)
     fun prepareToNavigateToChat(data: Channel)
 }
