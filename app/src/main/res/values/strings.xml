@@ -104,6 +104,14 @@
     <string name="loading_examination_creation">Creando nueva conversación...</string>
     <string name="loading_messages_channel">Cargando mensajes de la conversación</string>
     <string name="message_validating_coupon">Validando cupon...</string>
+
     <string name="document_progress">Cargando documentos...</string>
     <string name="document_fetch_error">Ocurrió un error al cargar los documentos</string>
+    <string name="label_validate_coupon">Estimado cliente, por favor ingrese su cupón para proceder a su nueva conversación.</string>
+    <string name="coupon_label">Cupón</string>
+    <string name="title_payment_method">Escoja su método de pago</string>
+    <string name="message_payment_method">Estimado cliente, escoja el método de pago a utilizar por favor</string>
+    <string name="dialog_coupon">Tengo un cupón</string>
+    <string name="dialog_credit_card">Tarjeta de crédito</string>
+
 </resources>
