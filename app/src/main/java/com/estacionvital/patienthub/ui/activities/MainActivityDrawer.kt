@@ -14,16 +14,19 @@ import android.view.MenuItem
 import android.widget.TextView
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.local.SharedPrefManager
+import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.IMainDrawerPresenter
 import com.estacionvital.patienthub.presenter.implementations.MainDrawerPresenterImpl
+import com.estacionvital.patienthub.services.RegistrationIntentService
 import com.estacionvital.patienthub.ui.fragments.ArticleCategoryFragment
 import com.estacionvital.patienthub.ui.fragments.ConversationHistoryFragment
 import com.estacionvital.patienthub.ui.fragments.DocumentHistoryFragment
 import com.estacionvital.patienthub.ui.fragments.ProfileFragment
 import com.estacionvital.patienthub.ui.views.IMainDrawerView
 import com.estacionvital.patienthub.util.*
+import com.github.clans.fab.FloatingActionButton
 import kotlinx.android.synthetic.main.activity_main_drawer.*
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
@@ -31,6 +34,9 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         ProfileFragment.OnFragmentInteractionListener, IMainDrawerView{
     override fun onProfileLoadedSuccessfully(data: EVUserProfile) {
         this.setDrawerHeaderData(data)
+        if(!EVChatSession.instance.isChatClientCreated){
+            mMainDrawerPresenter.getTwilioToken(this)
+        }
     }
 
     override fun navigateToNumberVerification() {
@@ -53,7 +59,15 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
 
     override fun onProfileLoadingFinished() {
         this.hideProgressDialog()
+    }
 
+    override fun showCreatingClientProgress() {
+        this.showProgressDialog(getString(R.string.chat_client_creation))
+    }
+
+    override fun chatClientFinished() {
+        val intent = Intent(this, RegistrationIntentService::class.java)
+        startService(intent)
     }
 
     private lateinit var mTextName: TextView
@@ -62,6 +76,9 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
     private lateinit var navigationView: NavigationView
     private lateinit var mMainDrawerPresenter: IMainDrawerPresenter
     private lateinit var mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource
+
+    private lateinit var mFabButtonChatFree: FloatingActionButton
+    private lateinit var mFabButtonChatPremium: FloatingActionButton
 
     private lateinit var mTypeChat: String
 
@@ -75,10 +92,61 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         mTextName = headerView.findViewById(R.id.text_name)
         mTextPhone = headerView.findViewById(R.id.text_phone)
 
+        mFabButtonChatFree = findViewById<FloatingActionButton>(R.id.fab_chat_free)
+        mFabButtonChatPremium = findViewById<FloatingActionButton>(R.id.fab_chat_premium)
 
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+
+        }
+        mFabButtonChatFree.setOnClickListener {
+            fab.close(true)
+            fragmentTransaction(ConversationHistoryFragment.newInstance(CHAT_FREE, object: ConversationHistoryFragment
+            .OnConversationHistorytInteraction{
+                override fun onConversationSelected(channel: EVChannel) {
+                    navigateToChat(channel)
+                }
+
+                override fun onHistoryLoadingFinished() {
+                    hideProgressDialog()
+                }
+
+                override fun onLoadingHistory() {
+                    showProgressDialog(getString(R.string.chat_getting_conversations_history))
+                }
+
+                override fun navigateToSpecialty() {
+                    navigateToSpecialtySelection()
+                }
+
+                override fun onHistoryLoadingError() {
+                   toast(getString(R.string.generic_500_error))
+                }
+            }))
+        }
+        mFabButtonChatPremium.setOnClickListener {
+            fab.close(true)
+            fragmentTransaction(ConversationHistoryFragment.newInstance(CHAT_PREMIUM,object: ConversationHistoryFragment
+            .OnConversationHistorytInteraction{
+                override fun onConversationSelected(channel: EVChannel) {
+                    navigateToChat(channel)
+                }
+
+                override fun onHistoryLoadingFinished() {
+                    hideProgressDialog()
+                }
+
+                override fun onLoadingHistory() {
+                    showProgressDialog(getString(R.string.chat_getting_conversations_history))
+                }
+
+                override fun navigateToSpecialty() {
+                    navigateToSpecialtySelection()
+                }
+
+                override fun onHistoryLoadingError() {
+                    toast(getString(R.string.generic_500_error))
+                }
+            }))
         }
 
 
@@ -95,7 +163,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
                 SharedPrefManager(
                         getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
                                 Context.MODE_PRIVATE)
-                ))
+                ), EVTwilioChatRemoteDataSource.instance)
         mMainDrawerPresenter.retrieveEVUSerProfile()
 
         fragmentTransaction(ProfileFragment())

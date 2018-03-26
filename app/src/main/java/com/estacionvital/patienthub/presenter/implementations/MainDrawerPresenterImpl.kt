@@ -1,10 +1,15 @@
 package com.estacionvital.patienthub.presenter.implementations
 
+import android.content.Context
 import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.data.remote.Callbacks.IEVRetrieveProfileCallback
+import com.estacionvital.patienthub.data.remote.Callbacks.IEVRetrieveUserExaminationsHIstoryCalllback
+import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioClientCallback
 import com.estacionvital.patienthub.data.remote.Callbacks.ILogoutCallback
+import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.EVRetrieveProfileResponse
+import com.estacionvital.patienthub.model.EVRetrieveUserExaminationResponse
 import com.estacionvital.patienthub.model.EVUserSession
 import com.estacionvital.patienthub.model.LogoutResponse
 import com.estacionvital.patienthub.presenter.IMainDrawerPresenter
@@ -59,12 +64,14 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
     private val mMainDrawerView : IMainDrawerView
     private val mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource
     private val mSharedPrefManager: SharedPrefManager
+    private val mEVTwilioChatRemoteDataSource: EVTwilioChatRemoteDataSource
 
     constructor(mainDrawerView: IMainDrawerView, estacionVitalRemoteDataSource: EstacionVitalRemoteDataSource,
-                sharedPrefManager: SharedPrefManager){
+                sharedPrefManager: SharedPrefManager, evTwilioChatRemoteDataSource: EVTwilioChatRemoteDataSource){
         this.mSharedPrefManager = sharedPrefManager
         this.mMainDrawerView = mainDrawerView
         this.mEstacionVitalRemoteDataSource = estacionVitalRemoteDataSource
+        this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDataSource
     }
 
     override fun retrieveEVUSerProfile() {
@@ -90,5 +97,40 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
                         mMainDrawerView.showError()
                     }
                 })
+    }
+
+    override fun getTwilioToken(context: Context) {
+        mMainDrawerView.showCreatingClientProgress()
+        val token = "Token token=${EVUserSession.instance.authToken}"
+        mEstacionVitalRemoteDataSource.retrieveExaminationsHistory(token, object: IEVRetrieveUserExaminationsHIstoryCalllback{
+            override fun onSuccess(response: EVRetrieveUserExaminationResponse) {
+                EVUserSession.instance.twilioToken = response.data.twilio_token
+                createEVTwilioChatClient(context)
+            }
+
+            override fun onFailure() {
+                mMainDrawerView.hideProgressDialog()
+                mMainDrawerView.showError()
+            }
+
+            override fun onTokenExpired() {
+                mMainDrawerView.hideProgressDialog()
+                mMainDrawerView.showError()
+            }
+        })
+    }
+
+    override fun createEVTwilioChatClient(context: Context) {
+        mEVTwilioChatRemoteDataSource.setupTwilioClient(EVUserSession.instance.twilioToken, context, object: IEVTwilioClientCallback{
+            override fun onSuccess() {
+                mMainDrawerView.hideProgressDialog()
+                mMainDrawerView.chatClientFinished()
+            }
+
+            override fun onFailure() {
+                mMainDrawerView.hideProgressDialog()
+                mMainDrawerView.showError()
+            }
+        })
     }
 }

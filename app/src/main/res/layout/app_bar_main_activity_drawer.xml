@@ -2,6 +2,7 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.estacionvital.patienthub.ui.activities.MainActivityDrawer">
@@ -22,12 +23,49 @@
 
     <include layout="@layout/content_main_activity_drawer" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.github.clans.fab.FloatingActionMenu
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="8dp"
+        app:menu_buttonSpacing="0dp"
+        app:menu_fab_size="normal"
+        app:menu_labels_ellipsize="none"
+        app:menu_fab_hide_animation="@anim/fab_slide_out_to_right"
+        app:menu_labels_position="left"
+        app:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+        app:menu_animationDelayPerItem="55"
+        app:menu_labels_showShadow="true"
+        app:menu_labels_singleLine="false"
+        app:menu_labels_colorNormal="#333"
+        app:menu_labels_colorPressed="#444"
+        app:menu_labels_colorRipple="#66efecec"
+        app:menu_labels_textColor="@android:color/white"
+        app:menu_colorNormal="@color/colorAccent"
+        app:menu_colorPressed="@color/colorAccent"
+        app:menu_icon="@android:drawable/ic_dialog_email">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_chat_free"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_colorPressed="@color/colorPrimary"
+            app:fab_label="@string/label_fab_button_chat_free"
+            android:src="@drawable/ic_watch_later_white_24dp" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fab_chat_premium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fabSize="mini"
+            app:fab_colorNormal="@color/colorPrimary"
+            app:fab_colorPressed="@color/colorPrimary"
+            app:fab_label="@string/label_fab_button_chat_premium"
+            android:src="@drawable/ic_vpn_key_white_24dp"/>
+    </com.github.clans.fab.FloatingActionMenu>
 
 </android.support.design.widget.CoordinatorLayout>

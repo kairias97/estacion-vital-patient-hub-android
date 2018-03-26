@@ -66,6 +66,7 @@ dependencies {
     compile 'com.google.firebase:firebase-messaging:11.6.2'
     compile 'com.google.android.gms:play-services:11.6.2'
     compile 'com.google.android.gms:play-services-base:11.6.2'
+    compile 'com.github.clans:fab:1.6.4'
     apply plugin: 'com.google.gms.google-services'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }

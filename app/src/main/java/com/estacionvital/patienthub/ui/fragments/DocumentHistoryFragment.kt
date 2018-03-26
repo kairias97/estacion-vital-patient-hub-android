@@ -68,6 +68,8 @@ class DocumentHistoryFragment: Fragment(), IDocumentHistoryFragmentView {
 
                 })
 
+        activity.title = "Documentos"
+
         return view
     }
     override fun showDocumentFetchProgress() {

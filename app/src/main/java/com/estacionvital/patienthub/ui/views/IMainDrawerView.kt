@@ -12,4 +12,6 @@ interface IMainDrawerView : IBaseView{
     fun navigateToNumberVerification()
     fun showLoggingOutProgress()
     fun hideLoggingOutProgress()
+    fun showCreatingClientProgress()
+    fun chatClientFinished()
 }

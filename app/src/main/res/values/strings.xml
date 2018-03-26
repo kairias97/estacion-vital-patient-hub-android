@@ -114,5 +114,9 @@
     <string name="dialog_coupon">Tengo un cupón</string>
     <string name="dialog_credit_card">Tarjeta de crédito</string>
     <string name="session_expired_msg">Su sesión ha caducado</string>
+    <string name="chat_client_creation">Creando cliente de chat</string>
+    <string name="label_fab_menu_chat">Escoja el tipo de chat a ir</string>
+    <string name="label_fab_button_chat_premium">Chat Premium</string>
+    <string name="label_fab_button_chat_free">Chat Gratis</string>
 
 </resources>

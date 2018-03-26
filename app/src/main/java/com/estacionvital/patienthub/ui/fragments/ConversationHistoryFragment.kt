@@ -176,8 +176,6 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
             }
         }
         hideLoading()
-        val intent = Intent(activity.applicationContext, RegistrationIntentService::class.java)
-        activity.startService(intent)
     }
     //del adapter
     override fun onChannelItemSelected(channel: EVChannel) {
