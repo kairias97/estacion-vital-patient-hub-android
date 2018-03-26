@@ -8,6 +8,7 @@ package com.estacionvital.patienthubestacionvital.util
 const val MAIN_URL: String = "http://app.netmovil.co/appestacionvital/"
 const val EV_BLOG_HOST_URL = "https://blog.estacionvital.com/api/core/"
 const val EV_MAIN_URL: String = "https://dev.estacionvital.com/api/"
+const val EV_MAIN_DOCS_URL: String = "https://dev.estacionvital.com"
 const val URL_VERIFY_NUMBER: String = "pin/number_validate"
 const val NETMOBILE_AUTH_CREDENTIAL: String = "bm1Fc3RhY2lvblZpdGFsOjIwMTdFViRWMQ=="
 const val EV_AUTH_CREDENTIAL: String = "RSR0QGMxbyRhcHAjOjIwMThFdkBwMSM="
