@@ -99,7 +99,6 @@
             android:parentActivityName=".ui.activities.ArticleSelectionActivity" />
 
 
-        <activity android:name=".ui.activities.WebDocumentActivity"></activity>
 
         <activity
             android:name=".ui.activities.TwilioChatActivity"
