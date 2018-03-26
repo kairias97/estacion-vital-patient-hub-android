@@ -12,7 +12,7 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.estacionvital.patienthubestacionvital"
+        applicationId "com.estacionvital.patienthub"
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 5
