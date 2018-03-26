@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import android.widget.TextView
 import com.estacionvital.patienthub.R
+import com.estacionvital.patienthub.R.id.nav_home
 import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
@@ -122,6 +123,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
                    toast(getString(R.string.generic_500_error))
                 }
             }))
+            navigationView.setCheckedItem(R.id.nav_chat_free)
         }
         mFabButtonChatPremium.setOnClickListener {
             fab.close(true)
@@ -147,6 +149,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
                     toast(getString(R.string.generic_500_error))
                 }
             }))
+            navigationView.setCheckedItem(R.id.nav_chat_premium)
         }
 
 

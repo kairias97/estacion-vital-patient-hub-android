@@ -144,36 +144,14 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
     }
     override fun setChannelList(data: MutableList<EVChannel>) {
         var list: MutableList<EVChannel> = ArrayList<EVChannel>()
-        if(mParam1 == CHAT_FREE){
-            for(channel in data.reversed()){
-                if(channel.type=="free"){
-                    list.add(channel)
-                    break
-                }
-            }
-            if(list.count()>0){
-                (mRecyclerView.adapter as? ConversationHistoryAdapter)!!.setChannelsList(list)
-                (mRecyclerView.adapter as? ConversationHistoryAdapter)!!.notifyDataSetChanged()
-                mTextViewNoRegister.visibility = View.GONE
-            }
-            else{
-                mTextViewNoRegister.visibility = View.VISIBLE
-            }
+        list = mConversationhistoryPresenter.filterByTypeChat(data, mParam1!!)
+        if(list.count()>0){
+            (mRecyclerView.adapter as? ConversationHistoryAdapter)!!.setChannelsList(list)
+            (mRecyclerView.adapter as? ConversationHistoryAdapter)!!.notifyDataSetChanged()
+            mTextViewNoRegister.visibility = View.GONE
         }
-        else if(mParam1 == CHAT_PREMIUM){
-            for(channel in data.reversed()){
-                if(channel.type=="paid"){
-                    list.add(channel)
-                }
-            }
-            if(list.count()>0){
-                (mRecyclerView.adapter as? ConversationHistoryAdapter)!!.setChannelsList(list)
-                (mRecyclerView.adapter as? ConversationHistoryAdapter)!!.notifyDataSetChanged()
-                mTextViewNoRegister.visibility = View.GONE
-            }
-            else{
-                mTextViewNoRegister.visibility = View.VISIBLE
-            }
+        else{
+            mTextViewNoRegister.visibility = View.VISIBLE
         }
         hideLoading()
     }
@@ -182,6 +160,7 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
 
         this.mListener?.onConversationSelected(channel)
     }
+
 
     companion object {
         // TODO: Rename parameter arguments, choose names that match

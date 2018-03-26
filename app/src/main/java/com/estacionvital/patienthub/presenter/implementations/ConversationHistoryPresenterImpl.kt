@@ -10,6 +10,8 @@ import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.IConversationHistoryPresenter
 import com.estacionvital.patienthub.ui.fragmentViews.IConversationHistoryFragmentView
+import com.estacionvital.patienthub.util.CHAT_FREE
+import com.estacionvital.patienthub.util.CHAT_PREMIUM
 import com.twilio.chat.Channel
 
 /**
@@ -92,6 +94,26 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
                 mConverstaionHistoryFragmentView.showError()
             }
         })
+    }
+
+    override fun filterByTypeChat(data: MutableList<EVChannel>, type: String): MutableList<EVChannel> {
+        var list: MutableList<EVChannel> = ArrayList<EVChannel>()
+        if(type == CHAT_FREE){
+            for(channel in data.reversed()){
+                if(channel.type == "free"){
+                    list.add(channel)
+                    break
+                }
+            }
+            return list
+        }
+        else if(type == CHAT_PREMIUM){
+            for(channel in data.reversed()){
+                list.add(channel)
+            }
+            return list
+        }
+        return list
     }
 
 }
