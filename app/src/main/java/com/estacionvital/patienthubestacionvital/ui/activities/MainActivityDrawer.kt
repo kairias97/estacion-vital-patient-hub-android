@@ -3,6 +3,7 @@ package com.estacionvital.patienthubestacionvital.ui.activities
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
@@ -25,9 +26,7 @@ import com.estacionvital.patienthubestacionvital.ui.fragments.ConversationHistor
 import com.estacionvital.patienthubestacionvital.ui.fragments.DocumentHistoryFragment
 import com.estacionvital.patienthubestacionvital.ui.fragments.ProfileFragment
 import com.estacionvital.patienthubestacionvital.ui.views.IMainDrawerView
-import com.estacionvital.patienthubestacionvital.util.CHAT_FREE
-import com.estacionvital.patienthubestacionvital.util.CHAT_PREMIUM
-import com.estacionvital.patienthubestacionvital.util.toast
+import com.estacionvital.patienthubestacionvital.util.*
 import kotlinx.android.synthetic.main.activity_main_drawer.*
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
@@ -186,8 +185,10 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
                 val activity = this
                 fragment = DocumentHistoryFragment.newInstance(object: DocumentHistoryFragment.DocumentHistoryFragmentListener {
                     override fun onDocumentSelected(document: Document) {
-                        activity.toast("Documento seleccionado: ${document.specialty}")
-                        val intent = Intent(activity, WebDocumentActivity::class.java)
+
+                        val url = "$EV_MAIN_DOCS_URL${document.url}?token=${Uri.encode(EVUserSession.instance.authToken)}"
+                        //activity.toast("Documento seleccionado: ${document.specialty}")
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                         startActivity(intent)
                     }
 
