@@ -36,6 +36,7 @@ class FCMListenerService : FirebaseMessagingService() {
         Log.d("from","From: " + remoteMessage!!.from)
 
         // Check if message contains a data payload.
+
         if (remoteMessage.data.size > 0) {
             Log.d("Data message body","Data Message Body: " + remoteMessage.data)
 
@@ -91,7 +92,7 @@ class FCMListenerService : FirebaseMessagingService() {
                     .setContentIntent(pendingIntent)
                     .setColor(Color.rgb(214, 10, 37))
                     .build()
-
+            /*
             val soundFileName = payload.sound
             if (resources.getIdentifier(soundFileName, "raw", packageName) != 0) {
                 val sound = Uri.parse("android.resource://$packageName/raw/$soundFileName")
@@ -102,6 +103,7 @@ class FCMListenerService : FirebaseMessagingService() {
                 notification.defaults = notification.defaults or Notification.DEFAULT_SOUND
                 Log.d("sound","Playing default sound")
             }
+            */
 
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 

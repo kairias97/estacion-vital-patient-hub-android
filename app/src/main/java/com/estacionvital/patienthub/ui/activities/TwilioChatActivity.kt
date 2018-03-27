@@ -49,10 +49,10 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
             if(intent.hasExtra("isFinished")){
                 mIsFinished = intent.extras.getBoolean("isFinished")
             }
-            mEVChannel = intent.extras.getParcelable("channel")
+            //mEVChannel = intent.extras.getParcelable("channel")
 
         }
-
+        //Refactorizar para hacer el format desde el R.string
         supportActionBar!!.title = "Chat con ${mSpecialtySelected}"
 
         mRecyclerView = findViewById<RecyclerView>(R.id.recycler_messages)
@@ -88,7 +88,7 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
         sendBtn.isEnabled = false
 
         mTwilioChatPresenter = TwilioChatPresenterImpl(this, EVTwilioChatRemoteDataSource.instance)
-        showMessageLoading()
+        //showMessageLoading()
         mTwilioChatPresenter.retrieveChannel(mRoomID)
 
         mMessageAdapter = MessageAdapter(ArrayList<Message>(),this)
@@ -128,6 +128,7 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
 
     override fun getChannelFromID(channel: Channel) {
         mCurrentChannel = channel
+        //move this to presenter
         mTwilioChatPresenter.retrieveMessages(mCurrentChannel)
         mTwilioChatPresenter.setChannelListener(mCurrentChannel)
     }

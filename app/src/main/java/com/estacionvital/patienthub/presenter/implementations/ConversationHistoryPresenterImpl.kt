@@ -72,7 +72,7 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
                 var list: MutableList<EVChannel> = ArrayList<EVChannel>()
                 for(channel in data){
                     var newChannel = EVChannel()
-                    newChannel.status = channel.finished
+                    newChannel.isFinished = channel.finished
                     newChannel.type = channel.service_type
                     newChannel.unique_name = channel.channel_name
                     newChannel.specialty = channel.specialty

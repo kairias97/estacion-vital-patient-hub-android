@@ -7,6 +7,7 @@ import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioJoinChannelCa
 import com.estacionvital.patienthub.data.remote.Callbacks.IEVValidateCouponCallBack
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
+import com.estacionvital.patienthub.model.EVChannel
 import com.estacionvital.patienthub.model.EVCreateNewExaminationResponse
 import com.estacionvital.patienthub.model.EVUserSession
 import com.estacionvital.patienthub.model.EVValidateCouponResponse
@@ -35,7 +36,7 @@ class ValidateCouponPresenterImpl: IValidateCouponPresenter {
         this.mSharedPrefManager = sharedPrefManager
     }
 
-    override fun validateCoupon(coupon: String) {
+    override fun validateCoupon(coupon: String, specialty: String, serviceType: String) {
         mValidateCouponView.showValidateLoading()
         val token = "Token token=${EVUserSession.instance.authToken}"
         mEstacionVitalRemoteDataSource.validateCoupon(token, coupon, object: IEVValidateCouponCallBack{
@@ -46,7 +47,12 @@ class ValidateCouponPresenterImpl: IValidateCouponPresenter {
 
             override fun onSuccess(response: EVValidateCouponResponse) {
                 mValidateCouponView.hideLoading()
-                mValidateCouponView.isValid(response.valid)
+                if (response.valid) {
+                    createNewExamination(specialty, serviceType)
+                }else {
+                    mValidateCouponView.showInvalidCouponMessage()
+                }
+
             }
 
             override fun onFailure() {
@@ -56,18 +62,23 @@ class ValidateCouponPresenterImpl: IValidateCouponPresenter {
         })
     }
 
-    override fun createNewExamination(specialty: String, service_type: String) {
+    override fun createNewExamination(specialty: String, serviceType: String) {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mValidateCouponView.showCreatingRoomLoading()
-        mEstacionVitalRemoteDataSource.createNewExamination(token, specialty, service_type, object: IEVCreateNewExaminationCallBack {
+        mEstacionVitalRemoteDataSource.createNewExamination(token, specialty, serviceType, object: IEVCreateNewExaminationCallBack {
             override fun onTokenExpired() {
                 mValidateCouponView.hideLoading()
                 expireSession()
             }
 
             override fun onSuccess(response: EVCreateNewExaminationResponse) {
-                mValidateCouponView.hideLoading()
-                mValidateCouponView.getCreatedRoomID(response.room)
+                //mValidateCouponView.hideLoading()
+                val evChannel = EVChannel()
+                evChannel.unique_name = response.room
+                evChannel.specialty = specialty
+                evChannel.isFinished = false
+                evChannel.type = serviceType
+                joinEVTwilioRoom(evChannel)
             }
 
             override fun onFailure() {
@@ -77,13 +88,14 @@ class ValidateCouponPresenterImpl: IValidateCouponPresenter {
         })
     }
 
-    override fun joinEVTwilioRoom(room_id: String) {
-        mEVTwilioChatRemoteDataSource.findChannelByID(room_id, object: IEVTwilioFindChannelByIDCallback{
+    override fun joinEVTwilioRoom(evChannel: EVChannel) {
+        mEVTwilioChatRemoteDataSource.findChannelByID(evChannel.unique_name, object: IEVTwilioFindChannelByIDCallback{
             override fun onSuccess(channel: Channel) {
                 mEVTwilioChatRemoteDataSource.joinChannel(channel,object: IEVTwilioJoinChannelCallBack {
                     override fun onSuccess() {
                         mValidateCouponView.hideLoading()
-                        mValidateCouponView.prepareToNavigateToChat(channel)
+                        evChannel.twilioChannel = channel
+                        mValidateCouponView.prepareToNavigateToChat(evChannel)
                     }
 
                     override fun onFailure() {

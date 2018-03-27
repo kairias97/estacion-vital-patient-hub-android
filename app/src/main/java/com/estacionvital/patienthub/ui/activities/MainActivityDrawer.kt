@@ -5,7 +5,6 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
@@ -13,7 +12,6 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
 import android.widget.TextView
 import com.estacionvital.patienthub.R
-import com.estacionvital.patienthub.R.id.nav_home
 import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
@@ -321,7 +319,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         targetIntent.putExtra("chatType",mTypeChat)
         targetIntent.putExtra("room_id", channel.unique_name)
         targetIntent.putExtra("specialty", channel.specialty)
-        targetIntent.putExtra("isFinished", channel.status)
+        targetIntent.putExtra("isFinished", channel.isFinished)
         targetIntent.putExtra("channel", channel)
         startActivity(targetIntent)
 

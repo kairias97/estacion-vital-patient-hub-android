@@ -118,5 +118,7 @@
     <string name="label_fab_menu_chat">Escoja el tipo de chat a ir</string>
     <string name="label_fab_button_chat_premium">Chat Premium</string>
     <string name="label_fab_button_chat_free">Chat Gratis</string>
+    <string name="title_activity_validate_coupon">Ingrese su cupón</string>
+    <string name="invalid_coupon_msg">El cupón ingresado es inválido.</string>
 
 </resources>

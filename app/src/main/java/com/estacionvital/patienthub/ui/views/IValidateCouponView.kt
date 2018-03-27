@@ -1,5 +1,6 @@
 package com.estacionvital.patienthub.ui.views
 
+import com.estacionvital.patienthub.model.EVChannel
 import com.twilio.chat.Channel
 
 /**
@@ -8,9 +9,8 @@ import com.twilio.chat.Channel
 interface IValidateCouponView : IBaseView{
     fun showValidateLoading()
     fun showCreatingRoomLoading()
-    fun getCreatedRoomID(data: String)
+    fun showInvalidCouponMessage()
     fun hideLoading()
     fun showErrorLoading()
-    fun isValid(isValid: Boolean)
-    fun prepareToNavigateToChat(data: Channel)
+    fun prepareToNavigateToChat(data: EVChannel)
 }

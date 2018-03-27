@@ -24,9 +24,11 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
     }
 
     override fun retrieveChannel(roomID: String) {
+        mTwilioChatView.showMessageLoading()
         if(EVChatSession.instance.isChatClientCreated == true){
             mEVTwilioChatRemoteDataSource.findChannelByID(roomID, object: IEVTwilioFindChannelByIDCallback{
                 override fun onSuccess(channel: Channel) {
+                    mTwilioChatView.hideLoading()
                     mTwilioChatView.getChannelFromID(channel)
                 }
 

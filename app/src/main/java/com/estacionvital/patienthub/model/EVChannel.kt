@@ -9,14 +9,14 @@ import com.twilio.chat.Channel
  */
 class EVChannel() : Parcelable{
     var unique_name: String = ""
-    var status: Boolean = true
+    var isFinished: Boolean = true
     var type: String = ""
     var specialty: String = ""
     var twilioChannel: Channel ?= null
 
     constructor(parcel: Parcel) : this() {
         unique_name = parcel.readString()
-        status = parcel.readByte() != 0.toByte()
+        isFinished = parcel.readByte() != 0.toByte()
         type = parcel.readString()
         specialty = parcel.readString()
         twilioChannel = parcel.readParcelable(Channel::class.java.classLoader)
@@ -24,7 +24,7 @@ class EVChannel() : Parcelable{
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(unique_name)
-        parcel.writeByte(if (status) 1 else 0)
+        parcel.writeByte(if (isFinished) 1 else 0)
         parcel.writeString(type)
         parcel.writeString(specialty)
         parcel.writeParcelable(twilioChannel, flags)
