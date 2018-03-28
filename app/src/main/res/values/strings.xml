@@ -114,5 +114,20 @@
     <string name="dialog_coupon">Tengo un cupón</string>
     <string name="dialog_credit_card">Tarjeta de crédito</string>
     <string name="session_expired_msg">Su sesión ha caducado</string>
+    <string name="chat_client_creation">Creando cliente de chat</string>
+    <string name="label_fab_menu_chat">Escoja el tipo de chat a ir</string>
+    <string name="label_fab_button_chat_premium">Chat Premium</string>
+    <string name="label_fab_button_chat_free">Chat Gratis</string>
+    <string name="title_activity_validate_coupon">Ingrese su cupón</string>
+    <string name="invalid_coupon_msg">El cupón ingresado es inválido.</string>
+    <string name="document_title_placeholder">%s - %s</string>
+    <string name="default_notification_title">Notificación de Estación Vital</string>
+    <string name="title_notification_new_message">Nuevo mensaje</string>
+    <string name="title_notification_added_channel">Agregado a un canal</string>
+    <string name="title_notification_invited_to_channel">Invitado a un canal</string>
+    <string name="title_notification_removed_from_channel">Removido de un canal</string>
+    <string name="title_chat_activity">Chat con %s</string>
+    <string name="disabled_free_chat_message">El envío de mensajes se ha desabilitado debido a que este es un chat Gratis</string>
+    <string name="send_message_error">Ocurrió un error al enviar el mensaje</string>
 
 </resources>

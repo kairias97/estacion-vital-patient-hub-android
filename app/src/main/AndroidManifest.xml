@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.estacionvital.patienthubestacionvital">
+    package="com.estacionvital.patienthub">
 
     <uses-sdk
         android:minSdkVersion="19"
@@ -11,11 +11,11 @@
     <uses-permission android:name="android.permission.READ_SMS" />
 
     <permission
-        android:name="com.estacionvital.patienthubestacionvital.permission.C2D_MESSAGE"
+        android:name="com.estacionvital.patienthub.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
 
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-permission android:name="com.estacionvital.patienthubestacionvital.permission.C2D_MESSAGE" />
+    <uses-permission android:name="com.estacionvital.patienthub.permission.C2D_MESSAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -28,25 +28,25 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service android:name=".services.FCMListenerService">
+        <service android:name="com.estacionvital.patienthub.services.FCMListenerService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
         <service
-            android:name=".services.FCMInstanceIDService"
+            android:name="com.estacionvital.patienthub.services.FCMInstanceIDService"
             android:exported="true">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
         <service
-            android:name=".services.RegistrationIntentService"
+            android:name="com.estacionvital.patienthub.services.RegistrationIntentService"
             android:exported="false"></service>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/ic_notification" />
+            android:resource="@mipmap/ic_launcher" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorPrimary" />
@@ -54,7 +54,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".ui.activities.MainActivity">
+        <activity android:name="com.estacionvital.patienthub.ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -66,7 +66,7 @@
             android:name="io.fabric.ApiKey"
             android:value="663de7737e30f5183dfda7c274c0893cf9063a44" />
 
-        <activity android:name=".ui.activities.SplashActivity">
+        <activity android:name="com.estacionvital.patienthub.ui.activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,42 +74,42 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.activities.NumberVerificationActivity"
+            android:name="com.estacionvital.patienthub.ui.activities.NumberVerificationActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
-            android:name=".ui.activities.ConfirmationCodeVerificationActivity"
+            android:name="com.estacionvital.patienthub.ui.activities.ConfirmationCodeVerificationActivity"
             android:windowSoftInputMode="stateVisible|adjustResize" />
-        <activity android:name=".ui.activities.SuscriptionQuestionActivity" />
-        <activity android:name=".ui.activities.ClubSubscriptionActivity" />
-        <activity android:name=".ui.activities.RegistrationProfileActivity" />
+        <activity android:name="com.estacionvital.patienthub.ui.activities.SuscriptionQuestionActivity" />
+        <activity android:name="com.estacionvital.patienthub.ui.activities.ClubSubscriptionActivity" />
+        <activity android:name="com.estacionvital.patienthub.ui.activities.RegistrationProfileActivity" />
         <activity
-            android:name=".ui.activities.MainActivityDrawer"
+            android:name="com.estacionvital.patienthub.ui.activities.MainActivityDrawer"
             android:label="@string/title_activity_main_drawer"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ui.activities.EditProfileActivity"
-            android:parentActivityName=".ui.activities.MainActivityDrawer" />
+            android:name="com.estacionvital.patienthub.ui.activities.EditProfileActivity"
+            android:parentActivityName="com.estacionvital.patienthub.ui.activities.MainActivityDrawer" />
         <activity
-            android:name=".ui.activities.ArticleSelectionActivity"
+            android:name="com.estacionvital.patienthub.ui.activities.ArticleSelectionActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".ui.activities.MainActivityDrawer" />
+            android:parentActivityName="com.estacionvital.patienthub.ui.activities.MainActivityDrawer" />
         <activity
-            android:name=".ui.activities.WebArticleActivity"
-            android:parentActivityName=".ui.activities.ArticleSelectionActivity" />
+            android:name="com.estacionvital.patienthub.ui.activities.WebArticleActivity"
+            android:parentActivityName="com.estacionvital.patienthub.ui.activities.ArticleSelectionActivity" />
 
 
 
         <activity
-            android:name=".ui.activities.TwilioChatActivity"
-            android:parentActivityName=".ui.activities.MainActivityDrawer" />
+            android:name="com.estacionvital.patienthub.ui.activities.TwilioChatActivity"
+            android:parentActivityName="com.estacionvital.patienthub.ui.activities.MainActivityDrawer" />
         <activity
-            android:name=".ui.activities.SpecialtySelectionActivity"
+            android:name="com.estacionvital.patienthub.ui.activities.SpecialtySelectionActivity"
             android:launchMode="singleTop"
-            android:parentActivityName=".ui.activities.MainActivityDrawer" />
+            android:parentActivityName="com.estacionvital.patienthub.ui.activities.MainActivityDrawer" />
         <activity
-            android:name=".ui.activities.ValidateCouponActivity"
-            android:parentActivityName=".ui.activities.SpecialtySelectionActivity" />
+            android:name="com.estacionvital.patienthub.ui.activities.ValidateCouponActivity"
+            android:parentActivityName="com.estacionvital.patienthub.ui.activities.SpecialtySelectionActivity" />
 
 
     </application>
