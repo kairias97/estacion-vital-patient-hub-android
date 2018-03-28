@@ -64,16 +64,16 @@ class FCMListenerService : FirebaseMessagingService() {
 
             if (type == NotificationPayload.Type.UNKNOWN) return  // Ignore everything we don't support
 
-            var title = "Twilio Notification"
+            var title = getString(R.string.default_notification_title)
 
             if (type == NotificationPayload.Type.NEW_MESSAGE)
-                title = "Twilio: New Message"
+                title = getString(R.string.title_notification_new_message)
             if (type == NotificationPayload.Type.ADDED_TO_CHANNEL)
-                title = "Twilio: Added to Channel"
+                title = getString(R.string.title_notification_added_channel)
             if (type == NotificationPayload.Type.INVITED_TO_CHANNEL)
-                title = "Twilio: Invited to Channel"
+                title = getString(R.string.title_notification_invited_to_channel)
             if (type == NotificationPayload.Type.REMOVED_FROM_CHANNEL)
-                title = "Twilio: Removed from Channel"
+                title = getString(R.string.title_notification_removed_from_channel)
 
             // Set up action Intent
             val intent = Intent(this, SplashActivity::class.java)

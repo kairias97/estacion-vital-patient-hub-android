@@ -120,5 +120,11 @@
     <string name="label_fab_button_chat_free">Chat Gratis</string>
     <string name="title_activity_validate_coupon">Ingrese su cupón</string>
     <string name="invalid_coupon_msg">El cupón ingresado es inválido.</string>
+    <string name="document_title_placeholder">%s - %s</string>
+    <string name="default_notification_title">Notificación de Estación Vital</string>
+    <string name="title_notification_new_message">Nuevo mensaje</string>
+    <string name="title_notification_added_channel">Agregado a un canal</string>
+    <string name="title_notification_invited_to_channel">Invitado a un canal</string>
+    <string name="title_notification_removed_from_channel">Removido de un canal</string>
 
 </resources>
