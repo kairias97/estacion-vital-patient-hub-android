@@ -13,6 +13,7 @@ class EVChannel() : Parcelable{
     var type: String = ""
     var specialty: String = ""
     var twilioChannel: Channel ?= null
+    var doctorName: String = ""
 
     constructor(parcel: Parcel) : this() {
         unique_name = parcel.readString()
@@ -20,6 +21,7 @@ class EVChannel() : Parcelable{
         type = parcel.readString()
         specialty = parcel.readString()
         twilioChannel = parcel.readParcelable(Channel::class.java.classLoader)
+        doctorName = parcel.readString()
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -28,6 +30,7 @@ class EVChannel() : Parcelable{
         parcel.writeString(type)
         parcel.writeString(specialty)
         parcel.writeParcelable(twilioChannel, flags)
+        parcel.writeString(doctorName)
     }
 
     override fun describeContents(): Int {
@@ -43,4 +46,5 @@ class EVChannel() : Parcelable{
             return arrayOfNulls(size)
         }
     }
+
 }

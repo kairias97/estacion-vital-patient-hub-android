@@ -7,5 +7,5 @@ interface ISpecialtySelectionPresenter: IBasePresenter {
     fun retrieveSpecialtiesChat()
     fun retrieveDoctorAvailability(specialty: String)
     fun createNewExamination(specialty: String, service_type: String)
-    fun joinEVTwilioRoom(room: String)
+    //fun joinEVTwilioRoom(room: String)
 }

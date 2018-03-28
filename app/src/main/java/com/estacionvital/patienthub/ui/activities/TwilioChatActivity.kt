@@ -23,14 +23,16 @@ import com.twilio.chat.Message
 
 class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMessageSelectedListener {
 
+
+    /*
     private lateinit var mTypeChat: String
     private lateinit var mSpecialtySelected: String
     private lateinit var mRoomID: String
-    private var mIsFinished: Boolean = false
+    private var mIsFinished: Boolean = false*/
     private lateinit var mTwilioChatPresenter: ITwilioChatPresenter
     private lateinit var mRecyclerView: RecyclerView
-    private lateinit var mMessageAdapter: MessageAdapter
-    private lateinit var mCurrentChannel: Channel
+
+    //private lateinit var mCurrentChannel: Channel
     private lateinit var messageTxt: EditText
     private lateinit var sendBtn: ImageButton
     private lateinit var mEVChannel:EVChannel
@@ -43,35 +45,50 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         if (intent.extras != null) {
+            /*
             mTypeChat = intent.extras.getString("chatType")
             mSpecialtySelected = intent.extras.getString("specialty")
             mRoomID = intent.extras.getString("room_id")
             if(intent.hasExtra("isFinished")){
                 mIsFinished = intent.extras.getBoolean("isFinished")
-            }
-            //mEVChannel = intent.extras.getParcelable("channel")
+            }*/
+            mEVChannel = intent.extras.getParcelable("channel")
 
         }
         //Refactorizar para hacer el format desde el R.string
-        supportActionBar!!.title = "Chat con ${mSpecialtySelected}"
+        supportActionBar!!.title = getString(R.string.title_chat_activity).format(mEVChannel.specialty)
+        //"Chat con ${mSpecialtySelected}"
 
-        mRecyclerView = findViewById<RecyclerView>(R.id.recycler_messages)
-        messageTxt = findViewById<EditText>(R.id.edit_text_message)
-        sendBtn = findViewById<ImageButton>(R.id.image_button_send)
+        mRecyclerView = findViewById(R.id.recycler_messages)
+        mRecyclerView.adapter = MessageAdapter(ArrayList<Message>(),this)
+        mRecyclerView.layoutManager = LinearLayoutManager(this)
+        mRecyclerView.setHasFixedSize(true)
+        (mRecyclerView.layoutManager as LinearLayoutManager).stackFromEnd = true
 
-        if(mIsFinished){
-            messageTxt.isEnabled = false
-            messageTxt.keyListener = null
-        }
-        
 
+        messageTxt = findViewById(R.id.edit_text_message)
+        sendBtn = findViewById(R.id.image_button_send)
+
+
+        mTwilioChatPresenter = TwilioChatPresenterImpl(this, EVTwilioChatRemoteDataSource.instance)
+
+        //Listeners setup
 
         sendBtn.setOnClickListener{
             val message = messageTxt.text.toString()
-            sendMessage(message)
+            mTwilioChatPresenter.sendMessage(mEVChannel, message)
+            //sendMessage(message)
             messageTxt.setText("")
-            sendBtn.isEnabled = false
+            //sendBtn.isEnabled = false
         }
+
+
+        //showMessageLoading()
+        mTwilioChatPresenter.setupChatChannel(mEVChannel)
+        //mTwilioChatPresenter.retrieveChannel(mRoomID)
+
+    }
+    override fun bindMessageTextInputListener() {
         messageTxt.addTextChangedListener(object: TextWatcher{
             override fun afterTextChanged(s: Editable?) {
 
@@ -82,22 +99,33 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                changeBtnEnabled()
+                mTwilioChatPresenter.onMessageTextChanged(s.toString())
+                //changeBtnEnabled()
             }
         })
-        sendBtn.isEnabled = false
-
-        mTwilioChatPresenter = TwilioChatPresenterImpl(this, EVTwilioChatRemoteDataSource.instance)
-        //showMessageLoading()
-        mTwilioChatPresenter.retrieveChannel(mRoomID)
-
-        mMessageAdapter = MessageAdapter(ArrayList<Message>(),this)
-        mRecyclerView.adapter = mMessageAdapter
-        mRecyclerView.layoutManager = LinearLayoutManager(this)
-        (mRecyclerView.layoutManager as LinearLayoutManager).stackFromEnd = true
-        mRecyclerView.setHasFixedSize(true)
     }
 
+    override fun unbindMessageTextInputListener() {
+        messageTxt.keyListener = null
+    }
+
+    override fun enableMessageTextInput() {
+        messageTxt.isEnabled = true
+    }
+
+    override fun disableMessageTextInput() {
+        messageTxt.isEnabled = false
+    }
+    override fun enableSendButton() {
+        sendBtn.isEnabled = true
+    }
+
+    override fun disableSendButton() {
+        sendBtn.isEnabled = false
+    }
+    override fun showErrorSendingMessage() {
+        this.toast(R.string.send_message_error)
+    }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item!!.itemId){
             android.R.id.home -> {
@@ -107,6 +135,9 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
         return true
     }
 
+    override fun showFreeChatDisabledMessage() {
+        this.toast(R.string.disabled_free_chat_message)
+    }
     override fun onBackPressed() {
         returnTop()
     }
@@ -125,34 +156,32 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
     override fun showErrorLoading() {
         this.toast(getString(R.string.generic_500_error))
     }
-
+    /*
     override fun getChannelFromID(channel: Channel) {
         mCurrentChannel = channel
         //move this to presenter
         mTwilioChatPresenter.retrieveMessages(mCurrentChannel)
         mTwilioChatPresenter.setChannelListener(mCurrentChannel)
-    }
+    }*/
 
-    override fun getMessagesFromChannel(messages: MutableList<Message>) {
+    override fun setChannelMessagesUI(messages: MutableList<Message>) {
         (mRecyclerView.adapter as? MessageAdapter)!!.setMessageList(messages)
         (mRecyclerView.adapter as? MessageAdapter)!!.notifyDataSetChanged()
         (mRecyclerView.layoutManager as LinearLayoutManager).stackFromEnd = true
-        hideLoading()
+        //hideLoading()
     }
 
-    override fun getNewMessage(message: Message) {
+    override fun addMessageToUI(message: Message) {
         (mRecyclerView.adapter as MessageAdapter).addNewMessage(message)
         (mRecyclerView.adapter as MessageAdapter).notifyDataSetChanged()
         mRecyclerView.scrollToPosition((mRecyclerView.adapter as MessageAdapter).getMessageList().count() - 1)
     }
 
-    override fun sendMessage(body: String) {
-        mTwilioChatPresenter.sendMessage(mCurrentChannel,body)
-    }
 
     override fun onMessageSelected(message: Message) {
 
     }
+    /*
     private fun changeBtnEnabled(){
         if(messageTxt.text.toString() != "" || messageTxt.text.toString() != ""){
             sendBtn.isEnabled = true
@@ -160,5 +189,5 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
         else{
             sendBtn.isEnabled = false
         }
-    }
+    }*/
 }

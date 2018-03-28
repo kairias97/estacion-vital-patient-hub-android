@@ -11,21 +11,31 @@ import com.estacionvital.patienthub.util.DateUtil
  * Created by dusti on 18/03/2018.
  */
 class ConversationHistoryViewHolder: RecyclerView.ViewHolder {
-    private var mTextViewName: TextView
-    private var mTextViewDate: TextView
+    private val mNameTextView: TextView
+    private val mDateTextView: TextView
+    private val mDoctorTextView: TextView
+    private val mStatusTextView: TextView
+
+
     constructor(itemView: View): super(itemView){
-        mTextViewName = itemView.findViewById<TextView>(R.id.textView_channel_name)
-        mTextViewDate = itemView.findViewById<TextView>(R.id.textView_channel_date)
+        mNameTextView = itemView.findViewById(R.id.textView_channel_name)
+        mDateTextView = itemView.findViewById(R.id.textView_channel_date)
+        mDoctorTextView = itemView.findViewById(R.id.textView_channel_doctor)
+        mStatusTextView = itemView.findViewById(R.id.textView_channel_status)
     }
-    fun bindData(viewModel: EVChannel, listener: ConversationHistoryAdapter.OnChannelSelectedListener){
-        mTextViewName.text = "Chat con ${viewModel.specialty}"
-        if(viewModel.twilioChannel != null){
-            val date = viewModel.twilioChannel!!.dateCreated.substring(0,viewModel.twilioChannel!!.dateCreated.length-4)
-            mTextViewDate.text = DateUtil.parseDateStringToFormat(date,"yyyy-MM-dd'T'HH:mm:ss","dd/MM/yyyy")
-            //mTextViewDate.text = viewModel.twilioChannel!!.dateCreated
+    fun bindData(channel: EVChannel, listener: ConversationHistoryAdapter.OnChannelSelectedListener){
+        mNameTextView.text = "Chat con ${channel.specialty}"
+        if(channel.twilioChannel != null){
+
+            val date = channel.twilioChannel!!.dateCreatedAsDate
+            mDateTextView.text = DateUtil.parseDateToFormat(date,"dd/MM/yyyy")
+            //mDateTextView.text = channel.twilioChannel!!.dateCreated
+            mDoctorTextView.text = if(channel.doctorName.isNullOrEmpty() || channel.doctorName == "false")
+                "Pendiente de doctor" else "Dr. ${channel.doctorName}"
+            mStatusTextView.text = if (!channel.isFinished) "Abierto" else "Finalizado"
         }
         itemView.setOnClickListener{
-            listener.onChannelItemSelected(viewModel)
+            listener.onChannelItemSelected(channel)
         }
     }
 

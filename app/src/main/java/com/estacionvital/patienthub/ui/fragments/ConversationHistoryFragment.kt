@@ -68,13 +68,13 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
         activity.fab.visibility = View.GONE
         val view = inflater!!.inflate(R.layout.fragment_conversation_history, container, false)
 
-        mFabButton = view.findViewById<FloatingActionButton>(R.id.fab_chat_add)
+        mFabButton = view.findViewById(R.id.fab_chat_add)
         mFabButton.setOnClickListener {
             navigateToSpecialty()
         }
-        mTextViewNoRegister = view.findViewById<TextView>(R.id.textView_register_none)
+        mTextViewNoRegister = view.findViewById(R.id.textView_register_none)
         mTextViewNoRegister.visibility = View.GONE
-        mRecyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        mRecyclerView = view.findViewById(R.id.recyclerView)
 
         mConversationhistoryPresenter = ConversationHistoryPresenterImpl(SharedPrefManager(
                 activity.getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),

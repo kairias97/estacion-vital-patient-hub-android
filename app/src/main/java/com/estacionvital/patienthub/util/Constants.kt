@@ -37,7 +37,8 @@ const val URL_EV_LOGOUT: String = "auth/sign-out"
 
 //Constantes para el tipo de chat
 const val CHAT_FREE: String = "free"
-const val CHAT_PREMIUM: String = "premium"
+const val CHAT_PREMIUM: String = "paid"
+const val CHAT_PAID: String = "paid"
 
 //Constantes para el tipo de examinacion
 const val EXAMINATION_TYPE_CHAT = "chat"

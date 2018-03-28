@@ -76,6 +76,7 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
                     newChannel.type = channel.service_type
                     newChannel.unique_name = channel.channel_name
                     newChannel.specialty = channel.specialty
+                    newChannel.doctorName = channel.doctorName
 
                     for(twilioChannel in channels){
                         if(twilioChannel.uniqueName.toString() == channel.channel_name){
@@ -100,7 +101,7 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
         var list: MutableList<EVChannel> = ArrayList<EVChannel>()
         if(type == CHAT_FREE){
             for(channel in data.reversed()){
-                if(channel.type == "free"){
+                if(channel.type == CHAT_FREE){
                     list.add(channel)
                     break
                 }
@@ -109,7 +110,10 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
         }
         else if(type == CHAT_PREMIUM){
             for(channel in data.reversed()){
-                list.add(channel)
+                if(channel.type == CHAT_PREMIUM){
+                    list.add(channel)
+                }
+
             }
             return list
         }

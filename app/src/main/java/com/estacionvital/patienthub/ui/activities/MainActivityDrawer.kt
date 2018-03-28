@@ -157,7 +157,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
-
+        navigationView.setCheckedItem(R.id.nav_home)
         mEstacionVitalRemoteDataSource = EstacionVitalRemoteDataSource.INSTANCE
 
         mMainDrawerPresenter = MainDrawerPresenterImpl(this, mEstacionVitalRemoteDataSource,

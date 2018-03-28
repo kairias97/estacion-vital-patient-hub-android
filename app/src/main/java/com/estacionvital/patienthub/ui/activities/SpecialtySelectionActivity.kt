@@ -13,6 +13,7 @@ import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
+import com.estacionvital.patienthub.model.EVChannel
 import com.estacionvital.patienthub.model.EVSpecialtiesResponse
 import com.estacionvital.patienthub.presenter.ISpecialtySelectionPresenter
 import com.estacionvital.patienthub.presenter.implementations.SpecialtySelectionPresenterImpl
@@ -58,6 +59,7 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
         }
 
         mAcceptButton.setOnClickListener {
+            //ESTA LOGICA TIENE QUE IR A MODO DE PRESENTER SOLO PASANDO EL SELECTED Y EL SERVICE TYPE
             //faltaria verificar el parametro para ver si es chat free o premium, en caso de ser premium mostrar dialogo
             if(mTypeChat == CHAT_FREE){
                 selected = mSpinner.selectedItem.toString()
@@ -151,12 +153,10 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
         hideLoading()
     }
 
-    override fun getCreatedRoomID(data: String) {
-        mSpecialtySelectionPresenter.joinEVTwilioRoom(data)
-    }
 
-    override fun prepareToNavigateToChat(data: Channel) {
-        navigateToChatWindow(selected, data.uniqueName)
+
+    override fun prepareToNavigateToChat(createdChannel: EVChannel) {
+        navigateToChatWindow(createdChannel)
     }
 
     override fun prepareToNavigateToCoupon(specialty: String, typeChat: String) {
@@ -189,11 +189,12 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
                     }
                 })
     }
-    private fun navigateToChatWindow(selected: String, room_id: String){
+    private fun navigateToChatWindow(channel: EVChannel){
         val intentChatWindow = Intent(this, TwilioChatActivity::class.java)
-        intentChatWindow.putExtra("chatType", mTypeChat)
+        intentChatWindow.putExtra("channel", channel)
+        /*
         intentChatWindow.putExtra("specialty", selected)
-        intentChatWindow.putExtra("room_id",room_id)
+        intentChatWindow.putExtra("room_id",room_id)*/
         startActivity(intentChatWindow)
     }
 }

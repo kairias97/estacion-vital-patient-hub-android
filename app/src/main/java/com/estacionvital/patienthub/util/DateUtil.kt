@@ -11,6 +11,7 @@ class DateUtil {
         fun parseDateToFormat(year: Int, month: Int, day: Int, format: String): String{
             val formatter = SimpleDateFormat(format)
             val c = Calendar.getInstance()
+
             c.set(year, month, day)
             val date = c.time as Date
             return formatter.format(date)

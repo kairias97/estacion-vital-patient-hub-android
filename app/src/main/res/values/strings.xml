@@ -126,5 +126,8 @@
     <string name="title_notification_added_channel">Agregado a un canal</string>
     <string name="title_notification_invited_to_channel">Invitado a un canal</string>
     <string name="title_notification_removed_from_channel">Removido de un canal</string>
+    <string name="title_chat_activity">Chat con %s</string>
+    <string name="disabled_free_chat_message">El envío de mensajes se ha desabilitado debido a que este es un chat Gratis</string>
+    <string name="send_message_error">Ocurrió un error al enviar el mensaje</string>
 
 </resources>
