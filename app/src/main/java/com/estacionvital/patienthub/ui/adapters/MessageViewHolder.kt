@@ -5,7 +5,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.estacionvital.patienthub.R
+import com.estacionvital.patienthub.model.EVUserSession
 import com.estacionvital.patienthub.util.DateUtil
+import com.squareup.picasso.Picasso
 import com.twilio.chat.Message
 import java.util.*
 
@@ -35,6 +37,12 @@ class MessageViewHolder: RecyclerView.ViewHolder {
         mTextViewDate.text = DateUtil.parseDateToFormat(date, "HH:mm dd/MM/yyyy")
         itemView.setOnClickListener {
             listener.onMessageSelected(message)
+        }
+
+        if(message.author == "${EVUserSession.instance.userProfile.name} ${EVUserSession.instance.userProfile.last_name}"){
+            Picasso.get()
+                    .load(R.mipmap.ic_patient_round)
+                    .into(mProfileView)
         }
     }
 }

@@ -129,5 +129,8 @@
     <string name="title_chat_activity">Chat con %s</string>
     <string name="disabled_free_chat_message">El envío de mensajes se ha desabilitado debido a que este es un chat Gratis</string>
     <string name="send_message_error">Ocurrió un error al enviar el mensaje</string>
+    <string name="label_doctor_left">Se ha terminado la sesión de chat, puede ver el documento de esta sesión en la sección de documentos.</string>
+    <string name="label_doctor_joined">El doctor se ha unido a la conversación.</string>
+    <string name="label_no_messages_chat">Escriba un mensaje para iniciar la conversación.</string>
 
 </resources>

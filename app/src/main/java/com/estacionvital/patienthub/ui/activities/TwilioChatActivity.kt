@@ -7,8 +7,10 @@ import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.MenuItem
+import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.model.EVChannel
@@ -35,6 +37,7 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
     //private lateinit var mCurrentChannel: Channel
     private lateinit var messageTxt: EditText
     private lateinit var sendBtn: ImageButton
+    private lateinit var sendMessageLbl: TextView
     private lateinit var mEVChannel:EVChannel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +71,9 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
 
         messageTxt = findViewById(R.id.edit_text_message)
         sendBtn = findViewById(R.id.image_button_send)
+        sendMessageLbl = findViewById(R.id.label_no_message)
+
+        sendMessageLbl.visibility = View.GONE
 
 
         mTwilioChatPresenter = TwilioChatPresenterImpl(this, EVTwilioChatRemoteDataSource.instance)
@@ -168,10 +174,17 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
         (mRecyclerView.adapter as? MessageAdapter)!!.setMessageList(messages)
         (mRecyclerView.adapter as? MessageAdapter)!!.notifyDataSetChanged()
         (mRecyclerView.layoutManager as LinearLayoutManager).stackFromEnd = true
+        if(messages.count() == 0){
+            sendMessageLbl.visibility = View.VISIBLE
+        }
+        else{
+            sendMessageLbl.visibility = View.GONE
+        }
         //hideLoading()
     }
 
     override fun addMessageToUI(message: Message) {
+        sendMessageLbl.visibility = View.GONE
         (mRecyclerView.adapter as MessageAdapter).addNewMessage(message)
         (mRecyclerView.adapter as MessageAdapter).notifyDataSetChanged()
         mRecyclerView.scrollToPosition((mRecyclerView.adapter as MessageAdapter).getMessageList().count() - 1)
@@ -180,6 +193,14 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
 
     override fun onMessageSelected(message: Message) {
 
+    }
+
+    override fun showDoctorLeaved() {
+        this.toast(getString(R.string.label_doctor_left))
+    }
+
+    override fun showDoctorJoined() {
+        this.toast(getString(R.string.label_doctor_joined))
     }
     /*
     private fun changeBtnEnabled(){
