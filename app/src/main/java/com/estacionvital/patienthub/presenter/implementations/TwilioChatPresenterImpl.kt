@@ -1,9 +1,6 @@
 package com.estacionvital.patienthub.presenter.implementations
 
-import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioFindChannelByIDCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioGetLastMessagesFromChannelCalBack
-import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioMessageAddedCallBack
-import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioSendMessageCallBack
+import com.estacionvital.patienthub.data.remote.Callbacks.*
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.model.EVChannel
 import com.estacionvital.patienthub.model.EVChatSession
@@ -114,6 +111,24 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
         mEVTwilioChatRemoteDataSource.subscribeToAddedMessages(channel, object: IEVTwilioMessageAddedCallBack{
             override fun onSuccess(message: Message) {
                 mTwilioChatView.addMessageToUI(message)
+            }
+
+            override fun onFailure() {
+                mTwilioChatView.showErrorLoading()
+            }
+        }, object: IEVMemberAddedCallBack{
+            override fun onSuccess() {
+                mTwilioChatView.showDoctorJoined()
+            }
+
+            override fun onFailure() {
+                mTwilioChatView.showErrorLoading()
+            }
+        }, object: IEVMemberDeletedCallBack{
+            override fun onSuccess() {
+                mTwilioChatView.showDoctorLeaved()
+                mTwilioChatView.disableMessageTextInput()
+                mTwilioChatView.disableSendButton()
             }
 
             override fun onFailure() {

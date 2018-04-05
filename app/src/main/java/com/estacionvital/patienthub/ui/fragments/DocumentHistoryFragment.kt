@@ -84,7 +84,7 @@ class DocumentHistoryFragment: Fragment(), IDocumentHistoryFragmentView {
     }
 
     override fun updateDocumentsListUI(documents : MutableList<Document>) {
-        (this.mDocumentRecycler.adapter as EVDocumentAdapter).setDocuments(documents)
+        (this.mDocumentRecycler.adapter as EVDocumentAdapter).setDocuments(documents.reversed().toMutableList())
 
         (this.mDocumentRecycler.adapter as EVDocumentAdapter).notifyDataSetChanged()
     }

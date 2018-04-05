@@ -21,4 +21,6 @@ interface ITwilioChatView : IBaseView{
     fun disableSendButton()
     fun showFreeChatDisabledMessage()
     fun showErrorSendingMessage()
+    fun showDoctorLeaved()
+    fun showDoctorJoined()
 }

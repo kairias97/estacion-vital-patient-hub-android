@@ -95,12 +95,7 @@ class EVTwilioChatRemoteDataSource {
     }
     fun callSubscribedChannels(callback: IEVTwilioCallSubscribedChannelsCallBack){
         val channels: List<Channel> = EVChatSession.instance.chatClient.channels.subscribedChannels
-        if(channels.count()==0){
-            callback.onFailure()
-        }
-        else if(channels.count()>0){
-            callback.onSuccess(channels)
-        }
+        callback.onSuccess(channels)
     }
     fun callPublicChannels(callback: IEVTwilioCallPublicChannelsCallBack){
         EVChatSession.instance.chatClient.channels.getPublicChannelsList(object: CallbackListener<Paginator<ChannelDescriptor>>(){
@@ -155,10 +150,10 @@ class EVTwilioChatRemoteDataSource {
             }
         })
     }
-    fun subscribeToAddedMessages(channel: Channel, callback: IEVTwilioMessageAddedCallBack){
+    fun subscribeToAddedMessages(channel: Channel, callback: IEVTwilioMessageAddedCallBack, callbackMemberAdded: IEVMemberAddedCallBack, callbackMemberDeleted: IEVMemberDeletedCallBack){
         channel.addListener(object: ChannelListener{
             override fun onMemberDeleted(p0: Member?) {
-
+                callbackMemberDeleted.onSuccess()
             }
 
             override fun onTypingEnded(p0: Member?) {
@@ -171,7 +166,7 @@ class EVTwilioChatRemoteDataSource {
             }
 
             override fun onMemberAdded(p0: Member?) {
-
+                callbackMemberAdded.onSuccess()
             }
 
             override fun onTypingStarted(p0: Member?) {
