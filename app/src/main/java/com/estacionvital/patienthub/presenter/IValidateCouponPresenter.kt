@@ -7,6 +7,6 @@ import com.estacionvital.patienthub.model.EVChannel
  */
 interface IValidateCouponPresenter : IBasePresenter{
     fun validateCoupon(coupon: String, specialty: String, serviceType:String)
-    fun createNewExamination(specialty: String, serviceType: String)
+    fun createNewExamination(specialty: String, serviceType: String, type: String, code: String, order_id: String)
     fun joinEVTwilioRoom(evChannel: EVChannel)
 }

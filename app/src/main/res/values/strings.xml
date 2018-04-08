@@ -132,5 +132,11 @@
     <string name="label_doctor_left">Se ha terminado la sesión de chat, puede ver el documento de esta sesión en la sección de documentos.</string>
     <string name="label_doctor_joined">El doctor se ha unido a la conversación.</string>
     <string name="label_no_messages_chat">Escriba un mensaje para iniciar la conversación.</string>
+    <string name="label_validate_credit_card">Estimado cliente, ingrese los datos que se le solicita pra procesar su tarjeta de crédito.</string>
+    <string name="holder_credit_card_label">Nombre del propietario</string>
+    <string name="number_credit_card_label">Número de tarjeta</string>
+    <string name="nexpMonth_credit_card_label">Mes</string>
+    <string name="expYear_credit_card_label">Año</string>
+    <string name="cvc_credit_card_label">CVC</string>
 
 </resources>

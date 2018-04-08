@@ -13,6 +13,7 @@ import com.estacionvital.patienthub.model.EVUserSession
 import com.estacionvital.patienthub.model.EVValidateCouponResponse
 import com.estacionvital.patienthub.presenter.IValidateCouponPresenter
 import com.estacionvital.patienthub.ui.views.IValidateCouponView
+import com.estacionvital.patienthub.util.PAYMENT_TYPE_COUPON
 import com.twilio.chat.Channel
 
 /**
@@ -48,7 +49,7 @@ class ValidateCouponPresenterImpl: IValidateCouponPresenter {
             override fun onSuccess(response: EVValidateCouponResponse) {
                 mValidateCouponView.hideLoading()
                 if (response.valid) {
-                    createNewExamination(specialty, serviceType)
+                    createNewExamination(specialty, serviceType, PAYMENT_TYPE_COUPON, coupon, "")
                 }else {
                     mValidateCouponView.showInvalidCouponMessage()
                 }
@@ -62,10 +63,10 @@ class ValidateCouponPresenterImpl: IValidateCouponPresenter {
         })
     }
 
-    override fun createNewExamination(specialty: String, serviceType: String) {
+    override fun createNewExamination(specialty: String, serviceType: String, type: String, code: String, order_id: String) {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mValidateCouponView.showCreatingRoomLoading()
-        mEstacionVitalRemoteDataSource.createNewExamination(token, specialty, serviceType, object: IEVCreateNewExaminationCallBack {
+        mEstacionVitalRemoteDataSource.createNewExamination(token, specialty, serviceType, type, code, order_id, object: IEVCreateNewExaminationCallBack {
             override fun onTokenExpired() {
                 mValidateCouponView.hideLoading()
                 expireSession()

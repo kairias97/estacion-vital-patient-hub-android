@@ -59,17 +59,12 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
         }
 
         mAcceptButton.setOnClickListener {
-            //ESTA LOGICA TIENE QUE IR A MODO DE PRESENTER SOLO PASANDO EL SELECTED Y EL SERVICE TYPE
-            //faltaria verificar el parametro para ver si es chat free o premium, en caso de ser premium mostrar dialogo
             if(mTypeChat == CHAT_FREE){
                 selected = mSpinner.selectedItem.toString()
                 service_type = "free"
-                mSpecialtySelectionPresenter.createNewExamination(selected,service_type)
-                //prepareToNavigateToCoupon(selected, service_type)
+                mSpecialtySelectionPresenter.createNewExamination(selected,service_type, "", "", "")
             }
             else if(mTypeChat == CHAT_PREMIUM){
-                //falta agregar verificar disponibilidad, por el momento tendra el mismo comportamiento
-                //igualmente, al ser premium, nos faltaria ver como mandarlo al activity de modo de pago
                 selected = mSpinner.selectedItem.toString()
                 service_type = "paid"
                 mSpecialtySelectionPresenter.retrieveDoctorAvailability(selected)

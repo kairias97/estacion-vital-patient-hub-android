@@ -70,10 +70,10 @@ class SpecialtySelectionPresenterImpl: ISpecialtySelectionPresenter {
         })
     }
 
-    override fun createNewExamination(specialty: String, service_type: String) {
+    override fun createNewExamination(specialty: String, service_type: String, type: String, code: String, order_id: String) {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mSpecialtySelectionView.showCreatingExaminationProgress()
-        mEstacionVitalRemoteDataSource.createNewExamination(token, specialty, service_type, object: IEVCreateNewExaminationCallBack{
+        mEstacionVitalRemoteDataSource.createNewExamination(token, specialty, service_type, type, code, order_id, object: IEVCreateNewExaminationCallBack{
             override fun onTokenExpired() {
                 mSpecialtySelectionView.hideLoading()
                 expireSession()
