@@ -233,8 +233,9 @@ class EstacionVitalRemoteDataSource {
             }
         })
     }
-    fun createNewExamination(token: String, specialty: String, service_type: String, callback: IEVCreateNewExaminationCallBack){
-        val authCall = EstacionVitalAPI.instance.service!!.createNewExamination(token, EVCreateNewExaminationRequest(specialty, EXAMINATION_TYPE_CHAT, service_type))
+    fun createNewExamination(token: String, specialty: String, service_type: String, type: String, code: String, order_id: String,callback: IEVCreateNewExaminationCallBack){
+        val authCall = EstacionVitalAPI.instance.service!!.createNewExamination(token, EVCreateNewExaminationRequest(specialty, EXAMINATION_TYPE_CHAT, service_type,
+                EVPaymentInfo(type, code, order_id)))
         authCall.enqueue(object: Callback<EVCreateNewExaminationResponse>{
             override fun onResponse(call: Call<EVCreateNewExaminationResponse>?, response: Response<EVCreateNewExaminationResponse>?) {
                 when(response!!.code()){
@@ -318,6 +319,34 @@ class EstacionVitalRemoteDataSource {
                 }
             }
 
+        })
+    }
+    fun paymentCreditCard(token: String, holder: String, expYear: String, expMonth: String, number: String, cvc: String, callback: IEVPaymentCreditCardCallBack){
+        val authCall = EstacionVitalAPI.instance.service!!.paymentCreditCard(token, EVCreditCardRequest(holder, number, expMonth, expYear, cvc))
+        authCall.enqueue(object: Callback<EVCreditCardResponse>{
+            override fun onResponse(call: Call<EVCreditCardResponse>?, response: Response<EVCreditCardResponse>?) {
+                when(response!!.code()){
+                    200 -> {
+                        callback.onSuccess(response!!.body()!!)
+                    }
+                    401, 403 -> {
+                        callback.onTokenExpired()
+                    }
+                    else -> {
+                        if(BuildConfig.BUILD_TYPE == "debug") {
+                            Log.e("Not 200", response.raw().body().toString())
+                        }
+                        callback.onFailure()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<EVCreditCardResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug") {
+                    Log.e("failure", t.toString())
+                }
+                callback.onFailure()
+            }
         })
     }
     companion object {

@@ -33,4 +33,6 @@ interface IEstacionVitalService{
     fun validateCoupon(@Header("Authorization") token: String, @Body body: EVValidateCouponRequest): Call<EVValidateCouponResponse>
     @GET(URL_EV_GET_DOCUMENTS)
     fun getDocuments(@Header("Authorization") token: String): Call<DocumentsResponse>
+    @POST(URL_EV_PAYMENT_CREDIT_CARD)
+    fun paymentCreditCard(@Header("Authorization") token: String, @Body body: EVCreditCardRequest): Call <EVCreditCardResponse>
 }

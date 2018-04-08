@@ -2,73 +2,73 @@ package com.estacionvital.patienthub.presenter.implementations
 
 import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.data.remote.Callbacks.IEVCreateNewExaminationCallBack
+import com.estacionvital.patienthub.data.remote.Callbacks.IEVPaymentCreditCardCallBack
 import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioFindChannelByIDCallback
 import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioJoinChannelCallBack
-import com.estacionvital.patienthub.data.remote.Callbacks.IEVValidateCouponCallBack
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.EVChannel
 import com.estacionvital.patienthub.model.EVCreateNewExaminationResponse
+import com.estacionvital.patienthub.model.EVCreditCardResponse
 import com.estacionvital.patienthub.model.EVUserSession
-import com.estacionvital.patienthub.model.EVValidateCouponResponse
-import com.estacionvital.patienthub.presenter.IValidateCouponPresenter
-import com.estacionvital.patienthub.ui.views.IValidateCouponView
-import com.estacionvital.patienthub.util.PAYMENT_TYPE_COUPON
+import com.estacionvital.patienthub.presenter.IValidateCreditCardPresenter
+import com.estacionvital.patienthub.ui.views.IValidateCreditCardView
+import com.estacionvital.patienthub.util.PAYMENT_TYPE_CREDIT_CARD
 import com.twilio.chat.Channel
 
 /**
- * Created by dusti on 22/03/2018.
+ * Created by dusti on 07/04/2018.
  */
-class ValidateCouponPresenterImpl: IValidateCouponPresenter {
-    override fun expireSession() {
-        mSharedPrefManager.clearPreferences()
-        mValidateCouponView.showExpirationMessage()
-    }
-
-    private val mValidateCouponView: IValidateCouponView
+class ValidateCreditCardPresenterImpl: IValidateCreditCardPresenter {
+    private val mValidateCreditCardView: IValidateCreditCardView
     private val mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource
     private val mEVTwilioChatRemoteDataSource: EVTwilioChatRemoteDataSource
     private val mSharedPrefManager: SharedPrefManager
 
-    constructor(sharedPrefManager: SharedPrefManager,validateCouponView: IValidateCouponView, estacionVitalRemoteDataSource: EstacionVitalRemoteDataSource, evTwilioChatRemoteDataSource: EVTwilioChatRemoteDataSource){
-        this.mValidateCouponView = validateCouponView
+    constructor(validateCreditCardView: IValidateCreditCardView, estacionVitalRemoteDataSource: EstacionVitalRemoteDataSource, evTwilioChatRemoteDataSource: EVTwilioChatRemoteDataSource,
+                sharedPrefManager: SharedPrefManager){
+        this.mValidateCreditCardView = validateCreditCardView
         this.mEstacionVitalRemoteDataSource = estacionVitalRemoteDataSource
         this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDataSource
         this.mSharedPrefManager = sharedPrefManager
     }
 
-    override fun validateCoupon(coupon: String, specialty: String, serviceType: String) {
-        mValidateCouponView.showValidateLoading()
+    fun expireSession() {
+        mSharedPrefManager.clearPreferences()
+        mValidateCreditCardView.showExpirationMessage()
+    }
+    override fun validateCreditCard(holder: String, expYear: String, expMonth: String, number: String, cvc: String, specialty: String, service_type: String) {
+        mValidateCreditCardView.showProcessingCreditCard()
         val token = "Token token=${EVUserSession.instance.authToken}"
-        mEstacionVitalRemoteDataSource.validateCoupon(token, coupon, object: IEVValidateCouponCallBack{
+        mEstacionVitalRemoteDataSource.paymentCreditCard(token, holder, expYear, expMonth, number, cvc, object: IEVPaymentCreditCardCallBack{
+            override fun onSuccess(response: EVCreditCardResponse) {
+                mValidateCreditCardView.hideLoading()
+                if(response.status == "success"){
+                    createNewExamination(specialty, service_type, PAYMENT_TYPE_CREDIT_CARD, "", response.order_id)
+                }
+                else{
+                    mValidateCreditCardView.showErrorProcessingCreditCard()
+                }
+            }
+
             override fun onTokenExpired() {
-                mValidateCouponView.hideLoading()
+                mValidateCreditCardView.hideLoading()
                 expireSession()
             }
 
-            override fun onSuccess(response: EVValidateCouponResponse) {
-                mValidateCouponView.hideLoading()
-                if (response.valid) {
-                    createNewExamination(specialty, serviceType, PAYMENT_TYPE_COUPON, coupon, "")
-                }else {
-                    mValidateCouponView.showInvalidCouponMessage()
-                }
-
-            }
-
             override fun onFailure() {
-                mValidateCouponView.hideLoading()
-                mValidateCouponView.showErrorLoading()
+                mValidateCreditCardView.hideLoading()
+                mValidateCreditCardView.showErrorMessage()
             }
         })
     }
 
     override fun createNewExamination(specialty: String, serviceType: String, type: String, code: String, order_id: String) {
         val token = "Token token=${EVUserSession.instance.authToken}"
-        mValidateCouponView.showCreatingRoomLoading()
+        mValidateCreditCardView.showCreatingRoomLoading()
         mEstacionVitalRemoteDataSource.createNewExamination(token, specialty, serviceType, type, code, order_id, object: IEVCreateNewExaminationCallBack {
             override fun onTokenExpired() {
-                mValidateCouponView.hideLoading()
+                mValidateCreditCardView.hideLoading()
                 expireSession()
             }
 
@@ -83,33 +83,34 @@ class ValidateCouponPresenterImpl: IValidateCouponPresenter {
             }
 
             override fun onFailure() {
-                mValidateCouponView.hideLoading()
-                mValidateCouponView.showErrorLoading()
+                mValidateCreditCardView.hideLoading()
+                mValidateCreditCardView.showErrorMessage()
             }
         })
     }
 
     override fun joinEVTwilioRoom(evChannel: EVChannel) {
-        mEVTwilioChatRemoteDataSource.findChannelByID(evChannel.unique_name, object: IEVTwilioFindChannelByIDCallback{
+        mEVTwilioChatRemoteDataSource.findChannelByID(evChannel.unique_name, object: IEVTwilioFindChannelByIDCallback {
             override fun onSuccess(channel: Channel) {
                 mEVTwilioChatRemoteDataSource.joinChannel(channel,object: IEVTwilioJoinChannelCallBack {
                     override fun onSuccess() {
-                        mValidateCouponView.hideLoading()
+                        mValidateCreditCardView.hideLoading()
                         evChannel.twilioChannel = channel
-                        mValidateCouponView.prepareToNavigateToChat(evChannel)
+                        mValidateCreditCardView.prepareToNavigateToChat(evChannel)
                     }
 
                     override fun onFailure() {
-                        mValidateCouponView.hideLoading()
-                        mValidateCouponView.showErrorLoading()
+                        mValidateCreditCardView.hideLoading()
+                        mValidateCreditCardView.showErrorMessage()
                     }
                 })
             }
 
             override fun onFailure() {
-                mValidateCouponView.hideLoading()
-                mValidateCouponView.showErrorLoading()
+                mValidateCreditCardView.hideLoading()
+                mValidateCreditCardView.showErrorMessage()
             }
         })
     }
+
 }

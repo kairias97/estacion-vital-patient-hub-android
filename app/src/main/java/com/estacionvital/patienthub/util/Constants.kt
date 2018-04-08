@@ -29,6 +29,7 @@ const val URL_EV_RETRIEVE_DOCTORS_AVAILABILITY = "doctors/availability/"
 const val URL_EV_CREATE_NEW_EXAMINATION = "examination/new/"
 const val URL_EV_VALIDATE_COUPON = "coupon/validate/"
 const val URL_EV_GET_DOCUMENTS = "user/documents"
+const val URL_EV_PAYMENT_CREDIT_CARD = "examination/exec_payment"
 
 //Endpoints API EV
 const val URL_EV_LOGIN: String = "auth/sign-in"
@@ -47,3 +48,5 @@ const val EXAMINATION_TYPE_VIDEO = "video"
 const val PAGE_SIZE_BLOG_ARTICLES = 3
 
 const val REGISTRATION_COMPLETE = "registrationComplete"
+const val PAYMENT_TYPE_COUPON = "coupon"
+const val PAYMENT_TYPE_CREDIT_CARD = "order"
