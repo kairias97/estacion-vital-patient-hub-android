@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import butterknife.ButterKnife
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
@@ -75,7 +74,6 @@ class RegistrationProfileActivity : BaseActivity(), IRegistrationProfileView,
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_registration_profile)
-        ButterKnife.bind(this)
         mPresenter = RegistrationProfilePresenterImpl(SharedPrefManager(
                 getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
                         Context.MODE_PRIVATE)),
