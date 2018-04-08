@@ -138,5 +138,7 @@
     <string name="nexpMonth_credit_card_label">Mes</string>
     <string name="expYear_credit_card_label">Año</string>
     <string name="cvc_credit_card_label">CVC</string>
+    <string name="msg_processing_credit_card">Procesando tarjeta de crédito...</string>
+    <string name="msg_error_processing_credit_card">Ocurrió un error procesando la tarjeta de crédito</string>
 
 </resources>

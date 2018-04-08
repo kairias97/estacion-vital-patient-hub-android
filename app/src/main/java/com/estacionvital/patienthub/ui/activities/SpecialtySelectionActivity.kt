@@ -163,6 +163,8 @@ class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
 
     override fun prepareToNavigateToCreditCard(specialty: String, typeChat: String) {
         val intentTarget = Intent(this, ValidateCreditCardActivity::class.java)
+        intentTarget.putExtra("chatType", typeChat)
+        intentTarget.putExtra("specialty", specialty)
         startActivity(intentTarget)
     }
     private fun paymentMethodDialog(){

@@ -84,7 +84,8 @@ class ValidateCouponActivity : BaseActivity(), IValidateCouponView {
 
 
     override fun showCreatingRoomLoading() {
-        this.showProgressDialog(getString(R.string.loading_examination_creation))
+
+
     }
 
 
