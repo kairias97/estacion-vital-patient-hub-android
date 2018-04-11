@@ -17,7 +17,9 @@ import com.twilio.chat.Message
  */
 class TwilioChatPresenterImpl: ITwilioChatPresenter {
     override fun setupChatChannel(channelID: String) {
-
+        //Setup twilio token here.
+        //Load examination data
+        //After loading examination data, make EVChannel and then process it
     }
 
 
@@ -152,6 +154,7 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
                         mTwilioChatView.unbindMessageTextInputListener()
                         mTwilioChatView.disableMessageTextInput()
                         mTwilioChatView.disableSendButton()
+                        mTwilioChatView.hideMessagingControls()
                         mTwilioChatView.showFreeChatDisabledMessage()
                     }
                 }

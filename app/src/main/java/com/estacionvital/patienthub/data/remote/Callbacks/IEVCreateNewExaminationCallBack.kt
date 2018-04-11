@@ -9,4 +9,5 @@ interface IEVCreateNewExaminationCallBack {
     fun onSuccess(response: EVCreateNewExaminationResponse)
     fun onFailure()
     fun onTokenExpired()
+    fun onChatCreationDenied()
 }

@@ -42,6 +42,7 @@ class FCMListenerService : FirebaseMessagingService() {
 
             val obj = JSONObject(remoteMessage.data)
             val data = Bundle()
+            //This is the value we would use to notify chat
             data.putString("channel_id", obj.optString("channel_id"))
             data.putString("message_id", obj.optString("message_id"))
             data.putString("author", obj.optString("author"))

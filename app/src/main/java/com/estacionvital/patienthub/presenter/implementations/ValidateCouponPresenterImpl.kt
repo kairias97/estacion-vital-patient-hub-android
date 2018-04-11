@@ -67,6 +67,11 @@ class ValidateCouponPresenterImpl: IValidateCouponPresenter {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mValidateCouponView.showCreatingRoomLoading()
         mEstacionVitalRemoteDataSource.createNewExamination(token, specialty, serviceType, type, code, order_id, object: IEVCreateNewExaminationCallBack {
+            override fun onChatCreationDenied() {
+                mValidateCouponView.hideLoading()
+                //Ignore here since it only applies to free chat
+            }
+
             override fun onTokenExpired() {
                 mValidateCouponView.hideLoading()
                 expireSession()

@@ -67,6 +67,10 @@ class ValidateCreditCardPresenterImpl: IValidateCreditCardPresenter {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mValidateCreditCardView.showCreatingRoomLoading()
         mEstacionVitalRemoteDataSource.createNewExamination(token, specialty, serviceType, type, code, order_id, object: IEVCreateNewExaminationCallBack {
+            override fun onChatCreationDenied() {
+                mValidateCreditCardView.hideLoading()
+            }
+
             override fun onTokenExpired() {
                 mValidateCreditCardView.hideLoading()
                 expireSession()

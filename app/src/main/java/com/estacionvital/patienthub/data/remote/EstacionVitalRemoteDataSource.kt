@@ -213,6 +213,7 @@ class EstacionVitalRemoteDataSource {
                     200 -> {
                         callback.onSuccess(response!!.body()!!)
                     }
+
                     401, 403 -> {
                         callback.onTokenExpired()
                     }
@@ -242,7 +243,10 @@ class EstacionVitalRemoteDataSource {
                     200 -> {
                         callback.onSuccess(response!!.body()!!)
                     }
-                    401, 403 -> {
+                    401 -> {
+                        callback.onChatCreationDenied()
+                    }
+                    403 -> {
                         callback.onTokenExpired()
                     }
                     else -> {
