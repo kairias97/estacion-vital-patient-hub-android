@@ -140,5 +140,6 @@
     <string name="cvc_credit_card_label">CVC</string>
     <string name="msg_processing_credit_card">Procesando tarjeta de crédito...</string>
     <string name="msg_error_processing_credit_card">Ocurrió un error procesando la tarjeta de crédito</string>
+    <string name="message_free_chat_banner">Usted tiene permiso a enviar un solo mensaje por chat gratis. Su mensaje será atendido en un lapso máximo de 24 horas.</string>
 
 </resources>

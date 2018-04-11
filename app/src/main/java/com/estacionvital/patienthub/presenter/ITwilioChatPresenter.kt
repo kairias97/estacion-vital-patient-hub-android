@@ -8,6 +8,7 @@ import com.twilio.chat.Channel
  */
 interface ITwilioChatPresenter {
     fun setupChatChannel(channel: EVChannel)
+    fun setupChatChannel(channelID: String)
     /*fun retrieveChannel(roomID: String)
     fun retrieveMessages(channel: Channel)
     fun setChannelListener(channel: Channel)

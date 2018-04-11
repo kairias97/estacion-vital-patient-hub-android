@@ -16,7 +16,9 @@ import com.twilio.chat.Message
  * Created by dusti on 20/03/2018.
  */
 class TwilioChatPresenterImpl: ITwilioChatPresenter {
+    override fun setupChatChannel(channelID: String) {
 
+    }
 
 
     override fun onMessageTextChanged(msg: String) {
@@ -37,19 +39,23 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
         this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDataSource
     }
     override fun setupChatChannel(channel: EVChannel) {
-
+        if (channel.type == CHAT_FREE) {
+            mTwilioChatView.showFreeChatBanner()
+        }
         validateChannelStatus(channel)
-
-
         retrieveMessages(channel)
     }
     private fun validateChannelStatus(channel: EVChannel) {
+
         mTwilioChatView.disableMessageTextInput()
         mTwilioChatView.disableSendButton()
+        mTwilioChatView.hideMessagingControls()
         if (!channel.isFinished && channel.type == CHAT_PAID ){
             //mTwilioChatView.disableSendButton()
+            mTwilioChatView.showMessagingControls()
             mTwilioChatView.bindMessageTextInputListener()
             mTwilioChatView.enableMessageTextInput()
+
         } else if (!channel.isFinished && channel.type == CHAT_FREE) {
             //This was commented because it is never binded via activity
             //mTwilioChatView.unbindMessageTextInputListener()
@@ -57,6 +63,7 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
             channel.twilioChannel!!.getMessagesCount(object: CallbackListener<Long>() {
                 override fun onSuccess(count: Long?) {
                     if (count!! == 0.toLong()) {
+                        mTwilioChatView.showMessagingControls()
                         mTwilioChatView.bindMessageTextInputListener()
                         mTwilioChatView.enableMessageTextInput()
                     }
