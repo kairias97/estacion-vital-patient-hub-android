@@ -35,4 +35,6 @@ interface IEstacionVitalService{
     fun getDocuments(@Header("Authorization") token: String): Call<DocumentsResponse>
     @POST(URL_EV_PAYMENT_CREDIT_CARD)
     fun paymentCreditCard(@Header("Authorization") token: String, @Body body: EVCreditCardRequest): Call <EVCreditCardResponse>
+    @POST(URL_EV_GET_CHANNEL_BY_ID)
+    fun getChannelByUniqueName(@Header("Authorization") token: String, @Body body: EVGetChannelByIDRequest): Call<EVUserExaminationByIDResponse>
 }

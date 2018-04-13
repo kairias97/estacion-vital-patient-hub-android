@@ -1,5 +1,8 @@
 package com.estacionvital.patienthub.ui.views
 
+import android.content.Context
+import com.estacionvital.patienthub.model.EVChannel
+
 /**
  * Created by kevin on 22/2/2018.
  */
@@ -10,4 +13,6 @@ package com.estacionvital.patienthub.ui.views
 interface ISplashView {
     fun navigateToNumberVerification() : Unit
     fun navigateToMain() : Unit
+    fun getContext(): Context
+    fun navigateToChat(evChannel: EVChannel)
 }

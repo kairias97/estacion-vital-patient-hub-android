@@ -26,4 +26,6 @@ interface ITwilioChatView : IBaseView{
     fun showFreeChatBanner()
     fun hideMessagingControls()
     fun showMessagingControls()
+    fun showChannelLoadingMessage()
+    fun hideChannelLoadingMessage()
 }

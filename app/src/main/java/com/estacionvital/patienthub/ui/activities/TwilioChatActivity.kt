@@ -13,6 +13,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
+import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
 import com.estacionvital.patienthub.model.EVChannel
 import com.estacionvital.patienthub.presenter.ITwilioChatPresenter
 import com.estacionvital.patienthub.presenter.implementations.TwilioChatPresenterImpl
@@ -22,7 +23,13 @@ import com.estacionvital.patienthub.util.toast
 import com.twilio.chat.Message
 
 class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMessageSelectedListener {
+    override fun showChannelLoadingMessage() {
+        showProgressDialog(getString(R.string.loading_channel_message))
+    }
 
+    override fun hideChannelLoadingMessage() {
+        hideProgressDialog()
+    }
 
 
     /*
@@ -77,7 +84,8 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
         mSendMessageTextView.visibility = View.GONE
 
 
-        mTwilioChatPresenter = TwilioChatPresenterImpl(this, EVTwilioChatRemoteDataSource.instance)
+        mTwilioChatPresenter = TwilioChatPresenterImpl(this, EVTwilioChatRemoteDataSource.instance,
+                EstacionVitalRemoteDataSource.INSTANCE)
 
         //Listeners setup
 

@@ -18,6 +18,7 @@ class EVTwilioChatRemoteDataSource {
             ChatClient.create(context, twilio_token,
                     props, object: CallbackListener<ChatClient>(){
                 override fun onSuccess(p0: ChatClient?) {
+                    //
                     EVChatSession.instance.chatClient = p0!!
                     EVChatSession.instance.chatClient.setListener(object: ChatClientListener {
                         override fun onChannelDeleted(p0: Channel?) {

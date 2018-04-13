@@ -43,7 +43,8 @@ class FCMListenerService : FirebaseMessagingService() {
             val obj = JSONObject(remoteMessage.data)
             val data = Bundle()
             //This is the value we would use to notify chat
-            data.putString("channel_id", obj.optString("channel_id"))
+            val channelID: String = obj.optString("channel_title")
+            data.putString("channel_id",obj.optString("channel_id"))
             data.putString("message_id", obj.optString("message_id"))
             data.putString("author", obj.optString("author"))
             data.putString("message_sid", obj.optString("message_sid"))
@@ -52,7 +53,7 @@ class FCMListenerService : FirebaseMessagingService() {
             data.putString("channel_sid", obj.optString("channel_sid"))
             data.putString("twi_message_id", obj.optString("twi_message_id"))
             data.putString("twi_body", obj.optString("twi_body"))
-            data.putString("channel_title", obj.optString("channel_title"))
+            data.putString("channel_title",channelID)
 
             val payload = NotificationPayload(data)
 
@@ -78,6 +79,7 @@ class FCMListenerService : FirebaseMessagingService() {
 
             // Set up action Intent
             val intent = Intent(this, SplashActivity::class.java)
+            intent.putExtra("notificationChannelID", channelID)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
             val cSid = payload.channelSid
