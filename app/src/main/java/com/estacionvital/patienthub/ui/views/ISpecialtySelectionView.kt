@@ -19,4 +19,5 @@ interface ISpecialtySelectionView: IBaseView {
     fun prepareToNavigateToCoupon(specialty: String, typeChat: String)
     fun prepareToNavigateToCreditCard(specialty: String, typeChat: String)
     fun prepareToNavigateToChat(data: EVChannel)
+    fun showNoFreeChatAvailable()
 }

@@ -99,6 +99,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         }
         mFabButtonChatFree.setOnClickListener {
             fab.close(true)
+            mTypeChat = CHAT_FREE
             fragmentTransaction(ConversationHistoryFragment.newInstance(CHAT_FREE, object: ConversationHistoryFragment
             .OnConversationHistorytInteraction{
                 override fun onConversationSelected(channel: EVChannel) {
@@ -125,7 +126,8 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         }
         mFabButtonChatPremium.setOnClickListener {
             fab.close(true)
-            fragmentTransaction(ConversationHistoryFragment.newInstance(CHAT_PREMIUM,object: ConversationHistoryFragment
+            mTypeChat = CHAT_PREMIUM
+            fragmentTransaction(ConversationHistoryFragment.newInstance(CHAT_PREMIUM, object: ConversationHistoryFragment
             .OnConversationHistorytInteraction{
                 override fun onConversationSelected(channel: EVChannel) {
                     navigateToChat(channel)

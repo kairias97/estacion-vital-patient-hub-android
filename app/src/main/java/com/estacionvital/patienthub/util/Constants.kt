@@ -30,6 +30,7 @@ const val URL_EV_CREATE_NEW_EXAMINATION = "examination/new/"
 const val URL_EV_VALIDATE_COUPON = "coupon/validate/"
 const val URL_EV_GET_DOCUMENTS = "user/documents"
 const val URL_EV_PAYMENT_CREDIT_CARD = "examination/exec_payment"
+const val URL_EV_GET_CHANNEL_BY_ID = "examination/get_by_channel"
 
 //Endpoints API EV
 const val URL_EV_LOGIN: String = "auth/sign-in"

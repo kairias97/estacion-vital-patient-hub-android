@@ -99,6 +99,7 @@
             android:parentActivityName=".ui.activities.ArticleSelectionActivity" />
         <activity
             android:name=".ui.activities.TwilioChatActivity"
+            android:launchMode="singleTop"
             android:parentActivityName=".ui.activities.MainActivityDrawer" />
         <activity
             android:name=".ui.activities.SpecialtySelectionActivity"

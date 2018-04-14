@@ -54,7 +54,7 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
         })
     }
     override fun setUpTwilioClient(context: Context, data: List<EVUserExamination>) {
-        mEVTwilioChatRemoteDataSource.setupTwilioClient(EVUserSession.instance.twilioToken,context,object: IEVTwilioClientCallback{
+        mEVTwilioChatRemoteDataSource.setupTwilioClient(EVUserSession.instance.twilioToken, context,object: IEVTwilioClientCallback{
             override fun onSuccess() {
                 callSubscribedChannels(data)
             }

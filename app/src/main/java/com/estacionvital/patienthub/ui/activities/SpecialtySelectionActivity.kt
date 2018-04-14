@@ -24,6 +24,9 @@ import com.estacionvital.patienthub.util.toast
 import com.twilio.chat.Channel
 
 class SpecialtySelectionActivity : BaseActivity(), ISpecialtySelectionView {
+    override fun showNoFreeChatAvailable() {
+        this.toast(R.string.message_free_chat_prohibited)
+    }
 
     private lateinit var mSpecialtySelectionPresenter: ISpecialtySelectionPresenter
     private lateinit var mSpinner: Spinner

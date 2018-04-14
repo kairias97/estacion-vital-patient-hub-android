@@ -74,6 +74,11 @@ class SpecialtySelectionPresenterImpl: ISpecialtySelectionPresenter {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mSpecialtySelectionView.showCreatingExaminationProgress()
         mEstacionVitalRemoteDataSource.createNewExamination(token, specialty, service_type, type, code, order_id, object: IEVCreateNewExaminationCallBack{
+            override fun onChatCreationDenied() {
+                mSpecialtySelectionView.hideLoading()
+                mSpecialtySelectionView.showNoFreeChatAvailable()
+            }
+
             override fun onTokenExpired() {
                 mSpecialtySelectionView.hideLoading()
                 expireSession()

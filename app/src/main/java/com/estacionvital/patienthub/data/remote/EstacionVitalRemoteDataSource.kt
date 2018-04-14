@@ -213,6 +213,7 @@ class EstacionVitalRemoteDataSource {
                     200 -> {
                         callback.onSuccess(response!!.body()!!)
                     }
+
                     401, 403 -> {
                         callback.onTokenExpired()
                     }
@@ -242,7 +243,10 @@ class EstacionVitalRemoteDataSource {
                     200 -> {
                         callback.onSuccess(response!!.body()!!)
                     }
-                    401, 403 -> {
+                    401 -> {
+                        callback.onChatCreationDenied()
+                    }
+                    403 -> {
                         callback.onTokenExpired()
                     }
                     else -> {
@@ -291,7 +295,32 @@ class EstacionVitalRemoteDataSource {
         })
     }
 
+    fun getChannelByID(token: String, body: EVGetChannelByIDRequest, callback:IGetChannelByUniqueName) {
+        val authCall = EstacionVitalAPI.instance.service!!.getChannelByUniqueName(token, body)
+        authCall.enqueue(object:Callback<EVUserExaminationByIDResponse> {
+            override fun onFailure(call: Call<EVUserExaminationByIDResponse>?, t: Throwable?) {
+                callback.onFailure()
+            }
 
+            override fun onResponse(call: Call<EVUserExaminationByIDResponse>?, response: Response<EVUserExaminationByIDResponse>?) {
+                when(response!!.code()){
+                    200 -> {
+                        callback.onSuccess(response!!.body()!!)
+                    }
+                    401, 403 -> {
+                        callback.onTokenExpired()
+                    }
+                    else -> {
+                        if(BuildConfig.BUILD_TYPE == "debug") {
+                            Log.e("Error", response.raw().body().toString())
+                        }
+                        callback.onFailure()
+                    }
+                }
+            }
+
+        })
+    }
     fun getDocuments(token: String, callback: IGetDocumentsCallback){
         val authCall = EstacionVitalAPI.instance.service!!.getDocuments(token)
         authCall.enqueue(object: Callback<DocumentsResponse>{

@@ -10,4 +10,5 @@ package com.estacionvital.patienthub.presenter
 * */
 interface ISplashPresenter {
     fun checkSession() : Unit
+    fun onChatNotificatioReceived(channelID: String)
 }
