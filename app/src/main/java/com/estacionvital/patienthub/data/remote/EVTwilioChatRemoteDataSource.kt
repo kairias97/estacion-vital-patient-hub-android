@@ -20,7 +20,7 @@ class EVTwilioChatRemoteDataSource {
                 override fun onSuccess(p0: ChatClient?) {
                     //
                     EVChatSession.instance.chatClient = p0!!
-                    EVChatSession.instance.chatClient.setListener(object: ChatClientListener {
+                    EVChatSession.instance.chatClient?.setListener(object: ChatClientListener {
                         override fun onChannelDeleted(p0: Channel?) {
 
                         }
@@ -95,11 +95,11 @@ class EVTwilioChatRemoteDataSource {
         }
     }
     fun callSubscribedChannels(callback: IEVTwilioCallSubscribedChannelsCallBack){
-        val channels: List<Channel> = EVChatSession.instance.chatClient.channels.subscribedChannels
-        callback.onSuccess(channels)
+        val channels: List<Channel>? = EVChatSession.instance.chatClient?.channels?.subscribedChannels
+        callback.onSuccess(if (channels == null) ArrayList<Channel>() else channels!!)
     }
     fun callPublicChannels(callback: IEVTwilioCallPublicChannelsCallBack){
-        EVChatSession.instance.chatClient.channels.getPublicChannelsList(object: CallbackListener<Paginator<ChannelDescriptor>>(){
+        EVChatSession.instance.chatClient?.channels?.getPublicChannelsList(object: CallbackListener<Paginator<ChannelDescriptor>>(){
             override fun onSuccess(p0: Paginator<ChannelDescriptor>?) {
                 callback.onSuccess(p0!!)
             }
@@ -110,7 +110,7 @@ class EVTwilioChatRemoteDataSource {
         })
     }
     fun findChannelByID(channel_id: String, callback:IEVTwilioFindChannelByIDCallback){
-        EVChatSession.instance.chatClient.channels.getChannel(channel_id,
+        EVChatSession.instance.chatClient?.channels?.getChannel(channel_id,
                 object: CallbackListener<Channel>(){
                     override fun onSuccess(p0: Channel?) {
                         callback.onSuccess(p0!!)
@@ -140,7 +140,7 @@ class EVTwilioChatRemoteDataSource {
         })
     }
     fun getLastMessagesFromChannel(channel: Channel, callback: IEVTwilioGetLastMessagesFromChannelCalBack){
-        channel.messages.getLastMessages(50, object: CallbackListener<List<Message>>(){
+        channel?.messages?.getLastMessages(50, object: CallbackListener<List<Message>>(){
             override fun onSuccess(p0: List<Message>?) {
                 callback.onSuccess(p0!!)
             }
@@ -191,7 +191,7 @@ class EVTwilioChatRemoteDataSource {
             }
         })
     }
-    fun sendMesage(channel: Channel, body: String, callback: IEVTwilioSendMessageCallBack){
+    fun sendMessage(channel: Channel, body: String, callback: IEVTwilioSendMessageCallBack){
         channel.messages.sendMessage(Message.options().withBody(body),object: CallbackListener<Message>(){
             override fun onSuccess(p0: Message?) {
                 callback.onSuccess()

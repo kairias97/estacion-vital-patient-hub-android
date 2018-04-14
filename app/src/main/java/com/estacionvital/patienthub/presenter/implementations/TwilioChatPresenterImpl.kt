@@ -180,7 +180,7 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
 
     override fun sendMessage(channel: EVChannel, body: String) {
         if(EVChatSession.instance.isChatClientCreated){
-            mEVTwilioChatRemoteDataSource.sendMesage(channel.twilioChannel!!,body,object: IEVTwilioSendMessageCallBack{
+            mEVTwilioChatRemoteDataSource.sendMessage(channel.twilioChannel!!,body,object: IEVTwilioSendMessageCallBack{
                 override fun onSuccess() {
                     if (channel.type == CHAT_FREE) {
                         mTwilioChatView.unbindMessageTextInputListener()

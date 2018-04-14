@@ -1,5 +1,6 @@
 package com.estacionvital.patienthub.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.NavUtils
 import android.support.v7.widget.LinearLayoutManager
@@ -169,7 +170,14 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
         returnTop()
     }
     private fun returnTop(){
-        NavUtils.navigateUpFromSameTask(this)
+        if (parent == null) {
+            val parentIntent = Intent(this, MainActivityDrawer::class.java)
+            parentIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(parentIntent)
+        } else {
+            NavUtils.navigateUpFromSameTask(this)
+        }
+
     }
 
     override fun showMessageLoading() {

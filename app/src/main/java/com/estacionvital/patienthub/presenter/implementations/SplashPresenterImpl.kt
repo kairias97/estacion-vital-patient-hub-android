@@ -1,15 +1,13 @@
 package com.estacionvital.patienthub.presenter.implementations
 
 import com.estacionvital.patienthub.data.local.SharedPrefManager
+import com.estacionvital.patienthub.data.remote.Callbacks.IEVRetrieveProfileCallback
 import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioClientCallback
 import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioFindChannelByIDCallback
 import com.estacionvital.patienthub.data.remote.Callbacks.IGetChannelByUniqueName
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
-import com.estacionvital.patienthub.model.EVChannel
-import com.estacionvital.patienthub.model.EVGetChannelByIDRequest
-import com.estacionvital.patienthub.model.EVUserExaminationByIDResponse
-import com.estacionvital.patienthub.model.EVUserSession
+import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.ISplashPresenter
 import com.estacionvital.patienthub.ui.views.ISplashView
 import com.estacionvital.patienthub.util.TimedTaskHandler
@@ -29,6 +27,7 @@ class SplashPresenterImpl: ISplashPresenter {
             timedTask.executeTimedTask({mSplashView.navigateToNumberVerification()}, mSplashTimeOut.toLong())
         }
     }
+    //Second function executed on the notification flow
     private fun prepareTwilioClient(twilioToken:String, evChannel: EVChannel){
         mEVTwilioChatRemoteDataSource.setupTwilioClient(twilioToken,
                 mSplashView.getContext(),
@@ -42,12 +41,12 @@ class SplashPresenterImpl: ISplashPresenter {
             }
         })
     }
-
+    //Third function executed in the flow
     private fun fetchTwilioChannel(evChannel: EVChannel){
         mEVTwilioChatRemoteDataSource.findChannelByID(evChannel.unique_name, object: IEVTwilioFindChannelByIDCallback {
             override fun onSuccess(channel: Channel) {
                 evChannel.twilioChannel = channel
-                mSplashView.navigateToChat(evChannel)
+                retrieveEVUSerProfileForChat(evChannel)
             }
 
             override fun onFailure() {
@@ -56,6 +55,7 @@ class SplashPresenterImpl: ISplashPresenter {
 
         })
     }
+    //First function executed in the notification flow
     private fun fetchNotificationExamination(channelID:String){
         val authToken = "Token token=${EVUserSession.instance.authToken}"
         mEVRemoteDataSource.getChannelByID(authToken, EVGetChannelByIDRequest(channelID), object:IGetChannelByUniqueName {
@@ -83,6 +83,32 @@ class SplashPresenterImpl: ISplashPresenter {
             }
 
         })
+    }
+
+
+    private fun retrieveEVUSerProfileForChat(evChannel: EVChannel) {
+        val token = "Token token=${EVUserSession.instance.authToken}"
+        mEVRemoteDataSource.retrieveEVUserProfile(token,
+                object: IEVRetrieveProfileCallback {
+                    override fun onTokenExpired() {
+                        redirectToMain()
+                    }
+
+                    override fun onSuccess(result: EVRetrieveProfileResponse) {
+                        if(result.status == "success"){
+                            EVUserSession.instance.userProfile = result.data
+
+                            mSplashView.navigateToChat(evChannel)
+                        }
+                        else{
+                            redirectToMain()
+                        }
+                    }
+
+                    override fun onFailure() {
+                        redirectToMain()
+                    }
+                })
     }
 
     private val mSplashTimeOut: Int = 1000

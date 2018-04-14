@@ -38,7 +38,7 @@ class RegistrationIntentService : IntentService("RegistrationIntentService") {
             /**
              * Persist registration to Twilio servers.
              */
-            EVChatSession.instance.chatClient.registerFCMToken(token, object: StatusListener() {
+            EVChatSession.instance.chatClient?.registerFCMToken(token, object: StatusListener() {
                 override fun onSuccess() {
                     Log.i("success fcm", "Token registered succesfully")
                 }
