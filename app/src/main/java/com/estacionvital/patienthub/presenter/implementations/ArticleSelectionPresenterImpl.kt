@@ -1,8 +1,8 @@
 package com.estacionvital.patienthub.presenter.implementations
 
-import com.estacionvital.patienthub.data.remote.Callbacks.IArticlesByCategoryCallback
+import com.estacionvital.patienthub.data.remote.Callbacks.IArticlesCallback
 import com.estacionvital.patienthub.data.remote.EVBlogRemoteDataSource
-import com.estacionvital.patienthub.model.ArticlesByCategoryResponse
+import com.estacionvital.patienthub.model.ArticlesResponse
 import com.estacionvital.patienthub.presenter.IArticleSelectionPresenter
 import com.estacionvital.patienthub.ui.views.IArticleSelectionView
 import com.estacionvital.patienthub.util.PAGE_SIZE_BLOG_ARTICLES
@@ -46,8 +46,8 @@ class ArticleSelectionPresenterImpl: IArticleSelectionPresenter {
     }
     override fun loadArticles(categoryID: Int) {
         this.mArticleSelectionView.showArticlesLoadingProgress()
-        this.mEVBlogRemoteDataSource.getArticlesByCategory(categoryID, object: IArticlesByCategoryCallback{
-            override fun onSuccess(response: ArticlesByCategoryResponse) {
+        this.mEVBlogRemoteDataSource.getArticlesByCategory(categoryID, object: IArticlesCallback{
+            override fun onSuccess(response: ArticlesResponse) {
                 mArticleSelectionView.hideArticlesLoadingProgress()
                 if (response.status == "ok") {
                     mArticleSelectionView.updateArticlesListUI(response.posts.toMutableList(), PAGE_SIZE_BLOG_ARTICLES)

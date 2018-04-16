@@ -143,5 +143,7 @@
     <string name="message_free_chat_banner">Usted tiene permiso a enviar un solo mensaje por chat gratis. Su mensaje será atendido en un lapso máximo de 24 horas.</string>
     <string name="message_free_chat_prohibited">Usted tiene permiso para crear un nuevo chat gratis solamente una vez cada 24 horas.</string>
     <string name="loading_channel_message">Cargando canal de chat...</string>
+    <string name="title_activity_recent_articles">Artículos recientes</string>
+    <string name="blog_recent_articles_progress">Obteniendo artículos recientes...</string>
 
 </resources>

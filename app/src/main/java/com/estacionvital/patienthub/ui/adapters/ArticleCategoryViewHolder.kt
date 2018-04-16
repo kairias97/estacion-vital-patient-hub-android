@@ -38,7 +38,7 @@ class ArticleCategoryViewHolder: RecyclerView.ViewHolder {
             listener.onCategoryItemClicked(articleCategory)
         }
         Picasso.get()
-                .load("https://ifsstech.files.wordpress.com/2008/10/169.jpg")
+                .load("")
                 .placeholder(R.drawable.img_logo)
                 .error(R.drawable.img_logo)
                 .into(mThumbnailImageView)

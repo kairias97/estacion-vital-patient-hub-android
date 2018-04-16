@@ -110,7 +110,10 @@
             android:parentActivityName=".ui.activities.SpecialtySelectionActivity" />
         <activity
             android:name=".ui.activities.ValidateCreditCardActivity"
-            android:parentActivityName=".ui.activities.SpecialtySelectionActivity"></activity>
+            android:parentActivityName=".ui.activities.SpecialtySelectionActivity" />
+        <activity android:name=".ui.activities.RecentArticlesActivity"
+            android:parentActivityName=".ui.activities.MainActivityDrawer"
+            ></activity>
     </application>
 
 </manifest>

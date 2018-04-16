@@ -191,14 +191,11 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
     override fun showErrorLoading() {
         this.toast(getString(R.string.generic_500_error))
     }
-    /*
-    override fun getChannelFromID(channel: Channel) {
-        mCurrentChannel = channel
-        //move this to presenter
-        mTwilioChatPresenter.retrieveMessages(mCurrentChannel)
-        mTwilioChatPresenter.setChannelListener(mCurrentChannel)
-    }*/
 
+    override fun onPause() {
+        super.onPause()
+        this.hideProgressDialog()
+    }
     override fun setChannelMessagesUI(messages: MutableList<Message>) {
         (mRecyclerView.adapter as? MessageAdapter)!!.setMessageList(messages)
         (mRecyclerView.adapter as? MessageAdapter)!!.notifyDataSetChanged()
