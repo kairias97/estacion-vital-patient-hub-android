@@ -23,6 +23,7 @@ const val URL_EV_RETRIEVE_PROFILE = "user"
 const val URL_EV_UPDATE_PROFILE = "user/update"
 const val URL_EV_BLOG_GET_CATEGORIES = "get_category_index/"
 const val URL_EV_BLOG_GET_ARTICLES_BY_CATEGORY = "get_category_posts/"
+const val URL_EV_BLOG_GET_RECENT_ARTICLES = "get_recent_posts/"
 const val URL_EV_RETRIEVE_SPECIALTIES = "doctors/specialities/"
 const val URL_EV_RETRIEVE_EXAMINATIONS = "user/examinations/"
 const val URL_EV_RETRIEVE_DOCTORS_AVAILABILITY = "doctors/availability/"
@@ -47,6 +48,7 @@ const val EXAMINATION_TYPE_CHAT = "chat"
 const val EXAMINATION_TYPE_VIDEO = "video"
 //Pagination
 const val PAGE_SIZE_BLOG_ARTICLES = 3
+const val RECENT_ARTICLES_PAGE_SIZE = 10
 
 const val REGISTRATION_COMPLETE = "registrationComplete"
 const val PAYMENT_TYPE_COUPON = "coupon"

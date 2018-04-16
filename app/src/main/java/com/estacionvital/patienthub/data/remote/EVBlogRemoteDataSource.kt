@@ -4,9 +4,9 @@ import android.util.Log
 import com.estacionvital.patienthub.BuildConfig
 import com.estacionvital.patienthub.data.api.EVBlogAPI
 import com.estacionvital.patienthub.data.remote.Callbacks.GetArticleCategoriesCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.IArticlesByCategoryCallback
+import com.estacionvital.patienthub.data.remote.Callbacks.IArticlesCallback
 import com.estacionvital.patienthub.model.ArticleCategoriesResponse
-import com.estacionvital.patienthub.model.ArticlesByCategoryResponse
+import com.estacionvital.patienthub.model.ArticlesResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -48,17 +48,39 @@ class EVBlogRemoteDataSource {
         })
     }
 
-    fun getArticlesByCategory(categoryID: Int, callback: IArticlesByCategoryCallback){
+    fun getArticlesByCategory(categoryID: Int, callback: IArticlesCallback){
         val authCall = EVBlogAPI.instance.service!!.getArticlesByCategory(categoryID)
-        authCall.enqueue(object:Callback<ArticlesByCategoryResponse>{
-            override fun onFailure(call: Call<ArticlesByCategoryResponse>?, t: Throwable?) {
+        authCall.enqueue(object:Callback<ArticlesResponse>{
+            override fun onFailure(call: Call<ArticlesResponse>?, t: Throwable?) {
                 if (BuildConfig.BUILD_TYPE == "debug") {
                    Log.e("getArticlesByCategory", t.toString())
                 }
                 callback.onFailure()
             }
 
-            override fun onResponse(call: Call<ArticlesByCategoryResponse>?, response: Response<ArticlesByCategoryResponse>?) {
+            override fun onResponse(call: Call<ArticlesResponse>?, response: Response<ArticlesResponse>?) {
+                when (response?.code()) {
+                    200 -> callback.onSuccess(response.body()!!)
+                    else -> {
+                        callback.onFailure()
+                    }
+                }
+            }
+
+
+        })
+    }
+    fun getRecentArticles(page: Int, count:Int, callback: IArticlesCallback){
+        val authCall = EVBlogAPI.instance.service!!.getRecentArticles(page, count)
+        authCall.enqueue(object:Callback<ArticlesResponse>{
+            override fun onFailure(call: Call<ArticlesResponse>?, t: Throwable?) {
+                if (BuildConfig.BUILD_TYPE == "debug") {
+                    Log.e("getArticlesByCategory", t.toString())
+                }
+                callback.onFailure()
+            }
+
+            override fun onResponse(call: Call<ArticlesResponse>?, response: Response<ArticlesResponse>?) {
                 when (response?.code()) {
                     200 -> callback.onSuccess(response.body()!!)
                     else -> {

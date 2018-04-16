@@ -19,10 +19,7 @@ import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.IMainDrawerPresenter
 import com.estacionvital.patienthub.presenter.implementations.MainDrawerPresenterImpl
 import com.estacionvital.patienthub.services.RegistrationIntentService
-import com.estacionvital.patienthub.ui.fragments.ArticleCategoryFragment
-import com.estacionvital.patienthub.ui.fragments.ConversationHistoryFragment
-import com.estacionvital.patienthub.ui.fragments.DocumentHistoryFragment
-import com.estacionvital.patienthub.ui.fragments.ProfileFragment
+import com.estacionvital.patienthub.ui.fragments.*
 import com.estacionvital.patienthub.ui.views.IMainDrawerView
 import com.estacionvital.patienthub.util.*
 import com.github.clans.fab.FloatingActionButton
@@ -159,6 +156,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         toggle.syncState()
 
         nav_view.setNavigationItemSelectedListener(this)
+
         navigationView.setCheckedItem(R.id.nav_home)
         mEstacionVitalRemoteDataSource = EstacionVitalRemoteDataSource.INSTANCE
 
@@ -169,7 +167,12 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
                 ), EVTwilioChatRemoteDataSource.instance)
         mMainDrawerPresenter.retrieveEVUSerProfile()
 
-        fragmentTransaction(ProfileFragment())
+        fragmentTransaction(HomeFragment.newInstance(object: HomeFragment.HomeFragmentListener {
+            override fun onRecentArticlesBannerSelected() {
+                navigateToRecentArticles()
+            }
+
+        }))
 
         mTypeChat = ""
 
@@ -202,7 +205,12 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         var fragment: Fragment = Fragment()
         when(menuId){
             R.id.nav_home -> {
-                this.supportActionBar?.title = getString(R.string.drawer_home)
+                fragment = HomeFragment.newInstance(object: HomeFragment.HomeFragmentListener {
+                    override fun onRecentArticlesBannerSelected() {
+                        navigateToRecentArticles()
+                    }
+
+                })
             }
             R.id.nav_profile -> fragment = ProfileFragment()
             R.id.nav_chat_free -> {
@@ -314,6 +322,11 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
             }
         }
         fragmentTransaction(fragment)
+    }
+
+    private fun navigateToRecentArticles() {
+        val recentArticlesIntent = Intent(this, RecentArticlesActivity::class.java)
+        startActivity(recentArticlesIntent)
     }
 
     private fun navigateToChat(channel: EVChannel) {
