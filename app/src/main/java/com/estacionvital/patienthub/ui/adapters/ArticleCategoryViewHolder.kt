@@ -33,14 +33,26 @@ class ArticleCategoryViewHolder: RecyclerView.ViewHolder {
 
     fun bindData(articleCategory: ArticleCategory, listener: ArticleCategoryAdapter.OnCategorySelectedListener) {
         mCategoryNameTextView.text = articleCategory.title
-        mCategoryDescriptionTextView.text = articleCategory.description
+
+        val description = articleCategory.description.split("\r\n/")
+        mCategoryDescriptionTextView.text = description[0]
+        if(description.size == 2){
+            val path = description[1]
+            Picasso.get()
+                    .load(path)
+                    .placeholder(R.drawable.img_logo)
+                    .error(R.drawable.img_logo)
+                    .into(mThumbnailImageView)
+        }
+        else{
+            Picasso.get()
+                    .load(R.drawable.img_logo)
+                    .placeholder(R.drawable.img_logo)
+                    .error(R.drawable.img_logo)
+                    .into(mThumbnailImageView)
+        }
         mCategoryContainerConstraintLayout.setOnClickListener {
             listener.onCategoryItemClicked(articleCategory)
         }
-        Picasso.get()
-                .load("")
-                .placeholder(R.drawable.img_logo)
-                .error(R.drawable.img_logo)
-                .into(mThumbnailImageView)
     }
 }
