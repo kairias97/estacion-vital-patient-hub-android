@@ -58,7 +58,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
     }
 
     override fun showCreatingClientProgress() {
-        this.showProgressDialog(getString(R.string.chat_client_creation))
+        this.showProgressDialog("")
     }
 
     override fun chatClientFinished() {
