@@ -47,7 +47,7 @@ class ValidateCreditCardPresenterImpl: IValidateCreditCardPresenter {
                     createNewExamination(specialty, service_type, PAYMENT_TYPE_CREDIT_CARD, "", response.order_id)
                 }
                 else{
-                    mValidateCreditCardView.showErrorProcessingCreditCard()
+                    mValidateCreditCardView.showErrorProcessingCreditCard(response.message)
                 }
             }
 

@@ -9,7 +9,7 @@ interface IValidateCreditCardView {
     fun showProcessingCreditCard()
     fun showCreatingRoomLoading()
     fun showErrorMessage()
-    fun showErrorProcessingCreditCard()
+    fun showErrorProcessingCreditCard(msg: String)
     fun hideLoading()
     fun prepareToNavigateToChat(data: EVChannel)
     fun showExpirationMessage()
