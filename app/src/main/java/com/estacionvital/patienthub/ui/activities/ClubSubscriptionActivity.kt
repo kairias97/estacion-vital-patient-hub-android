@@ -17,6 +17,12 @@ import com.estacionvital.patienthub.util.NETMOBILE_AUTH_CREDENTIAL
 import com.estacionvital.patienthub.util.toast
 
 class ClubSubscriptionActivity : BaseActivity(), IClubSubscriptionView, EVClubAdapter.OnClubSelectedListener{
+    override fun navigateToMain() {
+        val mainNavigationIntent: Intent = Intent(this, MainActivityDrawer::class.java)
+        mainNavigationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(mainNavigationIntent)
+    }
+
     override fun showActiveSubscriptionsProgress() {
         showProgressDialog(getString(R.string.active_subscriptions_progress))
     }
@@ -80,6 +86,10 @@ class ClubSubscriptionActivity : BaseActivity(), IClubSubscriptionView, EVClubAd
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_club_suscription)
 
+        var isLoggedInUser = false
+        if (intent.extras != null && intent.hasExtra("isLoggedIn")) {
+            isLoggedInUser = intent.extras.getBoolean("isLoggedIn", false)
+        }
         mCancelButton = findViewById(R.id.button_cancel)
         mAcceptButton = findViewById(R.id.button_accept)
 
@@ -88,7 +98,7 @@ class ClubSubscriptionActivity : BaseActivity(), IClubSubscriptionView, EVClubAd
         mSuscriptionRecyclerView.setHasFixedSize(true)
 
         mCatalogSuscriptionPresenter = ClubSubscriptionPresenterImpl(this, NetMobileRemoteDataSource.INSTANCE)
-        mCatalogSuscriptionPresenter.retrieveLimit(RegistrationSession.instance.phoneNumber, NETMOBILE_AUTH_CREDENTIAL)
+        mCatalogSuscriptionPresenter.retrieveLimit(isLoggedInUser, NETMOBILE_AUTH_CREDENTIAL)
 
         mClubAdapter = EVClubAdapter(ArrayList<EVClub>(), this)
         mSuscriptionRecyclerView.adapter = mClubAdapter
@@ -97,7 +107,7 @@ class ClubSubscriptionActivity : BaseActivity(), IClubSubscriptionView, EVClubAd
             finish()
         }
         mAcceptButton.setOnClickListener(){
-            mCatalogSuscriptionPresenter.validateSubscriptions()
+            mCatalogSuscriptionPresenter.validateSubscriptions(isLoggedInUser)
         }
     }
 

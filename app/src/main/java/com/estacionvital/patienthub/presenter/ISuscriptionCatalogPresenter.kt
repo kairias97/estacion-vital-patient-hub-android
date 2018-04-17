@@ -7,8 +7,8 @@ import com.estacionvital.patienthub.model.EVClub
  */
 interface ISuscriptionCatalogPresenter {
     fun retrieveCatalog(number: String,auth_credential: String)
-    fun retrieveLimit(number: String, auth_credential: String)
+    fun retrieveLimit(isLoggedInUser: Boolean, auth_credential: String)
     fun retrieveActive(number: String, auth_credential: String, catalog: List<EVClub>)
     fun validateSelectedClub(club: EVClub)
-    fun validateSubscriptions()
+    fun validateSubscriptions(isLoggedInUser: Boolean)
 }

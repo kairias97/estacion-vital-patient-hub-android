@@ -15,4 +15,7 @@ interface ISplashView {
     fun navigateToMain() : Unit
     fun getContext(): Context
     fun navigateToChat(evChannel: EVChannel)
+    fun navigateToClubSuscription()
+    fun showSuscriptionValidationError()
+    fun close()
 }

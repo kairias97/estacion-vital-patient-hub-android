@@ -23,4 +23,5 @@ interface IClubSubscriptionView: IBaseView {
     fun showCustomWSMessage(msg: String)
     fun showActiveSubscriptionsProgress()
     fun hideActiveSubscriptionsProgress()
+    fun navigateToMain()
 }
