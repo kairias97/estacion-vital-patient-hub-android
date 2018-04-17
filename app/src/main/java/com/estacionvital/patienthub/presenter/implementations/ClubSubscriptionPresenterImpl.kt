@@ -14,30 +14,37 @@ import com.estacionvital.patienthub.util.NETMOBILE_AUTH_CREDENTIAL
  * Created by dusti on 26/02/2018.
  */
 class ClubSubscriptionPresenterImpl : ISuscriptionCatalogPresenter {
-    override fun validateSubscriptions() {
+    override fun validateSubscriptions(isLoggedInUser: Boolean) {
         val subscriptions: MutableList<EVClub> = mSubscriptionCatalogView.getSelectedClubs().toMutableList()
         when {
             //No subscriptions selected
             subscriptions.count() == 0 -> {
+
                 mSubscriptionCatalogView.showSubscriptionsRequiredMessage()
             }
             //Only past subscriptions
             subscriptions.count{!it.isRemoteRegistered} == 0 -> {
-                mSubscriptionCatalogView.navigateToEVRegistration()
+                if (isLoggedInUser) {
+                    mSubscriptionCatalogView.navigateToMain()
+                } else {
+                    mSubscriptionCatalogView.navigateToEVRegistration()
+                }
+
             }
             //There are subscriptions to be added
             else -> {
-                subscribeNewClubs(subscriptions.filter { !it.isRemoteRegistered }.toMutableList(), 0)
+                val phoneNumber = if (isLoggedInUser) EVUserSession.instance.phoneNumber else RegistrationSession.instance.phoneNumber
+                subscribeNewClubs(subscriptions.filter { !it.isRemoteRegistered }.toMutableList(), 0, isLoggedInUser, phoneNumber)
             }
 
         }
 
     }
 
-    private fun subscribeNewClubs(newClubs: MutableList<EVClub>, index:Int){
+    private fun subscribeNewClubs(newClubs: MutableList<EVClub>, index:Int, isLoggedInUser: Boolean, phoneNumber: String){
         mSubscriptionCatalogView.showSubscriptionProgress(newClubs[index].name)
         mNetMobileRemoteDataSource.subscribeToEVClub(
-                ClubSubscriptionRequest(RegistrationSession.instance.phoneNumber,
+                ClubSubscriptionRequest(phoneNumber,
                         NETMOBILE_AUTH_CREDENTIAL, newClubs[index].id.toInt()),
                 object:INewClubSubscriptionCallback{
                     override fun onSuccess(result: ClubSubscriptionResponse) {
@@ -48,16 +55,24 @@ class ClubSubscriptionPresenterImpl : ISuscriptionCatalogPresenter {
                             mSubscriptionCatalogView.showCustomWSMessage(result.msg)
                             return
                         } else {
+                            //On success of processed element, we update UI in order to keep updated
+                            //the track of added club suscriptions
                             mSubscriptionCatalogView.showNewClubSuccessMessage(newClubs[index].name)
                             newClubs[index].isRemoteRegistered = true
 
                             mSubscriptionCatalogView.updateClubSubscriptionView(newClubs[index])
                         }
+                        //If the last element was processed successfully
                         if (index == newClubs.size - 1) {
                             mSubscriptionCatalogView.showSubscriptionSuccessMessage()
-                            mSubscriptionCatalogView.navigateToEVRegistration()
+                            if (isLoggedInUser) {
+                                mSubscriptionCatalogView.navigateToMain()
+                            } else {
+                                mSubscriptionCatalogView.navigateToEVRegistration()
+                            }
+
                         } else {
-                            subscribeNewClubs(newClubs, index + 1)
+                            subscribeNewClubs(newClubs, index + 1, isLoggedInUser, phoneNumber)
                         }
                     }
 
@@ -98,7 +113,9 @@ class ClubSubscriptionPresenterImpl : ISuscriptionCatalogPresenter {
                 })
     }
 
-    override fun retrieveLimit(number: String, auth_credential: String) {
+    override fun retrieveLimit(isLoggedInUser: Boolean, auth_credential: String) {
+        val phoneNumber = if (isLoggedInUser) EVUserSession.instance.phoneNumber else RegistrationSession.instance.phoneNumber
+
         mNetMobileRemoteDataSource.retrieveSubscriptionLimit(SuscriptionLimitRequest(auth_credential),
                 object: ISuscriptionLimitCallback{
                     override fun onSuccess(response: SuscriptionLimitResponse) {
@@ -106,7 +123,7 @@ class ClubSubscriptionPresenterImpl : ISuscriptionCatalogPresenter {
                             mSubscriptionCatalogView.showCustomWSMessage(response.msg)
                         } else {
                             RegistrationSession.instance.clubsRegistrationLimit = response.max
-                            retrieveCatalog(number, auth_credential)
+                            retrieveCatalog(phoneNumber, auth_credential)
 
                         }
                     }

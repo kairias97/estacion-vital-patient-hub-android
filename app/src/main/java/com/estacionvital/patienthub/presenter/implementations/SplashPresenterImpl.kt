@@ -1,15 +1,14 @@
 package com.estacionvital.patienthub.presenter.implementations
 
 import com.estacionvital.patienthub.data.local.SharedPrefManager
-import com.estacionvital.patienthub.data.remote.Callbacks.IEVRetrieveProfileCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioClientCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.IEVTwilioFindChannelByIDCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.IGetChannelByUniqueName
+import com.estacionvital.patienthub.data.remote.Callbacks.*
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
+import com.estacionvital.patienthub.data.remote.NetMobileRemoteDataSource
 import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.ISplashPresenter
 import com.estacionvital.patienthub.ui.views.ISplashView
+import com.estacionvital.patienthub.util.NETMOBILE_AUTH_CREDENTIAL
 import com.estacionvital.patienthub.util.TimedTaskHandler
 import com.twilio.chat.Channel
 
@@ -113,16 +112,18 @@ class SplashPresenterImpl: ISplashPresenter {
 
     private val mSplashTimeOut: Int = 1000
     private val mEVRemoteDataSource: EstacionVitalRemoteDataSource
+    private val mNetMobileRemoteDataSource: NetMobileRemoteDataSource
     private val mEVTwilioChatRemoteDataSource: EVTwilioChatRemoteDataSource
     private val mSplashView: ISplashView
     private val mSharedPrefManager: SharedPrefManager
 
     constructor(view: ISplashView, sharedPref: SharedPrefManager, evRemoteDS: EstacionVitalRemoteDataSource,
-                evTwilioChatRemoteDS: EVTwilioChatRemoteDataSource) {
+                evTwilioChatRemoteDS: EVTwilioChatRemoteDataSource, netMobileRemoteDataSource: NetMobileRemoteDataSource) {
         this.mSplashView = view
         this.mSharedPrefManager = sharedPref
         this.mEVRemoteDataSource = evRemoteDS
         this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDS
+        this.mNetMobileRemoteDataSource = netMobileRemoteDataSource
     }
     private fun isSessionSaved(): Boolean{
         val token = mSharedPrefManager.getSharedPrefString(SharedPrefManager.PreferenceKeys.AUTH_TOKEN)
@@ -148,11 +149,31 @@ class SplashPresenterImpl: ISplashPresenter {
 
         if ( isSessionSaved()) {
             setupSessionInstance()
-            redirectToMain()
+            validateClubSuscriptions()
         } else {
             redirectToNumberVerification()
         }
         //If it is not logged then go to Registration
 
+    }
+    private fun validateClubSuscriptions() {
+
+        mNetMobileRemoteDataSource.retrieveSubscriptionActive(SuscriptionActiveRequest(EVUserSession.instance.phoneNumber,
+                NETMOBILE_AUTH_CREDENTIAL), object:ISuscriptionActiveCallback {
+            override fun onSuccess(response: List<SuscriptionActiveResponse>) {
+                if (response.isNotEmpty()) {
+                    mSplashView.navigateToMain()
+                } else {
+                    mSplashView.navigateToClubSuscription()
+                }
+            }
+
+            override fun onFailure() {
+                //See what we can do on failure
+                mSplashView.showSuscriptionValidationError()
+                mSplashView.close()
+            }
+
+        } )
     }
 }

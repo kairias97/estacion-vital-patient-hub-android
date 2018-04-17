@@ -7,12 +7,33 @@ import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
+import com.estacionvital.patienthub.data.remote.NetMobileRemoteDataSource
 import com.estacionvital.patienthub.model.EVChannel
 import com.estacionvital.patienthub.presenter.ISplashPresenter
 import com.estacionvital.patienthub.presenter.implementations.SplashPresenterImpl
 import com.estacionvital.patienthub.ui.views.ISplashView
+import com.estacionvital.patienthub.util.toast
 
 class SplashActivity : BaseActivity(), ISplashView {
+    override fun close() {
+        finish()
+    }
+
+    override fun showSuscriptionValidationError() {
+        this.toast(R.string.validate_suscriptions_error)
+    }
+
+    override fun navigateToClubSuscription() {
+        val intentClub = Intent(this, ClubSubscriptionActivity::class.java)
+        //When navigating to club suscription it means it is a registered user
+        intentClub.putExtra("isLoggedIn", true)
+        /*
+        intentChatWindow.putExtra("specialty", selected)
+        intentChatWindow.putExtra("room_id",room_id)*/
+        intentClub.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intentClub)
+    }
+
     override fun navigateToChat(evChannel: EVChannel) {
         val intentChatWindow = Intent(this, TwilioChatActivity::class.java)
         intentChatWindow.putExtra("channel", evChannel)
@@ -40,7 +61,8 @@ class SplashActivity : BaseActivity(), ISplashView {
                                 Context.MODE_PRIVATE)
                 ),
                 EstacionVitalRemoteDataSource.INSTANCE,
-                EVTwilioChatRemoteDataSource.instance
+                EVTwilioChatRemoteDataSource.instance,
+                NetMobileRemoteDataSource.INSTANCE
         )
         if (intent.extras != null) {
 

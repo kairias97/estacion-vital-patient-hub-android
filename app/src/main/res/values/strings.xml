@@ -40,10 +40,10 @@
     <string name="validation_suscriptions_limit_msg">Se ha alcanzado el límite de suscripciones máximas permitidas por Estación Vital</string>
     <string name="club_catalog_process">Obteniendo suscripciones...</string>
     <string name="validation_suscription_required_msg">Debe estar suscrito al menos a un club de Estación Vital para continuar con el registro</string>
-    <string name="subscription_club_progress_msg">Suscribiéndose a club {0}...</string>
+    <string name="subscription_club_progress_msg">Suscribiéndose a club %s...</string>
     <string name="success_club_subscription_msg">La suscripción a los clubes solicitados ha sido realizada correctamente</string>
-    <string name="success_new_club_msg">Se ha suscrito exitosamente al club {0}</string>
-    <string name="custom_ws_message">No se procesó correctamente la solicitud. Razón: {0}</string>
+    <string name="success_new_club_msg">Se ha suscrito exitosamente al club %s</string>
+    <string name="custom_ws_message">No se procesó correctamente la solicitud. Razón: %s</string>
     <string name="active_subscriptions_progress">Obteniendo suscripciones activas...</string>
     <string name="required_input_name">El nombre es requerido</string>
     <string name="required_input_last_name">El apellido es requerido</string>
@@ -145,5 +145,6 @@
     <string name="loading_channel_message">Cargando canal de chat...</string>
     <string name="title_activity_recent_articles">Artículos recientes</string>
     <string name="blog_recent_articles_progress">Obteniendo artículos recientes...</string>
+    <string name="validate_suscriptions_error">Ocurrió un error al verificar las suscripciones activas de estación vital</string>
 
 </resources>
