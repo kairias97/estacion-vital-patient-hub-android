@@ -69,14 +69,22 @@ class ValidateCreditCardActivity : BaseActivity(), IValidateCreditCardView {
         setYears()
 
         mButtonVerify.setOnClickListener {
-        /*    if(mHolderCreditCard.text.toString() != "" && mNumberCreditCard.text.toString() != "" && mExpMonthCreditCard.text.toString() != "" &&
-                    mExpYearCreditCard.text.toString() != "" && mCVCCreditCard.text.toString() != ""){
-                mValidateCreditCardPresenter.validateCreditCard(mHolderCreditCard.text.toString(), mExpYearCreditCard.text.toString(), mExpMonthCreditCard.text.toString(),
+            if(mHolderCreditCard.text.toString() != "" && mNumberCreditCard.text.toString() != "" && mExpMonthCreditCard.selectedItem.toString() != "" &&
+                    mExpYearCreditCard.selectedItem.toString() != "" && mCVCCreditCard.text.toString() != ""){
+                val year = mExpYearCreditCard.selectedItem.toString()
+                var month: String
+                if(mExpMonthCreditCard.selectedItem.toString().length == 1){
+                    month = "0${mExpMonthCreditCard.selectedItem}"
+                }
+                else{
+                    month = mExpMonthCreditCard.selectedItem.toString()
+                }
+                mValidateCreditCardPresenter.validateCreditCard(mHolderCreditCard.text.toString(), year, month,
                         mNumberCreditCard.text.toString(), mCVCCreditCard.text.toString(), mSpecialty, mTypeChat)
             }
             else{
                 this.toast("Debe llenar todos los campos para verificar su tarjeta.")
-            }*/
+            }
         }
     }
 
@@ -121,8 +129,8 @@ class ValidateCreditCardActivity : BaseActivity(), IValidateCreditCardView {
         startActivity(intentChatWindow)
     }
 
-    override fun showErrorProcessingCreditCard() {
-        this.toast(getString(R.string.msg_error_processing_credit_card))
+    override fun showErrorProcessingCreditCard(msg: String) {
+        this.toast(msg)
     }
 
     override fun showExpirationMessage() {

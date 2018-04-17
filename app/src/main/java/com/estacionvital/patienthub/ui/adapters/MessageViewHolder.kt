@@ -41,7 +41,7 @@ class MessageViewHolder: RecyclerView.ViewHolder {
         //Be careful with that because it has side effects when it is not setup
         if(message.author == "${EVUserSession.instance.userProfile.name} ${EVUserSession.instance.userProfile.last_name}"){
             Picasso.get()
-                    .load(R.mipmap.ic_patient_round)
+                    .load(R.mipmap.ic_patient_new_round)
                     .into(mProfileView)
         }
     }
