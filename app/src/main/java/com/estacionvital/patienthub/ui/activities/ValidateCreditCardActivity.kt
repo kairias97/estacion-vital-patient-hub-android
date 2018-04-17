@@ -6,8 +6,10 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.NavUtils
 import android.view.MenuItem
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
@@ -17,13 +19,17 @@ import com.estacionvital.patienthub.presenter.IValidateCreditCardPresenter
 import com.estacionvital.patienthub.presenter.implementations.ValidateCreditCardPresenterImpl
 import com.estacionvital.patienthub.ui.views.IValidateCreditCardView
 import com.estacionvital.patienthub.util.toast
+import kotlinx.android.synthetic.main.activity_validate_credit_card.*
+import java.text.DateFormatSymbols
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ValidateCreditCardActivity : BaseActivity(), IValidateCreditCardView {
 
     private lateinit var mHolderCreditCard: EditText
     private lateinit var mNumberCreditCard: EditText
-    private lateinit var mExpMonthCreditCard: EditText
-    private lateinit var mExpYearCreditCard: EditText
+    private lateinit var mExpMonthCreditCard: Spinner
+    private lateinit var mExpYearCreditCard: Spinner
     private lateinit var mCVCCreditCard: EditText
     private lateinit var mButtonVerify: Button
 
@@ -43,8 +49,8 @@ class ValidateCreditCardActivity : BaseActivity(), IValidateCreditCardView {
 
         mHolderCreditCard = findViewById(R.id.edit_text_holder_credit_card)
         mNumberCreditCard = findViewById(R.id.edit_text_number_credit_card)
-        mExpMonthCreditCard = findViewById(R.id.edit_text_expMonth_credit_card)
-        mExpYearCreditCard = findViewById(R.id.edit_text_expYear_credit_card)
+        mExpMonthCreditCard = findViewById(R.id.spinner_expMonth_credit_card)
+        mExpYearCreditCard = findViewById(R.id.spinner_expYear_credit_card)
         mCVCCreditCard = findViewById(R.id.edit_text_cvc_credit_card)
         mButtonVerify = findViewById(R.id.button_verify)
 
@@ -59,15 +65,18 @@ class ValidateCreditCardActivity : BaseActivity(), IValidateCreditCardView {
                                 Context.MODE_PRIVATE)
                 ))
 
+        setMonths()
+        setYears()
+
         mButtonVerify.setOnClickListener {
-            if(mHolderCreditCard.text.toString() != "" && mNumberCreditCard.text.toString() != "" && mExpMonthCreditCard.text.toString() != "" &&
+        /*    if(mHolderCreditCard.text.toString() != "" && mNumberCreditCard.text.toString() != "" && mExpMonthCreditCard.text.toString() != "" &&
                     mExpYearCreditCard.text.toString() != "" && mCVCCreditCard.text.toString() != ""){
                 mValidateCreditCardPresenter.validateCreditCard(mHolderCreditCard.text.toString(), mExpYearCreditCard.text.toString(), mExpMonthCreditCard.text.toString(),
                         mNumberCreditCard.text.toString(), mCVCCreditCard.text.toString(), mSpecialty, mTypeChat)
             }
             else{
                 this.toast("Debe llenar todos los campos para verificar su tarjeta.")
-            }
+            }*/
         }
     }
 
@@ -118,5 +127,26 @@ class ValidateCreditCardActivity : BaseActivity(), IValidateCreditCardView {
 
     override fun showExpirationMessage() {
         super.showExpirationMessage()
+    }
+
+    fun setMonths(){
+        val months: MutableList<String> = ArrayList<String>()
+        for(m in 1..12){
+            months.add("$m")
+        }
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.spinner_item, months)
+        adapter.setDropDownViewResource(R.layout.spinner_item)
+        mExpMonthCreditCard.adapter = adapter
+    }
+
+    fun setYears(){
+        val currentYear = Calendar.getInstance().get(Calendar.YEAR)
+        val years: MutableList<String> = ArrayList<String>()
+        for(i in 0..10){
+            years.add("${currentYear+i}")
+        }
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(this, R.layout.spinner_item, years)
+        adapter.setDropDownViewResource(R.layout.spinner_item)
+        mExpYearCreditCard.adapter = adapter
     }
 }
