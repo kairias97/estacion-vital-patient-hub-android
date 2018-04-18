@@ -21,6 +21,24 @@ import com.estacionvital.patienthub.ui.views.IConfirmationCodeVerificationView
 import com.estacionvital.patienthub.util.toast
 
 class ConfirmationCodeVerificationActivity : BaseActivity(), IConfirmationCodeVerificationView {
+    override fun showClubValidationProgress() {
+        showProgressDialog(getString(R.string.validation_club_suscription_progress))
+    }
+
+    override fun hideClubValidationProgress() {
+        hideProgressDialog()
+    }
+
+    override fun navigateToClubSuscription() {
+        val intentClub = Intent(this, ClubSubscriptionActivity::class.java)
+        //When navigating to club suscription it means it is a registered user
+        intentClub.putExtra("isLoggedIn", true)
+        /*
+        intentChatWindow.putExtra("specialty", selected)
+        intentChatWindow.putExtra("room_id",room_id)*/
+        intentClub.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intentClub)
+    }
 
 
     private lateinit var mCodeEditText : TextInputEditText

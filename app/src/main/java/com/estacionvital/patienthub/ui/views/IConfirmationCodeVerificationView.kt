@@ -17,5 +17,8 @@ interface IConfirmationCodeVerificationView : IBaseView{
     //Navegability
     fun navigateToMain()
     fun navigateToConfirmSuscription()
+    fun navigateToClubSuscription()
+    fun showClubValidationProgress()
+    fun hideClubValidationProgress()
 
 }

@@ -146,5 +146,6 @@
     <string name="title_activity_recent_articles">Artículos recientes</string>
     <string name="blog_recent_articles_progress">Obteniendo artículos recientes...</string>
     <string name="validate_suscriptions_error">Ocurrió un error al verificar las suscripciones activas de estación vital</string>
+    <string name="validation_club_suscription_progress">Validando suscripciones al club de Estación Vital</string>
 
 </resources>
