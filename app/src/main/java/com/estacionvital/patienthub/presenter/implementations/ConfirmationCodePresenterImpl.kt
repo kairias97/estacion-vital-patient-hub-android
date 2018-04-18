@@ -2,6 +2,7 @@ package com.estacionvital.patienthub.presenter.implementations
 
 
 import com.estacionvital.patienthub.data.local.SharedPrefManager
+import com.estacionvital.patienthub.data.remote.Callbacks.ISuscriptionActiveCallback
 import com.estacionvital.patienthub.data.remote.Callbacks.IValidateEVCredentialsCallback
 import com.estacionvital.patienthub.data.remote.Callbacks.IValidatePinCallback
 import com.estacionvital.patienthub.data.remote.EstacionVitalRemoteDataSource
@@ -64,6 +65,30 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
             })
         }
     }
+
+    //Function called after validation successfully ev login
+    private fun validateActiveClubSuscriptions(phoneNumber: String) {
+        mCodeVerificationView.showClubValidationProgress()
+        mNetMobileRemoteDataSource.retrieveSubscriptionActive(SuscriptionActiveRequest(phoneNumber, NETMOBILE_AUTH_CREDENTIAL),
+                object: ISuscriptionActiveCallback {
+                    override fun onSuccess(response: List<SuscriptionActiveResponse>) {
+                        mCodeVerificationView.hideClubValidationProgress()
+                        if (response.isNotEmpty()) {
+                            mCodeVerificationView.navigateToMain()
+                        } else {
+                            mCodeVerificationView.navigateToClubSuscription()
+                        }
+                    }
+
+                    override fun onFailure() {
+                        mCodeVerificationView.hideClubValidationProgress()
+                        //Change later on for a view message from resources
+                        mCodeVerificationView.showCustomMessage("Error al validar suscripciones activas de estación vital")
+                    }
+
+                })
+        mCodeVerificationView.navigateToMain()
+    }
     private fun validateEVLogin(phoneNumber: String) {
         mCodeVerificationView.showEVLoginRequestProgress()
         mEstacionVitalRemoteDataSource.validateEVCredentials(LoginRequest(phoneNumber.toBase64().replace("\n", "")),
@@ -80,8 +105,8 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
                             //We prepare the session for main activity
                             EVUserSession.instance.authToken = authToken
                             EVUserSession.instance.phoneNumber = phoneNumber
+                            validateActiveClubSuscriptions(phoneNumber)
 
-                            mCodeVerificationView.navigateToMain()
                         } else {
                             mCodeVerificationView.navigateToConfirmSuscription()
                         }
