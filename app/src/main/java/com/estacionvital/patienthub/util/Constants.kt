@@ -53,3 +53,7 @@ const val RECENT_ARTICLES_PAGE_SIZE = 10
 const val REGISTRATION_COMPLETE = "registrationComplete"
 const val PAYMENT_TYPE_COUPON = "coupon"
 const val PAYMENT_TYPE_CREDIT_CARD = "order"
+
+const val URL_MOVISTAR_IMG_1 = "https://blog.estacionvital.com/wp-content/themes/better-health/assets/ICATEGORIAS/BANNER_INICIO_1.jpg"
+const val URL_MOVISTAR_IMG_2 = "https://blog.estacionvital.com/wp-content/themes/better-health/assets/ICATEGORIAS/BANNER_INICIO_2.jpg"
+const val URL_MOVISTAR_IMG_3 = "https://blog.estacionvital.com/wp-content/themes/better-health/assets/ICATEGORIAS/BANNER_INICIO_3.jpg"
