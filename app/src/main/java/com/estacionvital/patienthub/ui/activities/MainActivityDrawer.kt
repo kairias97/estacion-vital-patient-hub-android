@@ -8,8 +8,10 @@ import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
+import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.local.SharedPrefManager
@@ -152,9 +154,30 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
 
         val toggle = ActionBarDrawerToggle(
                 this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close)
+        //This comes from the xml
         drawer_layout.addDrawerListener(toggle)
         toggle.syncState()
+        drawer_layout.addDrawerListener(object:DrawerLayout.DrawerListener {
+            override fun onDrawerStateChanged(newState: Int) {
+                toggle.onDrawerStateChanged(newState)
+            }
 
+            override fun onDrawerSlide(drawerView: View?, slideOffset: Float) {
+                toggle.onDrawerSlide(drawerView, slideOffset)
+            }
+
+            override fun onDrawerClosed(drawerView: View?) {
+                toggle.onDrawerClosed(drawerView)
+            }
+
+            override fun onDrawerOpened(drawerView: View?) {
+                if (fab.isOpened) {
+                    fab.close(true)
+                }
+                toggle.onDrawerOpened(drawerView)
+            }
+
+        })
         nav_view.setNavigationItemSelectedListener(this)
 
         navigationView.setCheckedItem(R.id.nav_home)

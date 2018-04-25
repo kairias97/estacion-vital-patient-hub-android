@@ -43,6 +43,10 @@ class MessageViewHolder: RecyclerView.ViewHolder {
             Picasso.get()
                     .load(R.mipmap.ic_patient_new_round)
                     .into(mProfileView)
+        } else {
+            Picasso.get()
+                    .load(R.mipmap.ic_launcher_round)
+                    .into(mProfileView)
         }
     }
 }
