@@ -44,8 +44,7 @@
         app:menu_labels_colorRipple="#66efecec"
         app:menu_labels_textColor="@android:color/white"
         app:menu_colorNormal="@color/colorAccent"
-        app:menu_colorPressed="@color/colorAccent"
-        app:menu_icon="@android:drawable/ic_dialog_email">
+        app:menu_colorPressed="@color/colorAccent">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fab_chat_free"
