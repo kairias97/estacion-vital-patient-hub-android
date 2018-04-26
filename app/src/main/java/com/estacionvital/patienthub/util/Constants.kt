@@ -17,6 +17,7 @@ const val URL_VALIDATE_PIN: String = "pin/validate"
 const val URL_RETRIEVE_SUBSCRIPTION_CATALOG = "pin/service"
 const val URL_RETRIEVE_SUBSCRIPTION_LIMIT = "pin/limite_subscripciones_ev"
 const val URL_RETRIEVE_SUBSCRIPTION_ACTIVE = "pin/servicios_activos_ev"
+const val URL_RETRIEVE_SUBSCRIPTION_TOTAL = "pin/servicios_activos"
 const val URL_NEW_CLUB_SUBSCRIPTION = "pin/alta"
 const val URL_EV_NEW_REGISTRATION = "auth/register"
 const val URL_EV_RETRIEVE_PROFILE = "user"
@@ -37,6 +38,8 @@ const val URL_EV_GET_CHANNEL_BY_ID = "examination/get_by_channel"
 const val URL_EV_LOGIN: String = "auth/sign-in"
 const val URL_EV_LOGOUT: String = "auth/sign-out"
 
+//Constantes de validacion
+const val MAX_TOTAL_SUSCRIPTIONS = 5
 
 //Constantes para el tipo de chat
 const val CHAT_FREE: String = "free"

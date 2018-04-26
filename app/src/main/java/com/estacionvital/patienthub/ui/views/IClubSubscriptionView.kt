@@ -24,4 +24,5 @@ interface IClubSubscriptionView: IBaseView {
     fun showActiveSubscriptionsProgress()
     fun hideActiveSubscriptionsProgress()
     fun navigateToMain()
+    fun getNewSelectedClubsCount(): Int
 }

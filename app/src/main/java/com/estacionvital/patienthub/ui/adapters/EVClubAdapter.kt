@@ -58,4 +58,8 @@ class EVClubAdapter: RecyclerView.Adapter<EVClubViewHolder> {
         }
 
     }
+
+    fun getNewSelectedClubsCount(): Int {
+        return this.clubs.count { it.isSelected  && !it.isRemoteRegistered}
+    }
 }
