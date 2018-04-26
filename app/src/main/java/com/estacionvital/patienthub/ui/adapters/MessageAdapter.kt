@@ -16,6 +16,7 @@ class MessageAdapter: RecyclerView.Adapter<MessageViewHolder> {
 
     interface OnMessageSelectedListener{
         fun onMessageSelected(message: Message)
+        fun getDoctorName(): String
     }
 
     constructor(messages: MutableList<Message>, listener: OnMessageSelectedListener){

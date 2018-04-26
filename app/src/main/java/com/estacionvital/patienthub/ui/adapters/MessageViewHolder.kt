@@ -29,21 +29,29 @@ class MessageViewHolder: RecyclerView.ViewHolder {
 
     fun bindData(message: Message, listener: MessageAdapter.OnMessageSelectedListener){
         mTextViewMessage.text = message.messageBody
-        mTextViewAuthor.text = message.author
-        //val valueDate = message.timeStampAsDate
         val date = message.timeStampAsDate
 
-        //mTextViewDate.text = DateUtil.parseDateStringToFormat(date,"yyyy-MM-dd'T'HH:mm:ss","HH:mm dd/MM/yyyy")
         mTextViewDate.text = DateUtil.parseDateToFormat(date, "HH:mm dd/MM/yyyy")
         itemView.setOnClickListener {
             listener.onMessageSelected(message)
         }
         //Be careful with that because it has side effects when it is not setup
-        if(message.author == "${EVUserSession.instance.userProfile.name} ${EVUserSession.instance.userProfile.last_name}"){
+        if(message.author == EVUserSession.instance.userProfile.identity){
+            val name = "${EVUserSession.instance.userProfile.name} ${EVUserSession.instance.userProfile.last_name}"
+            mTextViewAuthor.text = name
             Picasso.get()
                     .load(R.mipmap.ic_patient_new_round)
                     .into(mProfileView)
         } else {
+            var name: String
+            val doctorName = listener.getDoctorName()
+            if(doctorName == "" || doctorName == "-"){
+                name = "Doctor"
+            }
+            else{
+                name = doctorName
+            }
+            mTextViewAuthor.text = "Dr. $name"
             Picasso.get()
                     .load(R.mipmap.ic_launcher_round)
                     .into(mProfileView)

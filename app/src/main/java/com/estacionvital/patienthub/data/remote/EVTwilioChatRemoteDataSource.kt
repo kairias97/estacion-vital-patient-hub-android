@@ -167,7 +167,15 @@ class EVTwilioChatRemoteDataSource {
             }
 
             override fun onMemberAdded(p0: Member?) {
-                callbackMemberAdded.onSuccess()
+                p0!!.getUserDescriptor(object: CallbackListener<UserDescriptor>(){
+                    override fun onSuccess(p0: UserDescriptor?) {
+                        callbackMemberAdded.onSuccess(p0!!.friendlyName)
+                    }
+
+                    override fun onError(errorInfo: ErrorInfo?) {
+                        super.onError(errorInfo)
+                    }
+                })
             }
 
             override fun onTypingStarted(p0: Member?) {

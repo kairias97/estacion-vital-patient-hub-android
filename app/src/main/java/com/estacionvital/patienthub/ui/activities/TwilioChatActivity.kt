@@ -225,8 +225,13 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
         this.toast(getString(R.string.label_doctor_left))
     }
 
-    override fun showDoctorJoined() {
+    override fun showDoctorJoined(name: String) {
+        mEVChannel.doctorName = name
         this.toast(getString(R.string.label_doctor_joined))
+    }
+
+    override fun getDoctorName(): String {
+        return mEVChannel.doctorName
     }
     /*
     private fun changeBtnEnabled(){

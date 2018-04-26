@@ -158,8 +158,8 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
                 mTwilioChatView.showErrorLoading()
             }
         }, object: IEVMemberAddedCallBack{
-            override fun onSuccess() {
-                mTwilioChatView.showDoctorJoined()
+            override fun onSuccess(name: String) {
+                mTwilioChatView.showDoctorJoined(name)
             }
 
             override fun onFailure() {
