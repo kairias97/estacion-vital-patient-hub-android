@@ -188,7 +188,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
                         getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
                                 Context.MODE_PRIVATE)
                 ), EVTwilioChatRemoteDataSource.instance)
-        mMainDrawerPresenter.retrieveEVUSerProfile()
+        mMainDrawerPresenter.retrieveEVUSerProfile(this)
 
         fragmentTransaction(HomeFragment.newInstance(object: HomeFragment.HomeFragmentListener {
             override fun onRecentArticlesBannerSelected() {
