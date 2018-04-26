@@ -1,13 +1,11 @@
 package com.estacionvital.patienthub.presenter.implementations
 
-import com.estacionvital.patienthub.data.remote.Callbacks.INewClubSubscriptionCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.ISuscriptionActiveCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.ISuscriptionCatalogCallback
-import com.estacionvital.patienthub.data.remote.Callbacks.ISuscriptionLimitCallback
+import com.estacionvital.patienthub.data.remote.Callbacks.*
 import com.estacionvital.patienthub.data.remote.NetMobileRemoteDataSource
 import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.presenter.ISuscriptionCatalogPresenter
 import com.estacionvital.patienthub.ui.views.IClubSubscriptionView
+import com.estacionvital.patienthub.util.MAX_TOTAL_SUSCRIPTIONS
 import com.estacionvital.patienthub.util.NETMOBILE_AUTH_CREDENTIAL
 
 /**
@@ -59,7 +57,7 @@ class ClubSubscriptionPresenterImpl : ISuscriptionCatalogPresenter {
                             //the track of added club suscriptions
                             mSubscriptionCatalogView.showNewClubSuccessMessage(newClubs[index].name)
                             newClubs[index].isRemoteRegistered = true
-
+                            RegistrationSession.instance.netmobileTotalSuscriptions += 1
                             mSubscriptionCatalogView.updateClubSubscriptionView(newClubs[index])
                         }
                         //If the last element was processed successfully
@@ -94,7 +92,7 @@ class ClubSubscriptionPresenterImpl : ISuscriptionCatalogPresenter {
         this.mSubscriptionCatalogView = clubSubscriptionView
         this.mNetMobileRemoteDataSource = netMobileRemoteDataSource
     }
-
+    //Third petition made via api
     override fun retrieveCatalog(number: String, auth_credential: String) {
         mSubscriptionCatalogView.showRetrievingCatalogProcess()
         mNetMobileRemoteDataSource.retrieveSubscriptionCatalog(SuscriptionCatalogRequest(auth_credential),
@@ -112,7 +110,29 @@ class ClubSubscriptionPresenterImpl : ISuscriptionCatalogPresenter {
                     }
                 })
     }
+    //Second request performed
+    private fun retrieveTotalSuscriptions(number: String, auth_credential: String) {
 
+        mNetMobileRemoteDataSource.retrieveSubscriptionTotal(SuscriptionTotalRequest(number, auth_credential),
+                object: ISuscriptionTotalCallback {
+                    override fun onSuccess(response: SuscriptionTotalResponse) {
+                        if (response.status == 1) {
+                            RegistrationSession.instance.netmobileTotalSuscriptions = response.total
+                            retrieveCatalog(number, auth_credential)
+                        } else  {
+                            mSubscriptionCatalogView.showCustomWSMessage(response.msg)
+                        }
+                    }
+
+                    override fun onFailure() {
+                        mSubscriptionCatalogView.showInternalErrorMessage()
+                    }
+
+                })
+
+    }
+
+    //first petition
     override fun retrieveLimit(isLoggedInUser: Boolean, auth_credential: String) {
         val phoneNumber = if (isLoggedInUser) EVUserSession.instance.phoneNumber else RegistrationSession.instance.phoneNumber
 
@@ -122,8 +142,9 @@ class ClubSubscriptionPresenterImpl : ISuscriptionCatalogPresenter {
                         if (response.status != 1) {
                             mSubscriptionCatalogView.showCustomWSMessage(response.msg)
                         } else {
-                            RegistrationSession.instance.clubsRegistrationLimit = response.max
-                            retrieveCatalog(phoneNumber, auth_credential)
+                            RegistrationSession.instance.evClubsRegistrationLimit = response.max
+                            RegistrationSession.instance.totalClubsRegistrationLimit = MAX_TOTAL_SUSCRIPTIONS
+                            retrieveTotalSuscriptions(phoneNumber, auth_credential)
 
                         }
                     }
@@ -134,6 +155,7 @@ class ClubSubscriptionPresenterImpl : ISuscriptionCatalogPresenter {
                 })
     }
 
+    //Fourth request made via api
     override fun retrieveActive(number: String, auth_credential: String, catalog: List<EVClub>) {
         mSubscriptionCatalogView.showActiveSubscriptionsProgress()
         mNetMobileRemoteDataSource.retrieveSubscriptionActive(SuscriptionActiveRequest(number, auth_credential),
@@ -156,9 +178,15 @@ class ClubSubscriptionPresenterImpl : ISuscriptionCatalogPresenter {
 
     override fun validateSelectedClub(club: EVClub) {
         val selectedClubsCount: Int = mSubscriptionCatalogView.getSelectedClubsCount()
+        val selectedNotRemoteClubsCount: Int = mSubscriptionCatalogView.getNewSelectedClubsCount()
         if (club.isRemoteRegistered) return
 
-        if (!club.isSelected && selectedClubsCount >= RegistrationSession.instance.clubsRegistrationLimit ) {
+        //We validate if it was not selected, if we dont surpass the limit of selected ev clubs
+        //Finally we validate that we dont overpass the limit of MAX_TOTAL_SUSCRIPTIONS
+        if (!club.isSelected
+                && (selectedClubsCount >= RegistrationSession.instance.evClubsRegistrationLimit
+                || RegistrationSession.instance.netmobileTotalSuscriptions + selectedNotRemoteClubsCount >= MAX_TOTAL_SUSCRIPTIONS)) {
+
             //Show validation message here
             mSubscriptionCatalogView.showLimitSubscriptionMessage()
         } else {

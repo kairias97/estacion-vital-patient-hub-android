@@ -23,6 +23,8 @@ interface INetMobileService {
     fun retrieveSuscriptionLimit(@Body body: SuscriptionLimitRequest): Call<SuscriptionLimitResponse>
     @POST(URL_RETRIEVE_SUBSCRIPTION_ACTIVE)
     fun retrieveSuscriptionActive(@Body body: SuscriptionActiveRequest): Call<List<SuscriptionActiveResponse>>
+    @POST(URL_RETRIEVE_SUBSCRIPTION_TOTAL)
+    fun retrieveSuscriptionTotal(@Body body: SuscriptionTotalRequest): Call<SuscriptionTotalResponse>
     @POST(URL_NEW_CLUB_SUBSCRIPTION)
     fun subscribeToEVClub(@Body body: ClubSubscriptionRequest): Call<ClubSubscriptionResponse>
 

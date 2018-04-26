@@ -17,6 +17,8 @@ import com.estacionvital.patienthub.util.NETMOBILE_AUTH_CREDENTIAL
 import com.estacionvital.patienthub.util.toast
 
 class ClubSubscriptionActivity : BaseActivity(), IClubSubscriptionView, EVClubAdapter.OnClubSelectedListener{
+
+
     override fun navigateToMain() {
         val mainNavigationIntent: Intent = Intent(this, MainActivityDrawer::class.java)
         mainNavigationIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
@@ -69,7 +71,9 @@ class ClubSubscriptionActivity : BaseActivity(), IClubSubscriptionView, EVClubAd
     override fun hideRetrievingCatalogProcess() {
         hideProgressDialog()
     }
-
+    override fun getNewSelectedClubsCount(): Int {
+        return (mSuscriptionRecyclerView.adapter as? EVClubAdapter)!!.getNewSelectedClubsCount()
+    }
     override fun getSelectedClubsCount(): Int {
         return (mSuscriptionRecyclerView.adapter as? EVClubAdapter)!!.getSelectedClubsCount()
     }

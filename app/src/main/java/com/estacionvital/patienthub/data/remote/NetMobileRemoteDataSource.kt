@@ -169,6 +169,29 @@ class NetMobileRemoteDataSource {
         })
     }
 
+    fun retrieveSubscriptionTotal(data: SuscriptionTotalRequest, callback: ISuscriptionTotalCallback){
+        val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionTotal(data)
+        authCall.enqueue(object: Callback<SuscriptionTotalResponse> {
+            override fun onResponse(call: Call<SuscriptionTotalResponse>?, response: Response<SuscriptionTotalResponse>?) {
+                if(response!!.code() == 200){
+                    callback.onSuccess(response.body()!!)
+                }
+                else if(response!!.code() == 500){
+                    if(BuildConfig.BUILD_TYPE == "debug") {
+                        Log.e("SuscriptionActive" + response.code().toString(), response.raw().body().toString())
+                    }
+                    callback.onFailure()
+                }
+            }
+            override fun onFailure(call: Call<SuscriptionTotalResponse>?, t: Throwable?) {
+                if(BuildConfig.BUILD_TYPE == "debug"){
+                    Log.e("SuscriptionActive error", t.toString())
+                }
+                callback.onFailure()
+            }
+        })
+    }
+
     fun subscribeToEVClub(data: ClubSubscriptionRequest, callback:INewClubSubscriptionCallback){
         val authCall = NetMobileAPI.instance.service!!.subscribeToEVClub(data)
         authCall.enqueue(object:Callback<ClubSubscriptionResponse>{
