@@ -22,7 +22,7 @@ interface ITwilioChatView : IBaseView{
     fun showFreeChatDisabledMessage()
     fun showErrorSendingMessage()
     fun showDoctorLeaved()
-    fun showDoctorJoined()
+    fun showDoctorJoined(name: String)
     fun showFreeChatBanner()
     fun hideMessagingControls()
     fun showMessagingControls()
