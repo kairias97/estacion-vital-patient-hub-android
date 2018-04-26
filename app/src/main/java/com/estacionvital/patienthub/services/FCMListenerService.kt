@@ -88,12 +88,12 @@ class FCMListenerService : FirebaseMessagingService() {
             val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
 
             val notification = NotificationCompat.Builder(this)
-                    .setSmallIcon(R.mipmap.ic_launcher)
+                    .setSmallIcon(R.mipmap.ic_launcher_round)
                     .setContentTitle(title)
                     .setContentText(payload.body)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent)
-                    .setColor(Color.rgb(214, 10, 37))
+                    .setColor(getColor(R.color.colorPrimary))
                     .build()
             /*
             val soundFileName = payload.sound

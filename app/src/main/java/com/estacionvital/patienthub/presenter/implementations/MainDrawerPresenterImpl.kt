@@ -74,7 +74,7 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
         this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDataSource
     }
 
-    override fun retrieveEVUSerProfile() {
+    override fun retrieveEVUSerProfile(context: Context) {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mEstacionVitalRemoteDataSource.retrieveEVUserProfile(token,
                 object: IEVRetrieveProfileCallback {
@@ -85,6 +85,7 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
                     override fun onSuccess(result: EVRetrieveProfileResponse) {
                         if(result.status == "success"){
                             EVUserSession.instance.userProfile = result.data
+                            getTwilioToken(context)
                             mMainDrawerView.setDrawerHeaderData(EVUserSession.instance.userProfile)
                         }
                         else{
