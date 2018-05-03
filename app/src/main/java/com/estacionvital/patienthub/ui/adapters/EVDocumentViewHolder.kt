@@ -25,8 +25,10 @@ class EVDocumentViewHolder : RecyclerView.ViewHolder{
     fun bindData(document: Document, listener: EVDocumentAdapter.EVDocumentListener){
         documentTitleTextView.text = "${document.specialty} - ${document.examinationType}"
         Log.i("fechaDocs", document.createdAt.substring(0, 9))
-        documentCreatedDateTextView.text = DateUtil.parseDateStringToFormat(document.createdAt.substring(0, 9),
+        val sub = document.createdAt.substring(0, 10)
+        val date =  DateUtil.parseDateStringToFormat(document.createdAt.substring(0, 10),
                 "yyyy-MM-dd", "dd/MM/yyyy")
+        documentCreatedDateTextView.text = date
         documentContainerConstraintLayout.setOnClickListener {
             listener.onDocumentClickedListener(document)
         }

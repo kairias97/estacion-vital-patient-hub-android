@@ -60,3 +60,5 @@ const val PAYMENT_TYPE_CREDIT_CARD = "order"
 const val URL_MOVISTAR_IMG_1 = "https://blog.estacionvital.com/wp-content/themes/better-health/assets/ICATEGORIAS/BANNER_INICIO_1.jpg"
 const val URL_MOVISTAR_IMG_2 = "https://blog.estacionvital.com/wp-content/themes/better-health/assets/ICATEGORIAS/BANNER_INICIO_2.jpg"
 const val URL_MOVISTAR_IMG_3 = "https://blog.estacionvital.com/wp-content/themes/better-health/assets/ICATEGORIAS/BANNER_INICIO_3.jpg"
+
+const val CONSULTANCE_PRICE = "$6.99"

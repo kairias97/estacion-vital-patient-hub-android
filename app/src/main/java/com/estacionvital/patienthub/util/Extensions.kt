@@ -12,10 +12,10 @@ fun String.toBase64(): String {
     return Base64.encodeToString(this.toByteArray(), DEFAULT)
 }
 
-fun Context.toast(msg: String, length: Int = Toast.LENGTH_SHORT){
+fun Context.toast(msg: String, length: Int = Toast.LENGTH_LONG){
     Toast.makeText(this, msg, length).show()
 }
 
-fun Context.toast(resID: Int, length: Int = Toast.LENGTH_SHORT){
+fun Context.toast(resID: Int, length: Int = Toast.LENGTH_LONG){
     Toast.makeText(this, resID, length).show()
 }

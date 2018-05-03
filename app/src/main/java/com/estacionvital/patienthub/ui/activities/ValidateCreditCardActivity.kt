@@ -6,10 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.NavUtils
 import android.view.MenuItem
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.*
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.data.local.SharedPrefManager
 import com.estacionvital.patienthub.data.remote.EVTwilioChatRemoteDataSource
@@ -18,6 +15,7 @@ import com.estacionvital.patienthub.model.EVChannel
 import com.estacionvital.patienthub.presenter.IValidateCreditCardPresenter
 import com.estacionvital.patienthub.presenter.implementations.ValidateCreditCardPresenterImpl
 import com.estacionvital.patienthub.ui.views.IValidateCreditCardView
+import com.estacionvital.patienthub.util.CONSULTANCE_PRICE
 import com.estacionvital.patienthub.util.toast
 import kotlinx.android.synthetic.main.activity_validate_credit_card.*
 import java.text.DateFormatSymbols
@@ -32,6 +30,7 @@ class ValidateCreditCardActivity : BaseActivity(), IValidateCreditCardView {
     private lateinit var mExpYearCreditCard: Spinner
     private lateinit var mCVCCreditCard: EditText
     private lateinit var mButtonVerify: Button
+    private lateinit var mTextViewPrice: TextView
 
     private lateinit var mTypeChat: String
     private lateinit var mSpecialty: String
@@ -53,6 +52,7 @@ class ValidateCreditCardActivity : BaseActivity(), IValidateCreditCardView {
         mExpYearCreditCard = findViewById(R.id.spinner_expYear_credit_card)
         mCVCCreditCard = findViewById(R.id.edit_text_cvc_credit_card)
         mButtonVerify = findViewById(R.id.button_verify)
+        mTextViewPrice = findViewById(R.id.msg_consultation_price)
 
         if(intent.extras != null){
             mTypeChat = intent.getStringExtra("chatType")
@@ -86,6 +86,8 @@ class ValidateCreditCardActivity : BaseActivity(), IValidateCreditCardView {
                 this.toast("Debe llenar todos los campos para verificar su tarjeta.")
             }
         }
+        mTextViewPrice.text = "Precio a debitar: $CONSULTANCE_PRICE"
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {

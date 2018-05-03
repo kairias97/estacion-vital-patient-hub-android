@@ -128,7 +128,7 @@ class NumberVerificationActivity : BaseActivity(), INumberVerificationView {
 
     override fun navigateToSMSCodeVerification() {
         val smsCodeIntent: Intent = Intent(this, ConfirmationCodeVerificationActivity::class.java)
-        smsCodeIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        //smsCodeIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         //smsCodeIntent.putExtra("phoneNumber", phoneNumber)
         startActivity(smsCodeIntent)
     }
