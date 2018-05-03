@@ -115,7 +115,16 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
         mSendBtn.visibility  = View.VISIBLE
     }
     override fun showFreeChatBanner() {
-        mFreeChatBannerTextView.visibility = View.VISIBLE
+        this.showSingleConfirmDialog(titleResId = R.string.title_dialog_warning,
+                iconResId = R.drawable.ic_error_black_24dp,
+                messageResId = R.string.message_free_chat_banner,
+                positiveBtnResId = R.string.dialog_yes_chat_free,
+                positiveListener = object:DialogInterface.OnClickListener{
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        dialog!!.dismiss()
+                    }
+                })
+        //mFreeChatBannerTextView.visibility = View.VISIBLE
     }
     override fun bindMessageTextInputListener() {
         mMessageEditText.addTextChangedListener(object: TextWatcher{

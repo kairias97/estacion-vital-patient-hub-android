@@ -150,5 +150,7 @@
     <string name="msg_doctor_leaved">El doctor ha abandonado la conversación.</string>
     <string name="msg_doctor_leaved_message">El doctor ha abandonado la conversación puede ver su documento en la sección documentos.</string>
     <string name="dialog_yes_doctor_leave">Aceptar</string>
+    <string name="title_dialog_warning">Advertencia</string>
+    <string name="dialog_yes_chat_free">Aceptar</string>
 
 </resources>
