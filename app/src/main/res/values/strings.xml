@@ -112,7 +112,7 @@
     <string name="title_payment_method">Escoja su método de pago</string>
     <string name="message_payment_method">Estimado cliente, escoja el método de pago a utilizar por favor</string>
     <string name="dialog_coupon">Tengo un cupón</string>
-    <string name="dialog_credit_card">Tarjeta de crédito/débito($6.99)</string>
+    <string name="dialog_credit_card">Tarjeta de crédito/débito(Valor: $6.99)</string>
     <string name="session_expired_msg">Su sesión ha caducado</string>
     <string name="chat_client_creation">Creando cliente de chat</string>
     <string name="label_fab_menu_chat">Escoja el tipo de chat a ir</string>
