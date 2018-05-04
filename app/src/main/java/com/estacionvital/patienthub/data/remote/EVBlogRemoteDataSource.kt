@@ -3,7 +3,7 @@ package com.estacionvital.patienthub.data.remote
 import android.util.Log
 import com.estacionvital.patienthub.BuildConfig
 import com.estacionvital.patienthub.data.api.EVBlogAPI
-import com.estacionvital.patienthub.data.remote.Callbacks.GetArticleCategoriesCallback
+import com.estacionvital.patienthub.data.remote.Callbacks.IGetArticleCategoriesCallback
 import com.estacionvital.patienthub.data.remote.Callbacks.IArticlesCallback
 import com.estacionvital.patienthub.model.ArticleCategoriesResponse
 import com.estacionvital.patienthub.model.ArticlesResponse
@@ -19,7 +19,7 @@ class EVBlogRemoteDataSource {
     companion object {
         val INSTANCE: EVBlogRemoteDataSource by lazy { EVBlogRemoteDataSource()}
     }
-    fun getArticleCategories(callback: GetArticleCategoriesCallback){
+    fun getArticleCategories(callback: IGetArticleCategoriesCallback){
         val authCall = EVBlogAPI.instance.service!!.getArticleCategories()
         authCall.enqueue(object: Callback<ArticleCategoriesResponse>{
             override fun onFailure(call: Call<ArticleCategoriesResponse>?, t: Throwable?) {

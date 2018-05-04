@@ -152,5 +152,8 @@
     <string name="dialog_yes_doctor_leave">Aceptar</string>
     <string name="title_dialog_warning">Advertencia</string>
     <string name="dialog_yes_chat_free">Aceptar</string>
+    <string name="connection_error_msg">Error de conexión. Revise que tenga conexión a internet</string>
+    <string name="fragment_title_free_chat">Pregunta de salud Gratis</string>
+    <string name="fragment_title_paid_chat">Chat Premium</string>
 
 </resources>

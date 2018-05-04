@@ -5,7 +5,7 @@ import com.estacionvital.patienthub.model.ArticleCategoriesResponse
 /**
  * Created by kevin on 6/3/2018.
  */
-interface GetArticleCategoriesCallback {
+interface IGetArticleCategoriesCallback {
     fun onSuccess(response: ArticleCategoriesResponse)
     fun onFailure()
 }

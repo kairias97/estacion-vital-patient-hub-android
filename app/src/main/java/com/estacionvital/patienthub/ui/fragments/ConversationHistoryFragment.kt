@@ -91,10 +91,10 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
         //asignacion del titulo en base al parametro pasado
         if(mParam1 != null){
             if(mParam1 == CHAT_FREE){
-                activity.title = "Chat Gratis"
+                activity.title = getString(R.string.fragment_title_free_chat)
             }
             else if(mParam1 == CHAT_PREMIUM){
-                activity.title = "Chat Premium"
+                activity.title =getString(R.string.fragment_title_paid_chat)
             }
         }
         return view

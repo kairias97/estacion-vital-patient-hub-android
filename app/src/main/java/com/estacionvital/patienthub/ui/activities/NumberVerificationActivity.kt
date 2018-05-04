@@ -18,6 +18,7 @@ import com.estacionvital.patienthub.presenter.INumberVerificationPresenter
 import com.estacionvital.patienthub.presenter.implementations.NumberVerificationPresenterImpl
 import com.estacionvital.patienthub.ui.views.INumberVerificationView
 import android.util.Log
+import com.estacionvital.patienthub.util.toast
 
 
 class NumberVerificationActivity : BaseActivity(), INumberVerificationView {
@@ -95,7 +96,10 @@ class NumberVerificationActivity : BaseActivity(), INumberVerificationView {
     }
 
     override fun showInternalErrorMessage() {
-       Toast.makeText(this, getString(R.string.generic_500_error), Toast.LENGTH_SHORT).show()
+       Toast.makeText(this, getString(R.string.generic_500_error), Toast.LENGTH_LONG).show()
+    }
+    override fun showConnectionError() {
+        this.toast(R.string.connection_error_msg)
     }
 
     override fun dismissMovistarValidationProgress() {

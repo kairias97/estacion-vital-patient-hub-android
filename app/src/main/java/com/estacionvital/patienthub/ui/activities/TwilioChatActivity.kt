@@ -25,13 +25,6 @@ import com.estacionvital.patienthub.util.toast
 import com.twilio.chat.Message
 
 class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMessageSelectedListener {
-    override fun showChannelLoadingMessage() {
-        showProgressDialog(getString(R.string.loading_channel_message))
-    }
-
-    override fun hideChannelLoadingMessage() {
-        hideProgressDialog()
-    }
 
 
     /*
@@ -114,6 +107,14 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
         mMessageEditText.visibility = View.VISIBLE
         mSendBtn.visibility  = View.VISIBLE
     }
+    override fun showChannelLoadingMessage() {
+        showProgressDialog(getString(R.string.loading_channel_message))
+    }
+
+    override fun hideChannelLoadingMessage() {
+        hideProgressDialog()
+    }
+
     override fun showFreeChatBanner() {
         this.showSingleConfirmDialog(titleResId = R.string.title_dialog_warning,
                 iconResId = R.drawable.ic_error_black_24dp,

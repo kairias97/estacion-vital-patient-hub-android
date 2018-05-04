@@ -55,6 +55,11 @@ class RegistrationProfilePresenterImpl: IRegistrationProfilePresenter{
                 EVRegistrationRequest(name, lastName, email, birthDate,
                         RegistrationSession.instance.phoneNumber,
                         isMale), object: IEVRegistrationSubmittedCallback{
+            override fun onCustomWSMessage(msg: String) {
+                mRegistrationProfileView.hideRegistrationRequestProgress()
+                mRegistrationProfileView.showCustomWSMessage(msg)
+            }
+
             override fun onSuccess(response: EVRegistrationResponse) {
                 mRegistrationProfileView.hideRegistrationRequestProgress()
                 if (response.status == "success"){

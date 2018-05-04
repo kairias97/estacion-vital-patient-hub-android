@@ -167,9 +167,10 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
             }
         }, object: IEVMemberDeletedCallBack{
             override fun onSuccess() {
-                mTwilioChatView.showDoctorLeaved()
                 mTwilioChatView.disableMessageTextInput()
                 mTwilioChatView.disableSendButton()
+                mTwilioChatView.showDoctorLeaved()
+
             }
 
             override fun onFailure() {
