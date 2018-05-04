@@ -101,7 +101,7 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
     }
 
     override fun getTwilioToken(context: Context) {
-        mMainDrawerView.showCreatingClientProgress()
+        //mMainDrawerView.showCreatingClientProgress()
         val token = "Token token=${EVUserSession.instance.authToken}"
         mEstacionVitalRemoteDataSource.retrieveExaminationsHistory(token, object: IEVRetrieveUserExaminationsHIstoryCalllback{
             override fun onSuccess(response: EVRetrieveUserExaminationResponse) {
@@ -110,12 +110,12 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
             }
 
             override fun onFailure() {
-                mMainDrawerView.hideProgressDialog()
+                //mMainDrawerView.hideLoggingOutProgress()
                 mMainDrawerView.showError()
             }
 
             override fun onTokenExpired() {
-                mMainDrawerView.hideProgressDialog()
+                //mMainDrawerView.hideLoggingOutProgress()
                 mMainDrawerView.showError()
             }
         })
@@ -124,13 +124,13 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
     override fun createEVTwilioChatClient(context: Context) {
         mEVTwilioChatRemoteDataSource.setupTwilioClient(EVUserSession.instance.twilioToken, context, object: IEVTwilioClientCallback{
             override fun onSuccess() {
-                mMainDrawerView.hideProgressDialog()
                 mMainDrawerView.chatClientFinished()
+                //mMainDrawerView.hideLoggingOutProgress()
             }
 
             override fun onFailure() {
-                mMainDrawerView.hideProgressDialog()
                 mMainDrawerView.showError()
+                //mMainDrawerView.hideLoggingOutProgress()
             }
         })
     }

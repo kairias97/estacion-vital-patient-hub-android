@@ -108,6 +108,7 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
                             validateActiveClubSuscriptions(phoneNumber)
 
                         } else {
+                            response
                             mCodeVerificationView.navigateToConfirmSuscription()
                         }
 

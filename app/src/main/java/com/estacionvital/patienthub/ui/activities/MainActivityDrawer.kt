@@ -48,7 +48,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
     }
 
     override fun hideLoggingOutProgress() {
-        hideProgressDialog()
+        this.hideProgressDialog()
     }
 
     override fun onLoadingProfile() {
@@ -182,14 +182,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         nav_view.setNavigationItemSelectedListener(this)
 
         navigationView.setCheckedItem(R.id.nav_home)
-        mEstacionVitalRemoteDataSource = EstacionVitalRemoteDataSource.INSTANCE
 
-        mMainDrawerPresenter = MainDrawerPresenterImpl(this, mEstacionVitalRemoteDataSource,
-                SharedPrefManager(
-                        getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
-                                Context.MODE_PRIVATE)
-                ), EVTwilioChatRemoteDataSource.instance)
-        mMainDrawerPresenter.retrieveEVUSerProfile(this)
 
         fragmentTransaction(HomeFragment.newInstance(object: HomeFragment.HomeFragmentListener {
             override fun onRecentArticlesBannerSelected() {
@@ -227,6 +220,14 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
                 }))
             }
         }
+        mEstacionVitalRemoteDataSource = EstacionVitalRemoteDataSource.INSTANCE
+
+        mMainDrawerPresenter = MainDrawerPresenterImpl(this, mEstacionVitalRemoteDataSource,
+                SharedPrefManager(
+                        getSharedPreferences(SharedPrefManager.PreferenceFiles.UserSharedPref.toString(),
+                                Context.MODE_PRIVATE)
+                ), EVTwilioChatRemoteDataSource.instance)
+        mMainDrawerPresenter.retrieveEVUSerProfile(this)
 
     }
 
