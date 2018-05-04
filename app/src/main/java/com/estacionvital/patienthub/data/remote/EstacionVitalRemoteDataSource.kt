@@ -6,6 +6,8 @@ import com.estacionvital.patienthub.data.api.EstacionVitalAPI
 import com.estacionvital.patienthub.data.remote.Callbacks.*
 import com.estacionvital.patienthub.model.*
 import com.estacionvital.patienthub.util.EXAMINATION_TYPE_CHAT
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -56,6 +58,12 @@ class EstacionVitalRemoteDataSource {
             override fun onResponse(call: Call<EVRegistrationResponse>?, response: Response<EVRegistrationResponse>?) {
                 when(response!!.code()){
                     200 -> callback.onSuccess(response.body()!!)
+                    401 -> {
+                        var stringResponse: String = response!!.errorBody()!!.string()
+                        var forbiddenResponse = Gson().fromJson( stringResponse,
+                                CustomRegistrationValidation::class.java)
+                        callback.onCustomWSMessage(forbiddenResponse.message)
+                    }
                     else -> {
                         if(BuildConfig.BUILD_TYPE == "debug") {
                             Log.e("EVRegistration " + response.code().toString(), response.raw().body().toString())

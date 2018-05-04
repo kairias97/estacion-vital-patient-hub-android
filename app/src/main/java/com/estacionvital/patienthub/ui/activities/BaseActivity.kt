@@ -77,4 +77,15 @@ abstract class BaseActivity: AppCompatActivity(), IBaseView {
                 .create()
                 .show()
     }
+    protected fun showSingleConfirmDialog(titleResId: Int, iconResId: Int, messageResId: Int,
+                                          positiveBtnResId: Int,
+                                          positiveListener: DialogInterface.OnClickListener){
+        AlertDialog.Builder(this)
+                .setIcon(iconResId)
+                .setTitle(titleResId)
+                .setMessage(messageResId)
+                .setPositiveButton(positiveBtnResId, positiveListener)
+                .create()
+                .show()
+    }
 }

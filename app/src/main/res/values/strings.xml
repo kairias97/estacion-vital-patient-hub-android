@@ -62,7 +62,7 @@
     <string name="action_settings">Settings</string>
     <string name="drawer_home">Inicio</string>
     <string name="drawer_profile">Perfil</string>
-    <string name="drawer_chat_free">Chat Gratis</string>
+    <string name="drawer_chat_free">Pregunta de salud Gratis</string>
     <string name="drawer_chat_premium">Chat Premium</string>
     <string name="drawer_documents">Documentos</string>
     <string name="drawer_articles">Artículos</string>
@@ -95,7 +95,7 @@
     <string name="previous">Anterior</string>
     <string name="next">Siguiente</string>
     <string name="placeholder_pager">Página %d de %d</string>
-    <string name="no_register_label">Aún no existen registros</string>
+    <string name="no_register_label">Aún no existen registros de chat</string>
     <string name="channel_name">Estacion Vital</string>
     <string name="loading_doctor_availability">Verificando disponibilidad de doctor</string>
     <string name="title_confirmation_doctor_available">No hay doctor disponible</string>
@@ -117,7 +117,7 @@
     <string name="chat_client_creation">Creando cliente de chat</string>
     <string name="label_fab_menu_chat">Escoja el tipo de chat a ir</string>
     <string name="label_fab_button_chat_premium">Chat Premium</string>
-    <string name="label_fab_button_chat_free">Chat Gratis</string>
+    <string name="label_fab_button_chat_free">Pregunta de salud gratis</string>
     <string name="title_activity_validate_coupon">Ingrese su cupón</string>
     <string name="invalid_coupon_msg">El cupón ingresado es inválido.</string>
     <string name="document_title_placeholder">%s - %s</string>
@@ -147,5 +147,13 @@
     <string name="blog_recent_articles_progress">Obteniendo artículos recientes...</string>
     <string name="validate_suscriptions_error">Ocurrió un error al verificar las suscripciones activas de estación vital</string>
     <string name="validation_club_suscription_progress">Validando suscripciones al club de Estación Vital</string>
+    <string name="msg_doctor_leaved">El doctor ha abandonado la conversación.</string>
+    <string name="msg_doctor_leaved_message">El doctor ha abandonado la conversación puede ver su documento en la sección documentos.</string>
+    <string name="dialog_yes_doctor_leave">Aceptar</string>
+    <string name="title_dialog_warning">Advertencia</string>
+    <string name="dialog_yes_chat_free">Aceptar</string>
+    <string name="connection_error_msg">Error de conexión. Revise que tenga conexión a internet</string>
+    <string name="fragment_title_free_chat">Pregunta de salud Gratis</string>
+    <string name="fragment_title_paid_chat">Chat Premium</string>
 
 </resources>

@@ -38,8 +38,7 @@ class DocumentHistoryPresenterImpl: IDocumentHistoryPresenter {
             override fun onSuccess(response: DocumentsResponse) {
                 mDocumentHistoryView.hideDocumentFetchProgress()
                 if (response.status == "success") {
-                    val paidDocuments = response.documents.filter { it.serviceType == CHAT_PREMIUM }
-                    mDocumentHistoryView.updateDocumentsListUI(paidDocuments.toMutableList())
+                    mDocumentHistoryView.updateDocumentsListUI(response.documents.toMutableList())
                 } else {
                     mDocumentHistoryView.showError()
                 }

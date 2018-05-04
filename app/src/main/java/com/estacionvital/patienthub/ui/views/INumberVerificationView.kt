@@ -18,4 +18,6 @@ interface INumberVerificationView : IBaseView{
     //Navegability
     fun navigateToSMSCodeVerification()
 
+    fun showConnectionError()
+
 }

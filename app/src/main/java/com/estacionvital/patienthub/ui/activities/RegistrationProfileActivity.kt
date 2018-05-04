@@ -20,51 +20,7 @@ import kotlinx.android.synthetic.main.activity_registration_profile.*
 
 class RegistrationProfileActivity : BaseActivity(), IRegistrationProfileView,
                                     DatePickerFragment.DatePickerListener{
-    override fun updateNameInput(name: String) {
-        edit_text_name.setText(name)
-        edit_text_name.setSelection(edit_text_name.text.toString().length)
-    }
 
-    override fun updateLastNameInput(lastName: String) {
-        edit_text_last_name.setText(lastName)
-        edit_text_last_name.setSelection(edit_text_last_name.text.toString().length)
-    }
-
-    override fun OnDateSelected(year: Int, month: Int, day: Int) {
-        var birthDate = DateUtil.parseDateToFormat(year, month, day, "dd/MM/yyyy")
-        edit_text_birthDate.setText(birthDate)
-
-    }
-
-    override fun navigateToMain() {
-        val mainIntent = Intent(this, MainActivityDrawer::class.java)
-        mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(mainIntent)
-    }
-
-    override fun showInvalidRegistrationDataMessage() {
-        this.toast(R.string.invalid_registration_data)
-    }
-
-    override fun clearNameInputMessage() {
-        this.text_input_layout_name.error = null
-    }
-
-    override fun clearLastNameInputMessage() {
-        this.text_input_layout_last_name.error = null
-    }
-
-    override fun clearEmailInputMessage() {
-        this.text_input_layout_email.error = null
-    }
-
-    override fun clearBirthDateInputMessage() {
-        this.text_input_layout_birth_date.error = null
-    }
-
-    override fun showInvalidEmailMessage() {
-        this.text_input_layout_email.error = getString(R.string.validation_invalid_email)
-    }
 
 
 
@@ -136,7 +92,51 @@ class RegistrationProfileActivity : BaseActivity(), IRegistrationProfileView,
     override fun setPhoneNumberUI(phoneNumber: String) {
         this.edit_text_phone_number.setText(phoneNumber)
     }
+    override fun updateNameInput(name: String) {
+        edit_text_name.setText(name)
+        edit_text_name.setSelection(edit_text_name.text.toString().length)
+    }
 
+    override fun updateLastNameInput(lastName: String) {
+        edit_text_last_name.setText(lastName)
+        edit_text_last_name.setSelection(edit_text_last_name.text.toString().length)
+    }
+
+    override fun OnDateSelected(year: Int, month: Int, day: Int) {
+        var birthDate = DateUtil.parseDateToFormat(year, month, day, "dd/MM/yyyy")
+        edit_text_birthDate.setText(birthDate)
+
+    }
+
+    override fun navigateToMain() {
+        val mainIntent = Intent(this, MainActivityDrawer::class.java)
+        mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(mainIntent)
+    }
+
+    override fun showInvalidRegistrationDataMessage() {
+        this.toast(R.string.invalid_registration_data)
+    }
+
+    override fun clearNameInputMessage() {
+        this.text_input_layout_name.error = null
+    }
+
+    override fun clearLastNameInputMessage() {
+        this.text_input_layout_last_name.error = null
+    }
+
+    override fun clearEmailInputMessage() {
+        this.text_input_layout_email.error = null
+    }
+
+    override fun clearBirthDateInputMessage() {
+        this.text_input_layout_birth_date.error = null
+    }
+
+    override fun showInvalidEmailMessage() {
+        this.text_input_layout_email.error = getString(R.string.validation_invalid_email)
+    }
     override fun showNameRequiredMessage() {
         this.text_input_layout_name.error = getString(R.string.required_input_name)
 
@@ -167,7 +167,7 @@ class RegistrationProfileActivity : BaseActivity(), IRegistrationProfileView,
     }
 
     override fun showCustomWSMessage(msg: String) {
-        this.toast(getString(R.string.custom_ws_message).format(msg))
+        this.toast(msg)
     }
 
     override fun showRegistrationSuccessMessage() {

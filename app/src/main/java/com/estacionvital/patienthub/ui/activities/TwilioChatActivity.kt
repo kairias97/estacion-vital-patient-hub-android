@@ -1,5 +1,6 @@
 package com.estacionvital.patienthub.ui.activities
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.NavUtils
@@ -24,13 +25,6 @@ import com.estacionvital.patienthub.util.toast
 import com.twilio.chat.Message
 
 class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMessageSelectedListener {
-    override fun showChannelLoadingMessage() {
-        showProgressDialog(getString(R.string.loading_channel_message))
-    }
-
-    override fun hideChannelLoadingMessage() {
-        hideProgressDialog()
-    }
 
 
     /*
@@ -113,8 +107,25 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
         mMessageEditText.visibility = View.VISIBLE
         mSendBtn.visibility  = View.VISIBLE
     }
+    override fun showChannelLoadingMessage() {
+        showProgressDialog(getString(R.string.loading_channel_message))
+    }
+
+    override fun hideChannelLoadingMessage() {
+        hideProgressDialog()
+    }
+
     override fun showFreeChatBanner() {
-        mFreeChatBannerTextView.visibility = View.VISIBLE
+        this.showSingleConfirmDialog(titleResId = R.string.title_dialog_warning,
+                iconResId = R.drawable.ic_error_black_24dp,
+                messageResId = R.string.message_free_chat_banner,
+                positiveBtnResId = R.string.dialog_yes_chat_free,
+                positiveListener = object:DialogInterface.OnClickListener{
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        dialog!!.dismiss()
+                    }
+                })
+        //mFreeChatBannerTextView.visibility = View.VISIBLE
     }
     override fun bindMessageTextInputListener() {
         mMessageEditText.addTextChangedListener(object: TextWatcher{
@@ -222,7 +233,26 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
     }
 
     override fun showDoctorLeaved() {
-        this.toast(getString(R.string.label_doctor_left))
+        this.showConfirmDialog(
+                titleResId = R.string.msg_doctor_leaved,
+                iconResId = R.drawable.ic_error_black_24dp,
+                messageResId = R.string.msg_doctor_leaved_message,
+                positiveBtnResId = R.string.dialog_yes_doctor_leave,
+                negativeBtnResId = R.string.dialog_cancel,
+                positiveListener = object: DialogInterface.OnClickListener{
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        dialog!!.dismiss()
+                        mMessageEditText.isEnabled = false
+                        prepareToNavigateToMain()
+                    }
+                },
+                negativeListener = object: DialogInterface.OnClickListener{
+                    override fun onClick(dialog: DialogInterface?, which: Int) {
+                        dialog!!.dismiss()
+                        mMessageEditText.isEnabled = false
+                    }
+                })
+        //this.toast(getString(R.string.label_doctor_left))
     }
 
     override fun showDoctorJoined(name: String) {
@@ -232,6 +262,11 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
 
     override fun getDoctorName(): String {
         return mEVChannel.doctorName
+    }
+    private fun prepareToNavigateToMain(){
+        val intent = Intent(this,MainActivityDrawer::class.java)
+        intent.putExtra("goToDocuments",true)
+        startActivity(intent)
     }
     /*
     private fun changeBtnEnabled(){

@@ -7,5 +7,6 @@ import com.estacionvital.patienthub.model.EVRegistrationResponse
  */
 interface IEVRegistrationSubmittedCallback {
     fun onSuccess(response: EVRegistrationResponse)
+    fun onCustomWSMessage(msg: String)
     fun onFailure()
 }

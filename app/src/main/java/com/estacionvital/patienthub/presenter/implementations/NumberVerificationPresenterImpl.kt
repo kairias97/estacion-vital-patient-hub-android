@@ -1,6 +1,6 @@
 package com.estacionvital.patienthub.presenter.implementations
 
-import com.estacionvital.patienthub.data.remote.Callbacks.AuthRegistrationCallback
+import com.estacionvital.patienthub.data.remote.Callbacks.IAuthRegistrationCallback
 import com.estacionvital.patienthub.data.remote.Callbacks.ISendSMSCallback
 import com.estacionvital.patienthub.data.remote.NetMobileRemoteDataSource
 import com.estacionvital.patienthub.model.*
@@ -24,7 +24,12 @@ class NumberVerificationPresenterImpl : INumberVerificationPresenter {
         if (validatePhoneNumberInput(phoneNumber)) {
             mNumberVerificationView.showMovistarValidationProgress()
             mNetMobileRemoteDataSource.verifyNumber(NumberVerificationRequest(phoneNumber, NETMOBILE_AUTH_CREDENTIAL),
-                    object: AuthRegistrationCallback {
+                    object: IAuthRegistrationCallback {
+                        override fun onConnectionError() {
+                            mNumberVerificationView.dismissMovistarValidationProgress()
+                            mNumberVerificationView.showConnectionError()
+                        }
+
                         override fun onSuccess(response: NumberVerificationResponse) {
                             mNumberVerificationView.dismissMovistarValidationProgress()
                             if(response.status==1){
@@ -65,6 +70,11 @@ class NumberVerificationPresenterImpl : INumberVerificationPresenter {
     private fun requestSMSCode(phoneNumber: String) {
         mNumberVerificationView.showSMSRequestProgress()
         mNetMobileRemoteDataSource.requestSMSCode(SendSMSRequest(phoneNumber, NETMOBILE_AUTH_CREDENTIAL), object: ISendSMSCallback{
+            override fun onConnectionError() {
+                mNumberVerificationView.dismissSMSRequestProgress()
+                mNumberVerificationView.showConnectionError()
+            }
+
             override fun onSuccess(response: SendSMSResponse) {
                 mNumberVerificationView.dismissSMSRequestProgress()
                 RegistrationSession.instance.phoneNumber = phoneNumber

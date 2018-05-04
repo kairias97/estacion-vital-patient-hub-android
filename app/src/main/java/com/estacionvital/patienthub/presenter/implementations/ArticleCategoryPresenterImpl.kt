@@ -1,6 +1,6 @@
 package com.estacionvital.patienthub.presenter.implementations
 
-import com.estacionvital.patienthub.data.remote.Callbacks.GetArticleCategoriesCallback
+import com.estacionvital.patienthub.data.remote.Callbacks.IGetArticleCategoriesCallback
 import com.estacionvital.patienthub.data.remote.EVBlogRemoteDataSource
 import com.estacionvital.patienthub.model.ArticleCategoriesResponse
 import com.estacionvital.patienthub.presenter.IArticleCategoryPresenter
@@ -22,7 +22,7 @@ class ArticleCategoryPresenterImpl: IArticleCategoryPresenter {
 
     override fun loadCategories() {
         mCategoriesView.showLoadingProgress()
-        mEVBlogRemoteDataSource.getArticleCategories(object: GetArticleCategoriesCallback {
+        mEVBlogRemoteDataSource.getArticleCategories(object: IGetArticleCategoriesCallback {
             override fun onSuccess(response: ArticleCategoriesResponse) {
                 mCategoriesView.hideLoadingProgress()
                 if (response.status == "ok") {

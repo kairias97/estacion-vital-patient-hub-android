@@ -14,7 +14,7 @@ import retrofit2.Response
  */
 class NetMobileRemoteDataSource {
 
-    fun verifyNumber(numberData: NumberVerificationRequest, callback: AuthRegistrationCallback){
+    fun verifyNumber(numberData: NumberVerificationRequest, callback: IAuthRegistrationCallback){
         val authCall = NetMobileAPI.instance.service!!.verifyNumber(numberData)
 
         authCall.enqueue(object: Callback<NumberVerificationResponse>{
@@ -39,7 +39,7 @@ class NetMobileRemoteDataSource {
                 if(BuildConfig.BUILD_TYPE == "debug") {
                     Log.e("VerifyNumber error", t.toString())
                 }
-                callback.onFailure()
+                callback.onConnectionError()
             }
         })
     }
@@ -51,7 +51,7 @@ class NetMobileRemoteDataSource {
                 if(BuildConfig.BUILD_TYPE == "debug") {
                     Log.e("SendSMS error", t.toString())
                 }
-                callback.onFailure()
+                callback.onConnectionError()
             }
 
             override fun onResponse(call: Call<SendSMSResponse>?, response: Response<SendSMSResponse>?) {

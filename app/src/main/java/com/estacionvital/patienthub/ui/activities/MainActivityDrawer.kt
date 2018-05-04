@@ -77,6 +77,7 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
 
     private lateinit var mFabButtonChatFree: FloatingActionButton
     private lateinit var mFabButtonChatPremium: FloatingActionButton
+    private var goToDocuments: Boolean = false
 
     private lateinit var mTypeChat: String
 
@@ -198,6 +199,34 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         }))
 
         mTypeChat = ""
+
+        if(intent.extras != null){
+            goToDocuments = intent.extras.getBoolean("goToDocuments")
+            if(goToDocuments){
+                val activity = this
+                fragmentTransaction(DocumentHistoryFragment.newInstance(object: DocumentHistoryFragment.DocumentHistoryFragmentListener{
+                    override fun onDocumentSelected(document: Document) {
+
+                        val url = "$EV_MAIN_DOCS_URL${document.url}?token=${Uri.encode(EVUserSession.instance.authToken)}"
+                        //activity.toast("Documento seleccionado: ${document.specialty}")
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        startActivity(intent)
+                    }
+
+                    override fun onDocumentLoadingStarted() {
+                        activity.showProgressDialog(getString(R.string.document_progress))
+                    }
+
+                    override fun onDocumentLoadingFinished() {
+                        activity.hideProgressDialog()
+                    }
+
+                    override fun onDocumentLoadingError() {
+                        activity.toast(R.string.document_fetch_error)
+                    }
+                }))
+            }
+        }
 
     }
 
@@ -361,6 +390,37 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         targetIntent.putExtra("channel", channel)
         startActivity(targetIntent)
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(intent.extras != null){
+            goToDocuments = intent.extras.getBoolean("goToDocuments")
+            if(goToDocuments){
+                val activity = this
+                fragmentTransaction(DocumentHistoryFragment.newInstance(object: DocumentHistoryFragment.DocumentHistoryFragmentListener{
+                    override fun onDocumentSelected(document: Document) {
+
+                        val url = "$EV_MAIN_DOCS_URL${document.url}?token=${Uri.encode(EVUserSession.instance.authToken)}"
+                        //activity.toast("Documento seleccionado: ${document.specialty}")
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                        startActivity(intent)
+                    }
+
+                    override fun onDocumentLoadingStarted() {
+                        activity.showProgressDialog(getString(R.string.document_progress))
+                    }
+
+                    override fun onDocumentLoadingFinished() {
+                        activity.hideProgressDialog()
+                    }
+
+                    override fun onDocumentLoadingError() {
+                        activity.toast(R.string.document_fetch_error)
+                    }
+                }))
+            }
+        }
     }
 
     private fun askForLogoutConfirmation(){
