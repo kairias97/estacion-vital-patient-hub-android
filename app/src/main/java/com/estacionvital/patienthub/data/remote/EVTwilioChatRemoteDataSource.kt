@@ -4,6 +4,7 @@ import android.content.Context
 import com.estacionvital.patienthub.data.remote.Callbacks.*
 import com.estacionvital.patienthub.model.EVChatSession
 import com.twilio.chat.*
+import java.io.IOException
 
 /**
  * Created by dusti on 17/03/2018.
@@ -154,7 +155,12 @@ class EVTwilioChatRemoteDataSource {
     fun subscribeToAddedMessages(channel: Channel, callback: IEVTwilioMessageAddedCallBack, callbackMemberAdded: IEVMemberAddedCallBack, callbackMemberDeleted: IEVMemberDeletedCallBack){
         channel.addListener(object: ChannelListener{
             override fun onMemberDeleted(p0: Member?) {
-                callbackMemberDeleted.onSuccess()
+                try{
+                    callbackMemberDeleted.onSuccess()
+                }
+                catch(e: IOException){
+
+                }
             }
 
             override fun onTypingEnded(p0: Member?) {

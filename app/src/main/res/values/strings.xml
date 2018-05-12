@@ -33,7 +33,7 @@
     <string name="not_movistar_msg">El número ingresado no es movistar</string>
 
     <!--Generic error message-->
-    <string name="generic_500_error">Ocurrió un error al procesar la solicitud</string>
+    <string name="generic_500_error">Hubo un error de conexión. Intente en un momento, por favor.</string>
     <string name="required_input_code">El código de confirmación es requerido</string>
     <string name="code_verification_progress">Verificando código de confirmación...</string>
     <string name="ev_login_progress">Verificando cuenta de Estación Vital</string>
