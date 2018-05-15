@@ -10,4 +10,4 @@ data class EVUserExamination(@SerializedName("twilio_channel_name") val channel_
                              @SerializedName("specialty") val specialty: String,
                              @SerializedName("examination_type") val examination_type: String, //chat or video
                              @SerializedName("service_type") val service_type: String, //free or paid
-                             @SerializedName("doctor") val doctorName: String)
+                             @SerializedName("doctor") val doctorName: String?)

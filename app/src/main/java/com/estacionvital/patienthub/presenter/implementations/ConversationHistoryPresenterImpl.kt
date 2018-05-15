@@ -76,7 +76,7 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
                     newChannel.type = channel.service_type
                     newChannel.unique_name = channel.channel_name
                     newChannel.specialty = channel.specialty
-                    newChannel.doctorName = channel.doctorName
+                    newChannel.doctorName = channel.doctorName ?: ""
 
                     for(twilioChannel in channels){
                         if(twilioChannel.uniqueName.toString() == channel.channel_name){
