@@ -16,6 +16,7 @@ import com.twilio.chat.Message
  * Created by dusti on 20/03/2018.
  */
 class TwilioChatPresenterImpl: ITwilioChatPresenter {
+
     /*
     override fun setupChatChannel(channelID: String) {
 
@@ -52,17 +53,9 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
     }
 
 */
-    override fun onMessageTextChanged(msg: String) {
-        if(msg.isNullOrEmpty()){
-            mTwilioChatView.disableSendButton()
-        }
-        else{
-            mTwilioChatView.enableSendButton()
-        }
 
-    }
 
-    private val mTwilioChatView: ITwilioChatView
+    private var mTwilioChatView: ITwilioChatView?
     private val mEVTwilioChatRemoteDataSource: EVTwilioChatRemoteDataSource
     private val mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource
 
@@ -72,23 +65,36 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
         this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDataSource
         this.mEstacionVitalRemoteDataSource = evRemoteDataSource
     }
+    override fun onMessageTextChanged(msg: String) {
+        if(msg.isNullOrEmpty()){
+            mTwilioChatView?.disableSendButton()
+        }
+        else{
+            mTwilioChatView?.enableSendButton()
+        }
+
+    }
     override fun setupChatChannel(channel: EVChannel) {
         if (channel.type == CHAT_FREE) {
-            mTwilioChatView.showFreeChatBanner()
+            mTwilioChatView?.showFreeChatBanner()
         }
         validateChannelStatus(channel)
         retrieveMessages(channel)
     }
+    override fun detach() {
+        this.mTwilioChatView = null
+    }
+
     private fun validateChannelStatus(channel: EVChannel) {
 
-        mTwilioChatView.disableMessageTextInput()
-        mTwilioChatView.disableSendButton()
-        mTwilioChatView.hideMessagingControls()
+        mTwilioChatView?.disableMessageTextInput()
+        mTwilioChatView?.disableSendButton()
+        mTwilioChatView?.hideMessagingControls()
         if (!channel.isFinished && channel.type == CHAT_PAID ){
             //mTwilioChatView.disableSendButton()
-            mTwilioChatView.showMessagingControls()
-            mTwilioChatView.bindMessageTextInputListener()
-            mTwilioChatView.enableMessageTextInput()
+            mTwilioChatView?.showMessagingControls()
+            mTwilioChatView?.bindMessageTextInputListener()
+            mTwilioChatView?.enableMessageTextInput()
 
         } else if (!channel.isFinished && channel.type == CHAT_FREE) {
             //This was commented because it is never binded via activity
@@ -97,9 +103,9 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
             channel.twilioChannel!!.getMessagesCount(object: CallbackListener<Long>() {
                 override fun onSuccess(count: Long?) {
                     if (count!! == 0.toLong()) {
-                        mTwilioChatView.showMessagingControls()
-                        mTwilioChatView.bindMessageTextInputListener()
-                        mTwilioChatView.enableMessageTextInput()
+                        mTwilioChatView?.showMessagingControls()
+                        mTwilioChatView?.bindMessageTextInputListener()
+                        mTwilioChatView?.enableMessageTextInput()
                     }
                 }
 
@@ -108,22 +114,22 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
     }
 
     private fun retrieveMessages(channel: EVChannel) {
-        mTwilioChatView.showMessageLoading()
+        mTwilioChatView?.showMessageLoading()
         if(EVChatSession.instance.isChatClientCreated){
             mEVTwilioChatRemoteDataSource.getLastMessagesFromChannel(channel.twilioChannel!!, object: IEVTwilioGetLastMessagesFromChannelCalBack{
                 override fun onSuccess(messages: List<Message>) {
-                    mTwilioChatView.hideLoading()
+                    mTwilioChatView?.hideLoading()
                     var list: MutableList<Message> = ArrayList<Message>()
                     for(message in messages){
                         list.add(message)
                     }
-                    mTwilioChatView.setChannelMessagesUI(list)
+                    mTwilioChatView?.setChannelMessagesUI(list)
                     refreshChannel(channel)
                 }
 
                 override fun onFailure() {
-                    mTwilioChatView.hideLoading()
-                    mTwilioChatView.showErrorLoading()
+                    mTwilioChatView?.hideLoading()
+                    mTwilioChatView?.showErrorLoading()
                 }
             })
         }
@@ -151,30 +157,30 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
     private fun setChannelListeners(channel: Channel) {
         mEVTwilioChatRemoteDataSource.subscribeToAddedMessages(channel, object: IEVTwilioMessageAddedCallBack{
             override fun onSuccess(message: Message) {
-                mTwilioChatView.addMessageToUI(message)
+                mTwilioChatView?.addMessageToUI(message)
             }
 
             override fun onFailure() {
-                mTwilioChatView.showErrorLoading()
+                mTwilioChatView?.showErrorLoading()
             }
         }, object: IEVMemberAddedCallBack{
             override fun onSuccess(name: String) {
-                mTwilioChatView.showDoctorJoined(name)
+                mTwilioChatView?.showDoctorJoined(name)
             }
 
             override fun onFailure() {
-                mTwilioChatView.showErrorLoading()
+                mTwilioChatView?.showErrorLoading()
             }
         }, object: IEVMemberDeletedCallBack{
             override fun onSuccess() {
-                mTwilioChatView.disableMessageTextInput()
-                mTwilioChatView.disableSendButton()
-                mTwilioChatView.showDoctorLeaved()
+                mTwilioChatView?.disableMessageTextInput()
+                mTwilioChatView?.disableSendButton()
+                mTwilioChatView?.showDoctorLeaved()
 
             }
 
             override fun onFailure() {
-                mTwilioChatView.showErrorLoading()
+                mTwilioChatView?.showErrorLoading()
             }
         })
     }
@@ -184,17 +190,17 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
             mEVTwilioChatRemoteDataSource.sendMessage(channel.twilioChannel!!,body,object: IEVTwilioSendMessageCallBack{
                 override fun onSuccess() {
                     if (channel.type == CHAT_FREE) {
-                        mTwilioChatView.unbindMessageTextInputListener()
-                        mTwilioChatView.disableMessageTextInput()
-                        mTwilioChatView.disableSendButton()
-                        mTwilioChatView.hideMessagingControls()
-                        mTwilioChatView.showFreeChatDisabledMessage()
+                        mTwilioChatView?.unbindMessageTextInputListener()
+                        mTwilioChatView?.disableMessageTextInput()
+                        mTwilioChatView?.disableSendButton()
+                        mTwilioChatView?.hideMessagingControls()
+                        mTwilioChatView?.showFreeChatDisabledMessage()
                     }
                 }
 
                 override fun onFailure() {
 
-                    mTwilioChatView.showErrorSendingMessage()
+                    mTwilioChatView?.showErrorSendingMessage()
                 }
             })
         }

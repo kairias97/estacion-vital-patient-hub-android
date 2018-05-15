@@ -268,6 +268,12 @@ class TwilioChatActivity : BaseActivity(), ITwilioChatView, MessageAdapter.OnMes
         intent.putExtra("goToDocuments",true)
         startActivity(intent)
     }
+
+    override fun onDestroy() {
+        mTwilioChatPresenter.detach()
+        super.onDestroy()
+
+    }
     /*
     private fun changeBtnEnabled(){
         if(mMessageEditText.text.toString() != "" || mMessageEditText.text.toString() != ""){

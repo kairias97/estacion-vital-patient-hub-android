@@ -15,4 +15,5 @@ interface ITwilioChatPresenter {
     */
     fun sendMessage(channel: EVChannel, body: String)
     fun onMessageTextChanged(msg: String)
+    fun detach()
 }
