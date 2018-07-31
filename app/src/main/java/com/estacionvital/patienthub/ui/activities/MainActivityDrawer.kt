@@ -94,6 +94,8 @@ class MainActivityDrawer : BaseActivity(), NavigationView.OnNavigationItemSelect
         mFabButtonChatFree = findViewById<FloatingActionButton>(R.id.fab_chat_free)
         mFabButtonChatPremium = findViewById<FloatingActionButton>(R.id.fab_chat_premium)
 
+        fab.isIconAnimated = false
+
         fab.setOnClickListener { view ->
 
         }
