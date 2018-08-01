@@ -9,11 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ScrollView
 import com.estacionvital.patienthub.R
 import com.estacionvital.patienthub.util.URL_MOVISTAR_IMG_1
 import com.estacionvital.patienthub.util.URL_MOVISTAR_IMG_2
 import com.estacionvital.patienthub.util.URL_MOVISTAR_IMG_3
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 
@@ -24,7 +26,7 @@ import kotlinx.android.synthetic.main.app_bar_main_activity_drawer.*
 class HomeFragment: Fragment() {
 
     private lateinit var mListener: HomeFragmentListener
-    private lateinit var mMovistarRecyclerView: ScrollView
+    private lateinit var mMovistarRecyclerView: LinearLayout
     private lateinit var mRecentArticlesBannerConstraintLayout: ConstraintLayout
 
     private lateinit var mImg1: ImageView
@@ -62,17 +64,18 @@ class HomeFragment: Fragment() {
         Picasso.get()
                 .load(URL_MOVISTAR_IMG_1)
                 .error(R.drawable.img_logo)
-                .placeholder(R.drawable.img_logo)
+                .fit()
                 .into(mImg1)
+
         Picasso.get()
                 .load(URL_MOVISTAR_IMG_2)
+                .fit()
                 .error(R.drawable.img_logo)
-                .placeholder(R.drawable.img_logo)
                 .into(mImg2)
         Picasso.get()
                 .load(URL_MOVISTAR_IMG_3)
+                .fit()
                 .error(R.drawable.img_logo)
-                .placeholder(R.drawable.img_logo)
                 .into(mImg3)
 
         mImg2.setOnClickListener {
