@@ -77,7 +77,7 @@ class HomeFragment: Fragment() {
                 .fit()
                 .error(R.drawable.img_logo)
                 .into(mImg3)
-
+        //Para el image view de chat
         mImg2.setOnClickListener {
             activity.fab.open(true)
         }

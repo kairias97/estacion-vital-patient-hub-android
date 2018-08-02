@@ -9,7 +9,9 @@ import java.io.IOException
 /**
  * Created by dusti on 17/03/2018.
  */
+//Clase que se comunica con retrofit para operaciones de API de twilio para hacer operaciones sobre twilio
 class EVTwilioChatRemoteDataSource {
+    //Setup de twilio client con twilio token
     fun setupTwilioClient(twilio_token: String, context: Context, callback: IEVTwilioClientCallback){
         if(EVChatSession.instance.isChatClientCreated){
             callback.onSuccess()
@@ -20,6 +22,7 @@ class EVTwilioChatRemoteDataSource {
                     props, object: CallbackListener<ChatClient>(){
                 override fun onSuccess(p0: ChatClient?) {
                     //
+                    //Se mantiene vivo el objeto en un singleton de sesion
                     EVChatSession.instance.chatClient = p0!!
                     EVChatSession.instance.chatClient?.setListener(object: ChatClientListener {
                         override fun onChannelDeleted(p0: Channel?) {
@@ -27,7 +30,7 @@ class EVTwilioChatRemoteDataSource {
                         }
 
                         override fun onClientSynchronization(p0: ChatClient.SynchronizationStatus?) {
-                            //aca
+                            //aca es para capturar y setear si el cliente está creado ya una vez inicializado
                             if(p0!! == ChatClient.SynchronizationStatus.COMPLETED || p0!! == ChatClient.SynchronizationStatus.CHANNELS_COMPLETED){
                                 EVChatSession.instance.isChatClientCreated = true
                                 callback.onSuccess()
@@ -95,10 +98,12 @@ class EVTwilioChatRemoteDataSource {
             })
         }
     }
+    //obtener lista de canales a los que esta suscrito este usuario de twilio
     fun callSubscribedChannels(callback: IEVTwilioCallSubscribedChannelsCallBack){
         val channels: List<Channel>? = EVChatSession.instance.chatClient?.channels?.subscribedChannels
         callback.onSuccess(if (channels == null) ArrayList<Channel>() else channels!!)
     }
+    /* Se uso solo para pruebas iniciales con twilio
     fun callPublicChannels(callback: IEVTwilioCallPublicChannelsCallBack){
         EVChatSession.instance.chatClient?.channels?.getPublicChannelsList(object: CallbackListener<Paginator<ChannelDescriptor>>(){
             override fun onSuccess(p0: Paginator<ChannelDescriptor>?) {
@@ -109,7 +114,8 @@ class EVTwilioChatRemoteDataSource {
                 callback.onFailure()
             }
         })
-    }
+    }*/
+    //obtener twilio channel por id de canal
     fun findChannelByID(channel_id: String, callback:IEVTwilioFindChannelByIDCallback){
         EVChatSession.instance.chatClient?.channels?.getChannel(channel_id,
                 object: CallbackListener<Channel>(){
@@ -124,6 +130,7 @@ class EVTwilioChatRemoteDataSource {
 
                 })
     }
+    //unirse a canal de twilio
     fun joinChannel(channel: Channel, callback: IEVTwilioJoinChannelCallBack){
         channel.join(object: StatusListener(){
             override fun onSuccess() {
@@ -140,6 +147,7 @@ class EVTwilioChatRemoteDataSource {
 
         })
     }
+    //obtener ultimos mensajes de un canal de chat de twilio
     fun getLastMessagesFromChannel(channel: Channel, callback: IEVTwilioGetLastMessagesFromChannelCalBack){
         channel?.messages?.getLastMessages(50, object: CallbackListener<List<Message>>(){
             override fun onSuccess(p0: List<Message>?) {
@@ -152,8 +160,10 @@ class EVTwilioChatRemoteDataSource {
             }
         })
     }
+    //suscribir a listener de un canal de twilio a fin de manejar ciertos eventos
     fun subscribeToAddedMessages(channel: Channel, callback: IEVTwilioMessageAddedCallBack, callbackMemberAdded: IEVMemberAddedCallBack, callbackMemberDeleted: IEVMemberDeletedCallBack){
         channel.addListener(object: ChannelListener{
+            //Detectar si un miembro se sale del canal
             override fun onMemberDeleted(p0: Member?) {
                 try{
                     callbackMemberDeleted.onSuccess()
@@ -171,7 +181,7 @@ class EVTwilioChatRemoteDataSource {
             override fun onMessageDeleted(p0: Message?) {
 
             }
-
+            //Para cuando el doctor se une
             override fun onMemberAdded(p0: Member?) {
                 p0!!.getUserDescriptor(object: CallbackListener<UserDescriptor>(){
                     override fun onSuccess(p0: UserDescriptor?) {
@@ -205,6 +215,7 @@ class EVTwilioChatRemoteDataSource {
             }
         })
     }
+    //Enviar mensaje de twilio con su sdk
     fun sendMessage(channel: Channel, body: String, callback: IEVTwilioSendMessageCallBack){
         channel.messages.sendMessage(Message.options().withBody(body),object: CallbackListener<Message>(){
             override fun onSuccess(p0: Message?) {
@@ -213,6 +224,7 @@ class EVTwilioChatRemoteDataSource {
 
         })
     }
+    //Singleton de esta clase
     companion object {
         val instance: EVTwilioChatRemoteDataSource by lazy { EVTwilioChatRemoteDataSource() }
     }

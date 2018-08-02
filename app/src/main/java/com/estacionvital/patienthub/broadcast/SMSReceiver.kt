@@ -8,6 +8,7 @@ import android.telephony.SmsMessage
 /**
  * Created by kevin on 1/3/2018.
  */
+//Broadcast receiver que permite detectar si el telefono recibe un mensaje y obtener su contenido
 class SMSReceiver: BroadcastReceiver() {
 
 
@@ -21,6 +22,7 @@ class SMSReceiver: BroadcastReceiver() {
                 val smsMessage = SmsMessage.createFromPdu(dataByteArray)
                 val sender = smsMessage.displayOriginatingAddress
                 val messageBody = smsMessage.messageBody
+                //Se usa esta interfaz para mandar el contenido del sms
                 mListener.messageReceived(messageBody)
 
 

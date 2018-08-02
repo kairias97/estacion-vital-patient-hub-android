@@ -8,6 +8,7 @@ import retrofit2.http.*
 /**
  * Created by kevin on 25/2/2018.
  */
+//INTERFAZ DE CONFIG DE ENDPOINTS DE RETROFIT Y PAYLOADS, RESPONSES PARA API EV
 interface IEstacionVitalService{
     @POST(URL_EV_LOGIN)
     fun validateEVCredentials(@Body body: LoginRequest): Call<LoginResponse>

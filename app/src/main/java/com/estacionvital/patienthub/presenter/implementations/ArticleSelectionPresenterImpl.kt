@@ -10,6 +10,7 @@ import com.estacionvital.patienthub.util.PAGE_SIZE_BLOG_ARTICLES
 /**
  * Created by kevin on 9/3/2018.
  */
+//Implementacion de presenter para la pantalla de articulos del blog
 class ArticleSelectionPresenterImpl: IArticleSelectionPresenter {
     override fun onNextPageRequested() {
         mArticleSelectionView.requestNextPage()
@@ -44,6 +45,7 @@ class ArticleSelectionPresenterImpl: IArticleSelectionPresenter {
         this.mArticleSelectionView = view
         this.mEVBlogRemoteDataSource = dataSource
     }
+    //cargar articulos por categoria
     override fun loadArticles(categoryID: Int) {
         this.mArticleSelectionView.showArticlesLoadingProgress()
         this.mEVBlogRemoteDataSource.getArticlesByCategory(categoryID, object: IArticlesCallback{

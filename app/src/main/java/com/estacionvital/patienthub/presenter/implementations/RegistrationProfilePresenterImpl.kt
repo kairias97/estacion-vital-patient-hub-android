@@ -12,13 +12,17 @@ import com.estacionvital.patienthub.util.RegexUtil
 /**
  * Created by kevin on 28/2/2018.
  */
+/**
+ * Clase presenter para registro de cuenta en el ultimo paso de registro
+ */
 class RegistrationProfilePresenterImpl: IRegistrationProfilePresenter{
+    //Validar cambio en input de nombre
     override fun validateName(name: String) {
         if (RegexUtil.instance.containsDigits(name)) {
             mRegistrationProfileView.updateNameInput(RegexUtil.instance.trimNumbersFromString(name))
         }
     }
-
+    //validar cambio en input de ultimo nombre
     override fun validateLastName(lastName: String) {
         if (RegexUtil.instance.containsDigits(lastName)) {
             mRegistrationProfileView.updateLastNameInput(RegexUtil.instance.trimNumbersFromString(lastName))
@@ -36,7 +40,7 @@ class RegistrationProfilePresenterImpl: IRegistrationProfilePresenter{
         this.mRegistrationProfileView = view
         this.mEstacionVitalRemoteDataSource = evDataSource
     }
-
+    //registro de cuenta con estacion vital
     override fun registerEVAccount(name: String, lastName: String, email: String, birthDate: String,
                                    gender: GenderEnum) {
         //Perform logic of webservice consume
@@ -46,7 +50,7 @@ class RegistrationProfilePresenterImpl: IRegistrationProfilePresenter{
                     birthDate, isMale)
         }
     }
-
+    ///submit registro al api
     private fun submitEVRegistration(name: String, lastName: String, email: String,
                                      birthDate: String, isMale: String){
         val basicAuth:String = "Basic $EV_AUTH_CREDENTIAL"
@@ -87,9 +91,11 @@ class RegistrationProfilePresenterImpl: IRegistrationProfilePresenter{
 
         })
     }
+    //Obtener numero de telefono de una variable de sesion
     override fun retrievePhoneNumber(): String {
         return RegistrationSession.instance.phoneNumber
     }
+    //validar los inputs de formulario de registro
     private fun validateRegistrationData(name: String, lastName: String,
                                          email: String, birthDate: String): Boolean{
         var isDataValid = true

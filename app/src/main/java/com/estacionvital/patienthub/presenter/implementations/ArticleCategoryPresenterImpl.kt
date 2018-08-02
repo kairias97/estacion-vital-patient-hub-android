@@ -9,6 +9,7 @@ import com.estacionvital.patienthub.ui.fragmentViews.IArticleCategoryFragmentVie
 /**
  * Created by kevin on 6/3/2018.
  */
+//Implementacion de presenter para la pantalla de categorias de articulos
 class ArticleCategoryPresenterImpl: IArticleCategoryPresenter {
     private val mCategoriesView: IArticleCategoryFragmentView
     private val mEVBlogRemoteDataSource: EVBlogRemoteDataSource

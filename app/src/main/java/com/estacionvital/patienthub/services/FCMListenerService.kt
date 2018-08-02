@@ -23,7 +23,7 @@ import com.google.firebase.messaging.RemoteMessage
 import com.twilio.chat.NotificationPayload
 
 import org.json.JSONObject
-
+//Clase para recibir mensajes de notificaciones de firebase
 class FCMListenerService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
@@ -44,6 +44,7 @@ class FCMListenerService : FirebaseMessagingService() {
             val data = Bundle()
             //This is the value we would use to notify chat
             val channelID: String = obj.optString("channel_title")
+
             data.putString("channel_id",obj.optString("channel_id"))
             data.putString("message_id", obj.optString("message_id"))
             data.putString("author", obj.optString("author"))
@@ -56,7 +57,7 @@ class FCMListenerService : FirebaseMessagingService() {
             data.putString("channel_title",channelID)
 
             val payload = NotificationPayload(data)
-
+            //Cliente de chat de twilio
             val client = EVChatSession.instance.chatClient
             if (client != null) {
                 client!!.handleNotification(payload)
@@ -82,18 +83,17 @@ class FCMListenerService : FirebaseMessagingService() {
             intent.putExtra("notificationChannelID", channelID)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
-            val cSid = payload.channelSid
-           //Aca se podria poner el putextra del channel id
+            //val cSid = payload.channelSid
 
             val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT)
-
+            //Preparacion para mostrar la notificacion
             val notification = NotificationCompat.Builder(this)
                     .setSmallIcon(R.mipmap.ic_launcher_round)
                     .setContentTitle(title)
                     .setContentText(payload.body)
                     .setAutoCancel(true)
                     .setContentIntent(pendingIntent)
-                    .setColor(getColor(R.color.colorPrimary))
+                    .setColor(resources.getColor(R.color.colorPrimary))
                     .build()
             /*
             val soundFileName = payload.sound

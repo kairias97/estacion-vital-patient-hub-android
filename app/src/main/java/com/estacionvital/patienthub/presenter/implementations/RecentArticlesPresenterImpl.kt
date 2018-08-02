@@ -11,6 +11,9 @@ import com.estacionvital.patienthub.util.RECENT_ARTICLES_PAGE_SIZE
 /**
  * Created by kevin on 15/4/2018.
  */
+/**
+* Clase presenter para manejar los artículos recientes
+*/
 class RecentArticlesPresenterImpl: IRecentArticlesPresenter {
 
 

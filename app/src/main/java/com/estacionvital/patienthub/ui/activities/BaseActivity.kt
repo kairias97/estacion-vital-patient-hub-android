@@ -21,6 +21,7 @@ abstract class BaseActivity: AppCompatActivity(), IBaseView {
 
     protected var mProgressDialog: ProgressDialog? = null
 
+    //Mostrar mensaje de progreso
     override fun showProgressDialog(msg:String) {
         //Show progress dialog here
         if (mProgressDialog == null) {
@@ -34,7 +35,7 @@ abstract class BaseActivity: AppCompatActivity(), IBaseView {
 
 
     }
-
+    //Esconder dialog de progreso
     override fun hideProgressDialog() {
         //Logic to hide progress dialog
         if (mProgressDialog != null) {
@@ -43,7 +44,7 @@ abstract class BaseActivity: AppCompatActivity(), IBaseView {
         }
 
     }
-
+    //Mostrar mensaje de sesion caducada
     override fun showExpirationMessage() {
         this.toast(R.string.session_expired_msg)
 
@@ -62,7 +63,7 @@ abstract class BaseActivity: AppCompatActivity(), IBaseView {
 
 
     }
-
+    //Para mostrar el dialog de activities
     protected fun showConfirmDialog(titleResId: Int, iconResId: Int, messageResId: Int,
                                     positiveBtnResId: Int, negativeBtnResId: Int,
                                     positiveListener: DialogInterface.OnClickListener,
@@ -77,6 +78,7 @@ abstract class BaseActivity: AppCompatActivity(), IBaseView {
                 .create()
                 .show()
     }
+    //Para mostrar un dialog de confirmacion
     protected fun showSingleConfirmDialog(titleResId: Int, iconResId: Int, messageResId: Int,
                                           positiveBtnResId: Int,
                                           positiveListener: DialogInterface.OnClickListener){

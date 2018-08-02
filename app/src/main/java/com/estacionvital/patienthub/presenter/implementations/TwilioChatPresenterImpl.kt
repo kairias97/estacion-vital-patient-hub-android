@@ -15,6 +15,9 @@ import com.twilio.chat.Message
 /**
  * Created by dusti on 20/03/2018.
  */
+/**
+ * Clase presenter para manejar el chat de twilio
+ */
 class TwilioChatPresenterImpl: ITwilioChatPresenter {
     /*
     override fun setupChatChannel(channelID: String) {
@@ -52,6 +55,7 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
     }
 
 */
+    /*Para manejar eventos de envios de sms de el boton de enviar*/
     override fun onMessageTextChanged(msg: String) {
         if(msg.isNullOrEmpty()){
             mTwilioChatView.disableSendButton()
@@ -72,6 +76,7 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
         this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDataSource
         this.mEstacionVitalRemoteDataSource = evRemoteDataSource
     }
+    //Para validar el estado del canal, obtener mensajes y mostrar el banner para chat free
     override fun setupChatChannel(channel: EVChannel) {
         if (channel.type == CHAT_FREE) {
             mTwilioChatView.showFreeChatBanner()
@@ -79,11 +84,13 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
         validateChannelStatus(channel)
         retrieveMessages(channel)
     }
+    //Validacion del estado del canal
     private fun validateChannelStatus(channel: EVChannel) {
 
         mTwilioChatView.disableMessageTextInput()
         mTwilioChatView.disableSendButton()
         mTwilioChatView.hideMessagingControls()
+        //Solo se habilitan los controles de chat para enviar en caso que esten en un estado valido
         if (!channel.isFinished && channel.type == CHAT_PAID ){
             //mTwilioChatView.disableSendButton()
             mTwilioChatView.showMessagingControls()
@@ -106,7 +113,7 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
             })
         }
     }
-
+    //obtener los mensajes del canal de chat
     private fun retrieveMessages(channel: EVChannel) {
         mTwilioChatView.showMessageLoading()
         if(EVChatSession.instance.isChatClientCreated){
@@ -128,7 +135,7 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
             })
         }
     }
-
+    //refrescar la referencia del canal de twilio dentro del objeto evchannel
     private fun refreshChannel(evChannel: EVChannel) {
         if(EVChatSession.instance.isChatClientCreated){
             mEVTwilioChatRemoteDataSource.findChannelByID(evChannel.unique_name, object: IEVTwilioFindChannelByIDCallback{
@@ -147,7 +154,7 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
 
         }
     }
-
+    //Para los eventos relacionados con el canal
     private fun setChannelListeners(channel: Channel) {
         mEVTwilioChatRemoteDataSource.subscribeToAddedMessages(channel, object: IEVTwilioMessageAddedCallBack{
             override fun onSuccess(message: Message) {
@@ -178,7 +185,7 @@ class TwilioChatPresenterImpl: ITwilioChatPresenter {
             }
         })
     }
-
+    //Para manejar el envio de un mensaje
     override fun sendMessage(channel: EVChannel, body: String) {
         if(EVChatSession.instance.isChatClientCreated){
             mEVTwilioChatRemoteDataSource.sendMessage(channel.twilioChannel!!,body,object: IEVTwilioSendMessageCallBack{

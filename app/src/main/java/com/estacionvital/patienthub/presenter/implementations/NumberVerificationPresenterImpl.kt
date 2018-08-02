@@ -11,6 +11,9 @@ import com.estacionvital.patienthub.util.NETMOBILE_AUTH_CREDENTIAL
 /**
  * Created by dusti on 24/02/2018.
  */
+/**
+ * Clase presenter para la verificación de numero movistar
+ */
 class NumberVerificationPresenterImpl : INumberVerificationPresenter {
     private val mNumberVerificationView: INumberVerificationView
     private val mNetMobileRemoteDataSource: NetMobileRemoteDataSource
@@ -19,7 +22,7 @@ class NumberVerificationPresenterImpl : INumberVerificationPresenter {
         this.mNumberVerificationView = numberVerificationView
         this.mNetMobileRemoteDataSource = netMobileRemoteDataSource
     }
-
+    //Verificar input de numero movistar
     override fun validateNumber(phoneNumber: String) {
         if (validatePhoneNumberInput(phoneNumber)) {
             mNumberVerificationView.showMovistarValidationProgress()
@@ -54,7 +57,7 @@ class NumberVerificationPresenterImpl : INumberVerificationPresenter {
         }
 
     }
-
+    //Validar el input de phonenumber
     private fun validatePhoneNumberInput(phoneNumber: String): Boolean{
         if(phoneNumber.isNullOrEmpty()) {
             mNumberVerificationView.showNumberRequiredMessage()
@@ -67,6 +70,7 @@ class NumberVerificationPresenterImpl : INumberVerificationPresenter {
         mNumberVerificationView.hidePhoneNumberInputMessage()
         return true
     }
+    //solicitar codigo sms
     private fun requestSMSCode(phoneNumber: String) {
         mNumberVerificationView.showSMSRequestProgress()
         mNetMobileRemoteDataSource.requestSMSCode(SendSMSRequest(phoneNumber, NETMOBILE_AUTH_CREDENTIAL), object: ISendSMSCallback{
@@ -89,7 +93,7 @@ class NumberVerificationPresenterImpl : INumberVerificationPresenter {
 
         })
     }
-
+    //Para manejar evento de que cambie el numero de telefono
     override fun checkNumberChanged(phoneNumber: String) {
         validatePhoneNumberInput(phoneNumber)
     }

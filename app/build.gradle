@@ -8,7 +8,6 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
-
 android {
     signingConfigs {
         releaseConfig {
@@ -41,6 +40,7 @@ android {
 repositories {
     maven { url 'https://maven.fabric.io/public' }
 }
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"

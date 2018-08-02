@@ -19,6 +19,10 @@ import com.twilio.chat.Channel
 /**
  * Created by dusti on 22/03/2018.
  */
+/**
+ * Clase presenter para validacion de cupon para chat
+ */
+
 class ValidateCouponPresenterImpl: IValidateCouponPresenter {
     override fun expireSession() {
         mSharedPrefManager.clearPreferences()
@@ -36,7 +40,7 @@ class ValidateCouponPresenterImpl: IValidateCouponPresenter {
         this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDataSource
         this.mSharedPrefManager = sharedPrefManager
     }
-
+    //validar cupon
     override fun validateCoupon(coupon: String, specialty: String, serviceType: String) {
         mValidateCouponView.showValidateLoading()
         val token = "Token token=${EVUserSession.instance.authToken}"
@@ -62,7 +66,7 @@ class ValidateCouponPresenterImpl: IValidateCouponPresenter {
             }
         })
     }
-
+    //crear una nueva examinacion de chat
     override fun createNewExamination(specialty: String, serviceType: String, type: String, code: String, order_id: String) {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mValidateCouponView.showCreatingRoomLoading()
@@ -93,7 +97,7 @@ class ValidateCouponPresenterImpl: IValidateCouponPresenter {
             }
         })
     }
-
+    //Unir al usuario a un twilio room
     override fun joinEVTwilioRoom(evChannel: EVChannel) {
         mEVTwilioChatRemoteDataSource.findChannelByID(evChannel.unique_name, object: IEVTwilioFindChannelByIDCallback{
             override fun onSuccess(channel: Channel) {

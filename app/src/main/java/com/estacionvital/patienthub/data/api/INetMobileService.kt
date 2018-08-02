@@ -9,7 +9,7 @@ import com.estacionvital.patienthub.util.*
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
-
+//INTERFAZ DE CONFIG DE ENDPOINTS DE RETROFIT Y PAYLOADS, RESPONSES PARA API NETMOBILE
 interface INetMobileService {
     @POST(URL_VERIFY_NUMBER)
     fun verifyNumber(@Body body: NumberVerificationRequest): Call<NumberVerificationResponse>

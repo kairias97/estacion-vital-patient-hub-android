@@ -12,6 +12,7 @@ import retrofit2.http.Query
 /**
  * Created by kevin on 6/3/2018.
  */
+//INTERFAZ DE CONFIG DE ENDPOINTS DE RETROFIT Y PAYLOADS, RESPONSES, PARA EL BLOG
 interface IEVBlogService {
     @GET(URL_EV_BLOG_GET_CATEGORIES)
     fun getArticleCategories(): Call<ArticleCategoriesResponse>

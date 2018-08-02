@@ -11,6 +11,7 @@ import java.util.*
 /**
  * Created by kevin on 5/3/2018.
  */
+/*Fragment para implementacion de datepicker*/
 class DatePickerFragment: DialogFragment(), DatePickerDialog.OnDateSetListener {
 
     private var mListener: DatePickerListener? = null

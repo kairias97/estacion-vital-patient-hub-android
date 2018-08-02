@@ -7,7 +7,7 @@ import android.content.Intent
 import android.util.Log
 
 import com.google.firebase.iid.FirebaseInstanceIdService
-
+//Service para manejar tokens de firebase
 class FCMInstanceIDService : FirebaseInstanceIdService() {
 
     /**

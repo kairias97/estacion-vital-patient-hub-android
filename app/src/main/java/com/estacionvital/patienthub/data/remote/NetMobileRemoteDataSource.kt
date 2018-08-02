@@ -12,8 +12,9 @@ import retrofit2.Response
 /**
  * Created by dusti on 24/02/2018.
  */
+//Clase que se comunica con retrofit para operaciones de api de netmobile
 class NetMobileRemoteDataSource {
-
+    //verificar numero movistar
     fun verifyNumber(numberData: NumberVerificationRequest, callback: IAuthRegistrationCallback){
         val authCall = NetMobileAPI.instance.service!!.verifyNumber(numberData)
 
@@ -43,7 +44,7 @@ class NetMobileRemoteDataSource {
             }
         })
     }
-
+    //solicitar codigo sms
     fun requestSMSCode(data: SendSMSRequest, callback: ISendSMSCallback){
         val authCall = NetMobileAPI.instance.service!!.sendSMSCode(data)
         authCall.enqueue(object: Callback<SendSMSResponse>{
@@ -71,7 +72,7 @@ class NetMobileRemoteDataSource {
 
         })
     }
-
+    //validar codigo pin
     fun validatePinCode(data: ValidatePinRequest, callback: IValidatePinCallback) {
         val authCall = NetMobileAPI.instance.service!!.validatePin(data)
         authCall.enqueue(object:Callback<ValidatePinResponse> {
@@ -99,6 +100,7 @@ class NetMobileRemoteDataSource {
 
         })
     }
+    //obtener catalogo de suscripciones
     fun retrieveSubscriptionCatalog(data: SuscriptionCatalogRequest, callback: ISuscriptionCatalogCallback){
         val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionCatalog(data)
         authCall.enqueue(object:Callback<List<EVClub>>{
@@ -121,7 +123,7 @@ class NetMobileRemoteDataSource {
             }
         })
     }
-
+    //obtener limite de suscrpciones
     fun retrieveSubscriptionLimit(data: SuscriptionLimitRequest, callback: ISuscriptionLimitCallback){
         val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionLimit(data)
         authCall.enqueue(object:Callback<SuscriptionLimitResponse>{
@@ -145,7 +147,7 @@ class NetMobileRemoteDataSource {
             }
         })
     }
-
+    //obtener suscripciones activas
     fun retrieveSubscriptionActive(data: SuscriptionActiveRequest, callback: ISuscriptionActiveCallback){
         val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionActive(data)
         authCall.enqueue(object: Callback<List<SuscriptionActiveResponse>> {
@@ -168,7 +170,7 @@ class NetMobileRemoteDataSource {
             }
         })
     }
-
+    //obtener total de suscripciones
     fun retrieveSubscriptionTotal(data: SuscriptionTotalRequest, callback: ISuscriptionTotalCallback){
         val authCall = NetMobileAPI.instance.service!!.retrieveSuscriptionTotal(data)
         authCall.enqueue(object: Callback<SuscriptionTotalResponse> {
@@ -191,7 +193,7 @@ class NetMobileRemoteDataSource {
             }
         })
     }
-
+    //suscribir a club de EV
     fun subscribeToEVClub(data: ClubSubscriptionRequest, callback:INewClubSubscriptionCallback){
         val authCall = NetMobileAPI.instance.service!!.subscribeToEVClub(data)
         authCall.enqueue(object:Callback<ClubSubscriptionResponse>{

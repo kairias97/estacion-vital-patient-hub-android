@@ -13,6 +13,9 @@ import com.estacionvital.patienthub.util.RegexUtil
 /**
  * Created by dusti on 05/03/2018.
  */
+/**
+ * Clase presenter para edición de perfil
+ */
 class EditProfilePresenterImpl: IEditProfilePresenter{
     override fun expireSession() {
         mSharedPrefManager.clearPreferences()

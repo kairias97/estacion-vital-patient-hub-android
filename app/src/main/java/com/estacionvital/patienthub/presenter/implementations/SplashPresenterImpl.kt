@@ -15,7 +15,11 @@ import com.twilio.chat.Channel
 /**
  * Created by kevin on 22/2/2018.
  */
+/**
+ * Class presenter para el splash
+ */
 class SplashPresenterImpl: ISplashPresenter {
+    //cuando se viene de una notificacion se prepara la info del canal de la notificacion
     override fun onChatNotificatioReceived(channelID: String) {
         //Implement here logic to check session on splash screen
         if ( isSessionSaved()) {
@@ -26,7 +30,7 @@ class SplashPresenterImpl: ISplashPresenter {
             timedTask.executeTimedTask({mSplashView.navigateToNumberVerification()}, mSplashTimeOut.toLong())
         }
     }
-    //Second function executed on the notification flow
+    //Second function executed on the notification flow, esto es para preparar el twilio client
     private fun prepareTwilioClient(twilioToken:String, evChannel: EVChannel){
         mEVTwilioChatRemoteDataSource.setupTwilioClient(twilioToken,
                 mSplashView.getContext(),
@@ -40,7 +44,8 @@ class SplashPresenterImpl: ISplashPresenter {
             }
         })
     }
-    //Third function executed in the flow
+    //Third function executed in the flow para obtener un twilio channel por su id una vez teniendo
+    //el canal que viene del api de ev
     private fun fetchTwilioChannel(evChannel: EVChannel){
         mEVTwilioChatRemoteDataSource.findChannelByID(evChannel.unique_name, object: IEVTwilioFindChannelByIDCallback {
             override fun onSuccess(channel: Channel) {
@@ -54,7 +59,7 @@ class SplashPresenterImpl: ISplashPresenter {
 
         })
     }
-    //First function executed in the notification flow
+    //First function executed in the notification flow, esto es para obtener el canal de la notificacion
     private fun fetchNotificationExamination(channelID:String){
         val authToken = "Token token=${EVUserSession.instance.authToken}"
         mEVRemoteDataSource.getChannelByID(authToken, EVGetChannelByIDRequest(channelID), object:IGetChannelByUniqueName {
@@ -84,7 +89,7 @@ class SplashPresenterImpl: ISplashPresenter {
         })
     }
 
-
+    //Para obtener la informacion de perfil para el chat
     private fun retrieveEVUSerProfileForChat(evChannel: EVChannel) {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mEVRemoteDataSource.retrieveEVUserProfile(token,
@@ -125,26 +130,30 @@ class SplashPresenterImpl: ISplashPresenter {
         this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDS
         this.mNetMobileRemoteDataSource = netMobileRemoteDataSource
     }
+    //Para validar si hay sesion guardada
     private fun isSessionSaved(): Boolean{
         val token = mSharedPrefManager.getSharedPrefString(SharedPrefManager.PreferenceKeys.AUTH_TOKEN)
         return token != ""
     }
+    //Para leer de sharedpref y luego instanciar el singleton
     private fun setupSessionInstance() {
         val token = mSharedPrefManager.getSharedPrefString(SharedPrefManager.PreferenceKeys.AUTH_TOKEN)
         val phoneNumber = mSharedPrefManager.getSharedPrefString(SharedPrefManager.PreferenceKeys.PHONE_NUMBER)
         EVUserSession.instance.authToken = token
         EVUserSession.instance.phoneNumber = phoneNumber
     }
+    //navegar hacia el main menu
     private fun redirectToMain() {
         val timedTask = TimedTaskHandler()
         timedTask.executeTimedTask({mSplashView.navigateToMain()}, mSplashTimeOut.toLong())
     }
+    //dirigirse hacia la verifioaciom de numero movistar
     private fun redirectToNumberVerification() {
         val timedTask = TimedTaskHandler()
         timedTask.executeTimedTask({mSplashView.navigateToNumberVerification()}, mSplashTimeOut.toLong())
     }
+    //para verificar la sesion
     override fun checkSession() {
-        //Implement here logic to check session on splash screen
 
 
         if ( isSessionSaved()) {
@@ -156,11 +165,13 @@ class SplashPresenterImpl: ISplashPresenter {
         //If it is not logged then go to Registration
 
     }
+    //validar las suscripciones al arrancar la aplicacion
     private fun validateClubSuscriptions() {
 
         mNetMobileRemoteDataSource.retrieveSubscriptionActive(SuscriptionActiveRequest(EVUserSession.instance.phoneNumber,
                 NETMOBILE_AUTH_CREDENTIAL), object:ISuscriptionActiveCallback {
             override fun onSuccess(response: List<SuscriptionActiveResponse>) {
+                //Si tiene suscripciones entonces ir a main, sino navegar hacia suscripciones de club
                 if (response.isNotEmpty()) {
                     mSplashView.navigateToMain()
                 } else {

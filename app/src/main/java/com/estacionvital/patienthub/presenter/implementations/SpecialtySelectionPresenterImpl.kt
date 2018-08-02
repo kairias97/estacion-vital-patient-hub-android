@@ -30,6 +30,7 @@ class SpecialtySelectionPresenterImpl: ISpecialtySelectionPresenter {
         this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDataSource
         this.mSharedPrefManager = sharedPrefManager
     }
+    //obtener especialidades para el chat
     override fun retrieveSpecialtiesChat() {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mSpecialtySelectionView.showProgressDialog()
@@ -50,6 +51,7 @@ class SpecialtySelectionPresenterImpl: ISpecialtySelectionPresenter {
             }
         })
     }
+    //obtener disponibilidad de medicos para una especialidad
     override fun retrieveDoctorAvailability(specialty: String) {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mSpecialtySelectionView.showAvailabilityProgressDialog()
@@ -69,7 +71,7 @@ class SpecialtySelectionPresenterImpl: ISpecialtySelectionPresenter {
             }
         })
     }
-
+    //crear nueva examinacion
     override fun createNewExamination(specialty: String, service_type: String, type: String, code: String, order_id: String) {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mSpecialtySelectionView.showCreatingExaminationProgress()
@@ -95,7 +97,7 @@ class SpecialtySelectionPresenterImpl: ISpecialtySelectionPresenter {
             }
         })
     }
-
+    //unir al usuario a un room de twilio
     private fun joinEVTwilioRoom(room: String, specialty: String, serviceType: String) {
 
         mEVTwilioChatRemoteDataSource.findChannelByID(room,object: IEVTwilioFindChannelByIDCallback{

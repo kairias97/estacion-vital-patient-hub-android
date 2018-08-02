@@ -8,6 +8,7 @@ import java.util.*
  */
 class DateUtil {
     companion object {
+        //Para convertir una fecha hacia un formato específico
         fun parseDateToFormat(year: Int, month: Int, day: Int, format: String): String{
             val formatter = SimpleDateFormat(format)
             val c = Calendar.getInstance()
@@ -16,10 +17,12 @@ class DateUtil {
             val date = c.time as Date
             return formatter.format(date)
         }
+        //Parsear objeto Date a un formato
         fun parseDateToFormat(date: Date, format: String): String{
             val formatter = SimpleDateFormat(format)
             return formatter.format(date)
         }
+        //Parsear una fecha que viene en texto en formato origen, hacia formato destino
         fun parseDateStringToFormat(date: String, originFormat: String, targetFormat: String): String{
             var formatter = SimpleDateFormat(originFormat)
             val date = formatter.parse(date)

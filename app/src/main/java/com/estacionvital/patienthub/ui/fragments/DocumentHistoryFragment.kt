@@ -30,6 +30,7 @@ class DocumentHistoryFragment: Fragment(), IDocumentHistoryFragmentView {
     override fun showExpirationMessage() {
         (activity as BaseActivity).showExpirationMessage()
     }
+    /*Interfaz para el historial de documentos*/
     interface DocumentHistoryFragmentListener {
         fun onDocumentLoadingStarted()
         fun onDocumentLoadingFinished()

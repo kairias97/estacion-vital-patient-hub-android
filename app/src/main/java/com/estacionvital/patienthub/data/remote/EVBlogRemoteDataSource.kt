@@ -14,11 +14,13 @@ import retrofit2.Response
 /**
  * Created by kevin on 6/3/2018.
  */
+//Clase que se comunica con retrofit para operaciones de API de blog de EV
 class EVBlogRemoteDataSource {
     private constructor()
     companion object {
         val INSTANCE: EVBlogRemoteDataSource by lazy { EVBlogRemoteDataSource()}
     }
+    //Obtener categorias de articulos
     fun getArticleCategories(callback: IGetArticleCategoriesCallback){
         val authCall = EVBlogAPI.instance.service!!.getArticleCategories()
         authCall.enqueue(object: Callback<ArticleCategoriesResponse>{
@@ -47,7 +49,7 @@ class EVBlogRemoteDataSource {
 
         })
     }
-
+    //Obtener articulos de ev por categoria
     fun getArticlesByCategory(categoryID: Int, callback: IArticlesCallback){
         val authCall = EVBlogAPI.instance.service!!.getArticlesByCategory(categoryID)
         authCall.enqueue(object:Callback<ArticlesResponse>{
@@ -70,6 +72,7 @@ class EVBlogRemoteDataSource {
 
         })
     }
+    //Obtener articulos recientes
     fun getRecentArticles(page: Int, count:Int, callback: IArticlesCallback){
         val authCall = EVBlogAPI.instance.service!!.getRecentArticles(page, count)
         authCall.enqueue(object:Callback<ArticlesResponse>{

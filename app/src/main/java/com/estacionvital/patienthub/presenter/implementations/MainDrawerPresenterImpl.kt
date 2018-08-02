@@ -18,12 +18,13 @@ import com.estacionvital.patienthub.ui.views.IMainDrawerView
 /**
  * Created by dusti on 03/03/2018.
  */
+//Presenter para el main drawer de menu principal de navegacion
 class MainDrawerPresenterImpl: IMainDrawerPresenter {
     override fun expireSession() {
         mSharedPrefManager.clearPreferences()
         mMainDrawerView.showExpirationMessage()
     }
-
+    //cerrar sesion
     override fun logout() {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mMainDrawerView.showLoggingOutProgress()
@@ -52,7 +53,7 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
 
         })
     }
-
+    //Obtener informacion local de singleton de sesion para mostrar perfil de usuario
     override fun retrieveLocalUserProfileSession() {
         if (EVUserSession.instance.userProfile != null) {
             mMainDrawerView.setDrawerHeaderData( EVUserSession.instance.userProfile)
@@ -73,7 +74,7 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
         this.mEstacionVitalRemoteDataSource = estacionVitalRemoteDataSource
         this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDataSource
     }
-
+    //obtener perfil de usuario de ev
     override fun retrieveEVUSerProfile(context: Context) {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mEstacionVitalRemoteDataSource.retrieveEVUserProfile(token,
@@ -99,7 +100,7 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
                     }
                 })
     }
-
+    //obtener twilio token
     override fun getTwilioToken(context: Context) {
         //mMainDrawerView.showCreatingClientProgress()
         val token = "Token token=${EVUserSession.instance.authToken}"
@@ -120,7 +121,7 @@ class MainDrawerPresenterImpl: IMainDrawerPresenter {
             }
         })
     }
-
+    //Crear cliente de chat de twilio
     override fun createEVTwilioChatClient(context: Context) {
         mEVTwilioChatRemoteDataSource.setupTwilioClient(EVUserSession.instance.twilioToken, context, object: IEVTwilioClientCallback{
             override fun onSuccess() {

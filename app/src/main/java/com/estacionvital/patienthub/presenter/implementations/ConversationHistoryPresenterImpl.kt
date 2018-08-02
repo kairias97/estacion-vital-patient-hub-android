@@ -17,6 +17,7 @@ import com.twilio.chat.Channel
 /**
  * Created by dusti on 16/03/2018.
  */
+//Presenter para historial de chats
 class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
     override fun expireSession() {
         mSharedPrefManager.clearPreferences()
@@ -34,7 +35,7 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
         this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDataSource
         this.mSharedPrefManager = sharedPrefManager
     }
-
+    //Obtener historial de conversaciones
     override fun retrieveConversationHistory(context: Context) {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mConverstaionHistoryFragmentView.showLoadingProgress()
@@ -53,6 +54,7 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
             }
         })
     }
+    //Preparar twilio client
     override fun setUpTwilioClient(context: Context, data: List<EVUserExamination>) {
         mEVTwilioChatRemoteDataSource.setupTwilioClient(EVUserSession.instance.twilioToken, context,object: IEVTwilioClientCallback{
             override fun onSuccess() {
@@ -65,7 +67,7 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
             }
         })
     }
-
+    //Obtener canales de chat suscritos
     override fun callSubscribedChannels(data: List<EVUserExamination>) {
         mEVTwilioChatRemoteDataSource.callSubscribedChannels(object: IEVTwilioCallSubscribedChannelsCallBack{
             override fun onSuccess(channels: List<Channel>) {
@@ -87,6 +89,7 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
                         list.add(newChannel)
                     }
                 }
+                //Setear lista de los canales
                 mConverstaionHistoryFragmentView.setChannelList(list)
             }
 
@@ -96,7 +99,7 @@ class ConversationHistoryPresenterImpl: IConversationHistoryPresenter {
             }
         })
     }
-
+    //Filtrar canales por tipos de chat
     override fun filterByTypeChat(data: MutableList<EVChannel>, type: String): MutableList<EVChannel> {
         var list: MutableList<EVChannel> = ArrayList<EVChannel>()
         if(type == CHAT_FREE){

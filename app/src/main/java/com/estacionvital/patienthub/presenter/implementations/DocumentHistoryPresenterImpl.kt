@@ -12,6 +12,7 @@ import com.estacionvital.patienthub.util.CHAT_PREMIUM
 /**
  * Created by kevin on 24/3/2018.
  */
+//Presenter para historial de documentos
 class DocumentHistoryPresenterImpl: IDocumentHistoryPresenter {
     override fun expireSession() {
         mDocumentHistoryView.showExpirationMessage()

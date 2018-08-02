@@ -11,6 +11,9 @@ import com.estacionvital.patienthub.ui.fragmentViews.IProfileFragmentView
 /**
  * Created by dusti on 03/03/2018.
  */
+/**
+ * Clase presenter para manejar la info de perfil
+ */
 class ProfilePresenterImpl: IProfilePresenter {
     override fun expireSession() {
         mSharedPrefManager.clearPreferences()
@@ -26,7 +29,7 @@ class ProfilePresenterImpl: IProfilePresenter {
         this.mSharedPrefManager = sharedPrefManager
         this.mEstacionVitalRemoteDataSource = estacionVitalRemoteDataSource
     }
-
+    //Obtener informacion de perfil
     override fun retrieveEVUserProfile() {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mProfileView.showLoadingProgress()

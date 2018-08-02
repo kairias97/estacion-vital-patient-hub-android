@@ -19,6 +19,9 @@ import com.twilio.chat.Channel
 /**
  * Created by dusti on 07/04/2018.
  */
+/**
+ * Presenter para validacion de tarjeta de credito
+ */
 class ValidateCreditCardPresenterImpl: IValidateCreditCardPresenter {
     private val mValidateCreditCardView: IValidateCreditCardView
     private val mEstacionVitalRemoteDataSource: EstacionVitalRemoteDataSource
@@ -32,11 +35,12 @@ class ValidateCreditCardPresenterImpl: IValidateCreditCardPresenter {
         this.mEVTwilioChatRemoteDataSource = evTwilioChatRemoteDataSource
         this.mSharedPrefManager = sharedPrefManager
     }
-
+    //expirar sesion de usuario
     fun expireSession() {
         mSharedPrefManager.clearPreferences()
         mValidateCreditCardView.showExpirationMessage()
     }
+    //validar tarjeta de credito
     override fun validateCreditCard(holder: String, expYear: String, expMonth: String, number: String, cvc: String, specialty: String, service_type: String) {
         mValidateCreditCardView.showProcessingCreditCard()
         val token = "Token token=${EVUserSession.instance.authToken}"
@@ -62,7 +66,7 @@ class ValidateCreditCardPresenterImpl: IValidateCreditCardPresenter {
             }
         })
     }
-
+    //crear una nueva examinacion de chat
     override fun createNewExamination(specialty: String, serviceType: String, type: String, code: String, order_id: String) {
         val token = "Token token=${EVUserSession.instance.authToken}"
         mValidateCreditCardView.showCreatingRoomLoading()
@@ -92,7 +96,7 @@ class ValidateCreditCardPresenterImpl: IValidateCreditCardPresenter {
             }
         })
     }
-
+    //unir al usuario a un ev channel obtenido del api
     override fun joinEVTwilioRoom(evChannel: EVChannel) {
         mEVTwilioChatRemoteDataSource.findChannelByID(evChannel.unique_name, object: IEVTwilioFindChannelByIDCallback {
             override fun onSuccess(channel: Channel) {

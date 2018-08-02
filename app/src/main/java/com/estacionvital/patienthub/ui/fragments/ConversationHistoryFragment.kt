@@ -113,7 +113,7 @@ class ConversationHistoryFragment : Fragment(), IConversationHistoryFragmentView
         super.onDetach()
         mListener = null
     }
-
+    //Interfaz para comunicar al fragment con la actividad
     interface OnConversationHistorytInteraction {
         fun onLoadingHistory()
         fun onHistoryLoadingFinished()

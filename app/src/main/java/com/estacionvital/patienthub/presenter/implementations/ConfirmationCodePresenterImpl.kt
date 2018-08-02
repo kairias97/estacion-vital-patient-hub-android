@@ -17,6 +17,7 @@ import com.estacionvital.patienthub.util.toBase64
 /**
  * Created by kevin on 25/2/2018.
  */
+//Presenter para confirmacion de codigo
 class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
     private val mCodeVerificationView: IConfirmationCodeVerificationView
     private val mNetMobileRemoteDataSource: NetMobileRemoteDataSource
@@ -32,7 +33,7 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
         this.mPrefManager = prefManager
 
     }
-
+    //Validar input de UI
     private fun validateCodeInput(code: String): Boolean{
         if(code.isNullOrEmpty()) {
             mCodeVerificationView.showCodeRequiredMessage()
@@ -41,6 +42,7 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
         mCodeVerificationView.hideCodeInputMessage()
         return true
     }
+    //Validar codigo en ws
     override fun validateCode(confirmationCode: String) {
         val phoneNumber: String = RegistrationSession.instance.phoneNumber
 
@@ -89,6 +91,7 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
                 })
         mCodeVerificationView.navigateToMain()
     }
+    //Validar login de ev
     private fun validateEVLogin(phoneNumber: String) {
         mCodeVerificationView.showEVLoginRequestProgress()
         mEstacionVitalRemoteDataSource.validateEVCredentials(LoginRequest(phoneNumber.toBase64().replace("\n", "")),
@@ -122,7 +125,7 @@ class ConfirmationCodePresenterImpl: IConfirmationCodePresenter {
 
                 })
     }
-
+    //verificar cambios en el codigo de confirmacion
     override fun checkCodeChanged(confirmationCode: String) {
         validateCodeInput(confirmationCode)
     }

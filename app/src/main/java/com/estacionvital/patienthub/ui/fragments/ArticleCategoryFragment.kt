@@ -61,7 +61,7 @@ class ArticleCategoryFragment: Fragment(), IArticleCategoryFragmentView,
         super.onDetach()
         mListener = null
     }
-
+    //Interfaz para que del fragment se puedan lanzar callbacks al activity
     interface OnArticleCategoryInteraction {
         fun onLoadingCategories()
         fun onCategoriesLoaded()

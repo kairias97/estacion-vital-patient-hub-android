@@ -22,6 +22,7 @@ import java.io.IOException
 /**
  * Registration intent handles receiving and updating the FCM token lifecycle events.
  */
+//IntentService para registro de token de firebase para twilio
 class RegistrationIntentService : IntentService("RegistrationIntentService") {
     init {
         Log.i("start","Stared")
@@ -49,7 +50,7 @@ class RegistrationIntentService : IntentService("RegistrationIntentService") {
 
 
             })
-
+            //Suscripcion a firebase topics
             subscribeTopics(token)
 
             // You should store a boolean that indicates whether the generated token has been

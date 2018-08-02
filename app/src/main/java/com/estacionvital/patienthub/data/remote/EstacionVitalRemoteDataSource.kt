@@ -15,9 +15,10 @@ import retrofit2.Response
 /**
  * Created by kevin on 25/2/2018.
  */
+//Clase que se comunica con retrofit para operaciones de API de EV
 class EstacionVitalRemoteDataSource {
     private constructor()
-
+    //Validar usuario de ev
     fun validateEVCredentials(data: LoginRequest, callback: IValidateEVCredentialsCallback) {
         val authCall = EstacionVitalAPI.instance.service!!.validateEVCredentials(data)
         authCall.enqueue(object: Callback<LoginResponse> {
@@ -44,6 +45,7 @@ class EstacionVitalRemoteDataSource {
 
         })
     }
+    //Enviar registro de usuario de ev
     fun submitEVRegistration(basicAuth: String, data: EVRegistrationRequest,
                              callback: IEVRegistrationSubmittedCallback) {
         val authCall = EstacionVitalAPI.instance.service!!.submitRegistrationData(basicAuth,
@@ -76,6 +78,7 @@ class EstacionVitalRemoteDataSource {
 
         })
     }
+    //Obtener perfil de usuario de ev
     fun retrieveEVUserProfile(token: String, callback: IEVRetrieveProfileCallback){
         val authCall = EstacionVitalAPI.instance.service!!.retrieveProfileData(token)
         authCall.enqueue(object: Callback<EVRetrieveProfileResponse>{
@@ -102,6 +105,7 @@ class EstacionVitalRemoteDataSource {
             }
         })
     }
+    //Actualizar perfil de usuario
     fun updateEVProfile(token: String, data: EVProfileUpdateRequest, callback: IEVProfileUpdateCallback){
         val authCall = EstacionVitalAPI.instance.service!!.updateProfile(token, data)
         authCall.enqueue(object: Callback<EVProfileUpdateResponse>{
@@ -128,6 +132,7 @@ class EstacionVitalRemoteDataSource {
             }
         })
     }
+    //Cerrar sesion
     fun logout(token: String, callback: ILogoutCallback){
         val authCall = EstacionVitalAPI.instance.service!!.logout(token)
         authCall.enqueue(object: Callback<LogoutResponse>{
@@ -157,6 +162,7 @@ class EstacionVitalRemoteDataSource {
 
         })
     }
+    //Obtener catalogo de especialidades de doctores
     fun retrieveSpecialtiesChat(token: String, callback: IEVRetrieveSpecialtiesCallback){
         val authCall = EstacionVitalAPI.instance.service!!.retrieveSpecialties(token)
         authCall.enqueue(object: Callback<EVSpecialtiesResponse>{
@@ -185,6 +191,7 @@ class EstacionVitalRemoteDataSource {
             }
         })
     }
+    //Obtener historial de examinaciones
     fun retrieveExaminationsHistory(token: String, callback: IEVRetrieveUserExaminationsHIstoryCalllback){
         val authCall = EstacionVitalAPI.instance.service!!.retrieveExaminations(token, EVRetrieveUserExaminationRequest(EXAMINATION_TYPE_CHAT))
         authCall.enqueue(object: Callback<EVRetrieveUserExaminationResponse>{
@@ -213,6 +220,7 @@ class EstacionVitalRemoteDataSource {
             }
         })
     }
+    //Consultar disponibilidad de doctores de una especialidad
     fun retrieveDoctorsAvailability(token: String, specialty: String, callback: IEVRetrieveDoctorsAvailabilityCallBack){
         val authCall = EstacionVitalAPI.instance.service!!.retrieveDoctorsAvailability(token, EVRetrieveDoctorsAvailabilityRequest(specialty))
         authCall.enqueue(object: Callback<EVRetrieveDoctorsAvailabilityResponse>{
@@ -242,6 +250,7 @@ class EstacionVitalRemoteDataSource {
             }
         })
     }
+    //Crear examinacion de chat de ev
     fun createNewExamination(token: String, specialty: String, service_type: String, type: String, code: String, order_id: String,callback: IEVCreateNewExaminationCallBack){
         val authCall = EstacionVitalAPI.instance.service!!.createNewExamination(token, EVCreateNewExaminationRequest(specialty, EXAMINATION_TYPE_CHAT, service_type,
                 EVPaymentInfo(type, code, order_id)))
@@ -274,6 +283,7 @@ class EstacionVitalRemoteDataSource {
             }
         })
     }
+    //Validar cupon de ev para chat
     fun validateCoupon(token: String, coupon: String, callback: IEVValidateCouponCallBack){
         val authCall = EstacionVitalAPI.instance.service!!.validateCoupon(token, EVValidateCouponRequest(coupon))
         authCall.enqueue(object: Callback<EVValidateCouponResponse>{
@@ -302,7 +312,7 @@ class EstacionVitalRemoteDataSource {
             }
         })
     }
-
+    //Obtener canal de twilio por ID, en este caso proveido por ev
     fun getChannelByID(token: String, body: EVGetChannelByIDRequest, callback:IGetChannelByUniqueName) {
         val authCall = EstacionVitalAPI.instance.service!!.getChannelByUniqueName(token, body)
         authCall.enqueue(object:Callback<EVUserExaminationByIDResponse> {
@@ -329,6 +339,7 @@ class EstacionVitalRemoteDataSource {
 
         })
     }
+    //Obtener documentos del paciente
     fun getDocuments(token: String, callback: IGetDocumentsCallback){
         val authCall = EstacionVitalAPI.instance.service!!.getDocuments(token)
         authCall.enqueue(object: Callback<DocumentsResponse>{
@@ -358,6 +369,7 @@ class EstacionVitalRemoteDataSource {
 
         })
     }
+    //procesar pago de tarjeta de credito
     fun paymentCreditCard(token: String, holder: String, expYear: String, expMonth: String, number: String, cvc: String, callback: IEVPaymentCreditCardCallBack){
         val authCall = EstacionVitalAPI.instance.service!!.paymentCreditCard(token, EVCreditCardRequest(holder, number, expMonth, expYear, cvc))
         authCall.enqueue(object: Callback<EVCreditCardResponse>{
@@ -386,6 +398,7 @@ class EstacionVitalRemoteDataSource {
             }
         })
     }
+    //Singleton de esta clase
     companion object {
         val INSTANCE: EstacionVitalRemoteDataSource by lazy { EstacionVitalRemoteDataSource()}
     }
